@@ -44,16 +44,18 @@ public class ScreenGame implements Screen {
 
         myGdxGame.batch.begin();
 
-        hero.draw(myGdxGame.batch, frameCount);
 //        bitmapFont.draw(myGdxGame.batch, " " + joystick.getY(), MyGdxGame.SCR_WIDTH / 30, MyGdxGame.SCR_HEIGHT / 20 * 19);
         if(Gdx.input.justTouched()){
             joystick.changeXY(Gdx.input.getX(),MyGdxGame.SCR_HEIGHT - Gdx.input.getY());
         }
         else if(Gdx.input.isTouched()){
-            if(keepTouching) joystick.draw(myGdxGame.batch) ;
+            if(keepTouching) joystick.draw(myGdxGame.batch);
             hero.move(joystick.getX(), joystick.getY());
             keepTouching = true;
-        }else keepTouching = false;
+        }else{
+            keepTouching = false;
+        }
+        hero.draw(myGdxGame.batch, frameCount, keepTouching);
 
 
         myGdxGame.batch.end();
