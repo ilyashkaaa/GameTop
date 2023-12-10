@@ -8,13 +8,16 @@ public class Hero {
     Texture head;
     int speed = 5;
     float x = MyGdxGame.SCR_WIDTH / 2, y = MyGdxGame.SCR_HEIGHT / 2;
-    public Hero(){
+
+    public Hero() {
         head = new Texture("textures/player/head/head_blue.png");
     }
-    public void draw(SpriteBatch batch){
+
+    public void draw(SpriteBatch batch) {
         batch.draw(head, x, y, 120, 120);
     }
-    public void move(double deltaX, double deltaY){
+
+    public void move(double deltaX, double deltaY) {
         x += deltaX * speed;
         y += deltaY * speed;
     }

@@ -1,9 +1,9 @@
 package com.mygdx.game.items.artefacts;
 
-public class Dice extends Artefacts{
+public class Dice extends Artefacts {
     public Dice() {
         title = "Игральная кость";
-        description="азарт берёт верх";
+        description = "азарт берёт верх";
         Power = "при высреле пуля с 10% шансом заменяется на игральную кость при выпадании:" +
                 "6. Бессмертие на полсекунды" +
                 "5. Бафф к урону на 3 секунды на +1 урон" +
