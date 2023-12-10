@@ -1,5 +1,7 @@
 package com.mygdx.game.items.artefacts;
 
+import java.util.Random;
+
 public class Dice extends Artefacts{
     public Dice() {
         title = "Игральная кость";
