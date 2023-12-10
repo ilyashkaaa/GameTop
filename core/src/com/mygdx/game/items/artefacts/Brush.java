@@ -1,4 +1,11 @@
 package com.mygdx.game.items.artefacts;
 
-public class Brush {
+public class Brush extends Artefacts {
+    public Brush() {
+        title = "Кисть";
+        description = "На месте попадания в объект оставляют лужу";
+        effect="color";
+        damageOst=1;
+    }
+
 }
