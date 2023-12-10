@@ -4,7 +4,7 @@ public class Artefacts {
     protected String title;
     protected String description;
     protected String Power;
-    Effect effect;
+    Effects effects;
     int damageUP;
     int speedUP;
     int damageOst;

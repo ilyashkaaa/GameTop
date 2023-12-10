@@ -5,7 +5,7 @@ public class Crane extends Artefacts {
         title = "Журавлик";
         description="Cимвол мира";
         Power = "добаляет пулям эффект радиации (радиация при попадании в стену " + "или во врага появляется зона наносящая 2урона в секунду";
-        effect=Effect.Radiation;
+        effects = Effects.Radiation;
 
     }
 }

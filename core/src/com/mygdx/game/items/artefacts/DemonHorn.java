@@ -7,6 +7,6 @@ public class DemonHorn extends Artefacts {
         description="рог демона отобран у работника почты России";
         Power = "Добавляет пулям эффект огня и увеличивает урон";
         damageUP=2;
-        effect=Effect.Fire;
+        effects = Effects.Fire;
     }
 }

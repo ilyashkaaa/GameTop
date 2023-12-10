@@ -1,6 +1,6 @@
 package com.mygdx.game.items.artefacts;
 
-public enum Effect {
+public enum Effects {
     Electric,
     Freeze,
     Fire,

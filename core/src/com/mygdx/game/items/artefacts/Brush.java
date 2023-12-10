@@ -5,7 +5,7 @@ public class Brush extends Artefacts {
         title = "Кисть";
         description="Вы думаете что раскрашивать пули неплохая идея";
         Power = "На месте попадания в объект оставляют лужу";
-        effect=Effect.Color;
+        effects = Effects.Color;
         damageOst=1;
     }
 
