@@ -15,15 +15,12 @@ public class MyGdxGame extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		hero = new Texture("hero.png");
 	}
 
 	@Override
 	public void render () {
 		ScreenUtils.clear(1, 2, 0, 1);
 		batch.begin();
-
-
 		batch.end();
 	}
 	
