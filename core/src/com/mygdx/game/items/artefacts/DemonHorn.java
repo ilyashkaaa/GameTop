@@ -5,5 +5,7 @@ public class DemonHorn extends Artefacts {
     public DemonHorn() {
         title = "Рог демона";
         description = "Добавляет пулям эффект огня и увеличивает урон";
+        damageUP=2;
+        effect=Effect.Fire;
     }
 }

@@ -5,8 +5,8 @@ public class AssassinBody extends Body{
         title = "Ассасин тело";
         description = "Быстрое тело с большим уроном";
         characteristics = "7оз ,200%урон ,19скорость";
-        HP=7;
-        multipleAttack=2;
+        hp =7;
+        damageMultiplier =2;
         speed=19;
     }
 }
