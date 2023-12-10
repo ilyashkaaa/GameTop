@@ -15,6 +15,7 @@ public class ScreenGame implements Screen {
     Hero hero;
     boolean keepTouching;
     private final MyGdxGame myGdxGame;
+    int frameCount;
     ScreenGame(MyGdxGame myGdxGame) {
         this.myGdxGame = myGdxGame;
 
@@ -36,13 +37,14 @@ public class ScreenGame implements Screen {
 
     @Override
     public void render(float delta) {
+        frameCount++;
         myGdxGame.camera.update();
 
         ScreenUtils.clear(0.65f, 0.49f, 0.22f, 0.5f);
 
         myGdxGame.batch.begin();
 
-        hero.draw(myGdxGame.batch);
+        hero.draw(myGdxGame.batch, frameCount);
 //        bitmapFont.draw(myGdxGame.batch, " " + joystick.getY(), MyGdxGame.SCR_WIDTH / 30, MyGdxGame.SCR_HEIGHT / 20 * 19);
         if(Gdx.input.justTouched()){
             joystick.changeXY(Gdx.input.getX(),MyGdxGame.SCR_HEIGHT - Gdx.input.getY());

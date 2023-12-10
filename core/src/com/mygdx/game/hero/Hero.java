@@ -5,14 +5,19 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.MyGdxGame;
 
 public class Hero {
-    Texture head;
+    Head head;
+    Body body;
     int speed = 5;
-    float x = MyGdxGame.SCR_WIDTH / 2, y = MyGdxGame.SCR_HEIGHT / 2;
+    float x = (float) MyGdxGame.SCR_WIDTH / 2;
+    float y = (float) MyGdxGame.SCR_HEIGHT / 2;
+
     public Hero(){
-        head = new Texture("textures/player/head/head_blue.png");
+        head = new Head();
+        body = new BasicBody();
     }
-    public void draw(SpriteBatch batch){
-        batch.draw(head, x, y, 120, 120);
+    public void draw(SpriteBatch batch, int frameCount){
+        body.draw(batch, x, y);
+        head.draw(batch, x, y + 10 * MyGdxGame.scale + 0.5f * MyGdxGame.scale * (frameCount % 80 / 40));
     }
     public void move(double deltaX, double deltaY){
         x += deltaX * speed;
