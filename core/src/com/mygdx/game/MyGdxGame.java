@@ -11,8 +11,6 @@ public class MyGdxGame extends ApplicationAdapter {
 	Texture hero;
 	int SCR_WIDTH = 1280;
 	int SCR_HEIGHT = 720;
-	int heroX, heroY;
-	int speedHero = 5;
 	
 	@Override
 	public void create () {
