@@ -13,11 +13,11 @@ public class ChervChemist extends BaseNPC{
                 for (int i = 0; i < 2; i++) {
                     if (i == 0) {
                         new Message("Спасибо ,что спас я этого не забуду и держи отвар из трав.", "Да", "Нет");
-                    } else if (i == 1) {
+                    } else {
                         new Message("Спасибо ,что спас я этого не забуду и держи отвар из трав.", "Да", "Нет");
+                    }
                 }
             }
-        }
             else if(vstrechaCounter==1){
                 new Message("Спасибо ,что спас я этого не забуду и держи отвар из трав.", "Да", "Нет");
             }
