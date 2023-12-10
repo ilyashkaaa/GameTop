@@ -15,7 +15,7 @@ public class MyGdxGame extends Game {
 	ScreenGame screenGame;
 
 	public static int SCR_WIDTH, SCR_HEIGHT;
-
+	public static final float scale = 5;
 	
 	@Override
 	public void create () {
