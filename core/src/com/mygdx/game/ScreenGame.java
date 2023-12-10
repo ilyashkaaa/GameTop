@@ -1,13 +1,19 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.game.hero.Hero;
+
+import java.util.logging.Handler;
 
 public class ScreenGame implements Screen {
     BitmapFont bitmapFont;
     Joystick joystick;
+    Hero hero;
+    boolean keepTouching;
     private final MyGdxGame myGdxGame;
     ScreenGame(MyGdxGame myGdxGame) {
         this.myGdxGame = myGdxGame;
@@ -17,6 +23,7 @@ public class ScreenGame implements Screen {
         bitmapFont.setColor(Color.WHITE);
 
         joystick = new Joystick();
+        hero = new Hero();
 
         myGdxGame.batch.setProjectionMatrix(myGdxGame.camera.combined);
         myGdxGame.camera.update();
@@ -35,8 +42,16 @@ public class ScreenGame implements Screen {
 
         myGdxGame.batch.begin();
 
-        joystick.draw(myGdxGame.batch);
-        bitmapFont.draw(myGdxGame.batch, " " + joystick.getY(), MyGdxGame.SCR_WIDTH / 30, MyGdxGame.SCR_HEIGHT / 20 * 19);
+        hero.draw(myGdxGame.batch);
+//        bitmapFont.draw(myGdxGame.batch, " " + joystick.getY(), MyGdxGame.SCR_WIDTH / 30, MyGdxGame.SCR_HEIGHT / 20 * 19);
+        if(Gdx.input.justTouched()){
+            joystick.changeXY(Gdx.input.getX(),MyGdxGame.SCR_HEIGHT - Gdx.input.getY());
+        }
+        else if(Gdx.input.isTouched()){
+            if(keepTouching) joystick.draw(myGdxGame.batch) ;
+            hero.move(joystick.getX(), joystick.getY());
+            keepTouching = true;
+        }else keepTouching = false;
 
 
         myGdxGame.batch.end();
