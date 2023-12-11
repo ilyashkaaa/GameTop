@@ -5,9 +5,10 @@ public class CyberBow extends Gun {
         title = "Кибер лук";
         description="Это базовый лук со стократным усилением,";
         property = "10 урона, дальность 200м, перезарядка 0";
-        damage = 10;
-        distance = 200;
+        damage = 20;
+        distance = 5000;
         clip = 1;
-        reload = 0.1;
+        reload = 1;
+        bulletSpeed=20;
     }
 }

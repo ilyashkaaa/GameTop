@@ -1,11 +1,12 @@
 package com.mygdx.game.items.weapon;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.utils.Bullet;
 import com.mygdx.game.utils.BulletStorage;
 
 public class Gun extends Weapon {
-    Sprite bulletTexture;
+    Sprite bulletTexture = new Sprite(new Texture("textures/weapons/bullets/lazer_bullet.png"));
     double bulletSpeed = 5;
     // урон
     double damage = 5;

@@ -4,7 +4,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.items.weapon.BasicLaser;
+import com.mygdx.game.items.weapon.CyberBow;
+import com.mygdx.game.items.weapon.DoomShotgun;
+import com.mygdx.game.items.weapon.GasRifle;
 import com.mygdx.game.items.weapon.Gun;
+import com.mygdx.game.items.weapon.Ledashnikov;
+import com.mygdx.game.items.weapon.RusRoulette;
+import com.mygdx.game.items.weapon.StarRifle;
 import com.mygdx.game.items.weapon.Weapon;
 
 public class Hero {
@@ -20,7 +26,7 @@ public class Hero {
     public Hero(){
         head = new Head();
         body = new BasicBody();
-        gun = new BasicLaser();
+        gun = new StarRifle();
     }
     public void draw(SpriteBatch batch, int frameCount, boolean isMoving){
         body.draw(batch, x, y, frameCount, isMoving);
