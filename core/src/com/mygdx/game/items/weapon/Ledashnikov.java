@@ -6,7 +6,7 @@ public class Ledashnikov extends Gun {
     public Ledashnikov() {
         title = "Автомат Ледашникова";
         description="Калашников, но с ледяным уроном";
-        property = "урон 10, накладывает лёд, дальность 200м, перезарядка 0.01";
+        property = "урон 10, накладывает эффект заморозки, дальность 200м, перезарядка 0.01";
         damage = 10;
         distance = 1500;
         clip = 30;
