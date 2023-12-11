@@ -10,11 +10,13 @@ public class BulletStorage {
 
     public static void draw(SpriteBatch batch) {
         for (Bullet bullet :  bullets) {
-            boolean isAlive = bullet.move();
-            if (!isAlive) {
+            if (!bullet.isAlive()) {
                 bullets.remove(bullet);
-                continue;
+                break;
             }
+        }
+        for (Bullet bullet : bullets) {
+            bullet.move();
             bullet.draw(batch);
         }
     }

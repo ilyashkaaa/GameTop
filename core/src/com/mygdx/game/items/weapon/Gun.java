@@ -6,17 +6,17 @@ import com.mygdx.game.utils.BulletStorage;
 
 public class Gun extends Weapon {
     Sprite bulletTexture;
-    double bulletSpeed;
+    double bulletSpeed = 5;
     // урон
-    double damage;
+    double damage = 5;
     //время перезарядки в сек
-    double reload;
+    double reload = 2;
     //расстояние стрельбы
-    double distance;
+    double distance = 100;
     //объем обоймы
-    int clip;
+    int clip = 10;
     int currentClip;
-    double shotDelay;
+    double shotDelay = 0.25;
 
 
     long lastBulletTime = 0L;
