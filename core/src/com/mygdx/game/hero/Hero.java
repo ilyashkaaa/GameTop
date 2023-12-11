@@ -26,7 +26,7 @@ public class Hero {
     public Hero(){
         head = new Head();
         body = new BasicBody();
-        gun = new StarRifle();
+        gun = new BasicLaser();
     }
     public void draw(SpriteBatch batch, int frameCount, boolean isMoving){
         body.draw(batch, x, y, frameCount, isMoving);
