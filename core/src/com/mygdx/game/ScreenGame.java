@@ -62,7 +62,7 @@ public class ScreenGame implements Screen {
         BulletStorage.draw(myGdxGame.batch);
 
         if (Gdx.input.isTouched(indexJoystick(countOfTouching())) && Gdx.input.getX(indexJoystick(countOfTouching())) <= MyGdxGame.SCR_WIDTH / 2) {
-            if (keepTouching) joystick.draw(myGdxGame.batch, indexJoystick(countOfTouching()));
+            if (keepTouching) joystick.draw(myGdxGame.batch, indexJoystick(countOfTouching()), myGdxGame.camera.position.x, myGdxGame.camera.position.y);
             else
                 joystick.changeXY(Gdx.input.getX(indexJoystick(countOfTouching())), MyGdxGame.SCR_HEIGHT - Gdx.input.getY(indexJoystick(countOfTouching())));
             hero.move(joystick.getX(indexJoystick(countOfTouching())), joystick.getY(indexJoystick(countOfTouching())));
