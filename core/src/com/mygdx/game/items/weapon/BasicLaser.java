@@ -11,8 +11,9 @@ public class BasicLaser extends Gun {
         property = "1 урон, дальность 50м, перезарядка 0,25 секунд";
         damage = 1;
         distance = 50;
-        clip = 1;
-        reload = 0.25;
+        clip = 10;
+        reload = 2;
+        shotDelay = 0.25;
         bulletSpeed = 5;
     }
 }
