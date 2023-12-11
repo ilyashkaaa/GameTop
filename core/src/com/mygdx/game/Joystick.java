@@ -19,19 +19,20 @@ public class Joystick {
         y = jy;
     }
     private double calculateHypotinase(int tapX, int tapY){
-        return Math.pow((Math.pow(tapX - x, 2) + Math.pow(tapY - y, 2)), 0.5) + 1;
+        if(Math.pow((Math.pow(tapX - x, 2) + Math.pow(tapY - y, 2)), 0.5) != 0) return Math.pow((Math.pow(tapX - x, 2) + Math.pow(tapY - y, 2)), 0.5);
+        else return 1;
     }
-    public double getX(){
-        int tapX = Gdx.input.getX();
-        int tapY = MyGdxGame.SCR_HEIGHT - Gdx.input.getY();
+    public double getX(int index){
+        int tapX = Gdx.input.getX(index);
+        int tapY = MyGdxGame.SCR_HEIGHT - Gdx.input.getY(index);
         return (tapX - x) / calculateHypotinase(tapX, tapY);
     }
-    public double getY(){
-        int tapX = Gdx.input.getX();
-        int tapY = MyGdxGame.SCR_HEIGHT - Gdx.input.getY();
+    public double getY(int index){
+        int tapX = Gdx.input.getX(index);
+        int tapY = MyGdxGame.SCR_HEIGHT - Gdx.input.getY(index);
         return (tapY - y) / calculateHypotinase(tapX, tapY);
     }
-    public void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch, int index) {
         batch.setColor(1, 1, 1, 0.4f);
         batch.draw(circle, x - width / 2, y - height / 2, width, height);
         int tapX = Gdx.input.getX();
@@ -39,7 +40,7 @@ public class Joystick {
         batch.setColor(1, 1, 1, 0.7f);
         if (calculateHypotinase(tapX, tapY) <= width / 3)
             batch.draw(filledCircle, Gdx.input.getX() - width / 8, MyGdxGame.SCR_HEIGHT - Gdx.input.getY() - height / 8, width / 4, height / 4);
-        else batch.draw(filledCircle, (float)getX() * width / 3 + x - width / 8, (float)getY() * height / 3 + y - height / 8, width / 4, height / 4);
+        else batch.draw(filledCircle, (float)getX(index) * width / 3 + x - width / 8, (float)getY(index) * height / 3 + y - height / 8, width / 4, height / 4);
         batch.setColor(1, 1, 1, 1);
     }
 }

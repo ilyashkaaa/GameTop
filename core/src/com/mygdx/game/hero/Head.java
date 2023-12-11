@@ -9,9 +9,12 @@ public class Head {
     Sprite head;
     Head(){
         head = new Sprite(new Texture("textures/player/head/head_blue_0.png"));
+        head.setOrigin(8, 8);
+        head.scale(MyGdxGame.scale);
     }
     public void draw(SpriteBatch batch, float x, float y){
-        batch.draw(head, x, y, 16 * MyGdxGame.scale, 16 * MyGdxGame.scale);
+        head.setPosition(x, y);
+        head.draw(batch);
     }
     public void flip(){
         head.flip(true,false);

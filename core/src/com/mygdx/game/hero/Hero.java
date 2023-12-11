@@ -18,7 +18,7 @@ public class Hero {
     }
     public void draw(SpriteBatch batch, int frameCount, boolean isMoving){
         body.draw(batch, x, y, frameCount, isMoving);
-        head.draw(batch, x, y + 10 * MyGdxGame.scale + 0.5f * MyGdxGame.scale * (frameCount % 80 / 40));
+        head.draw(batch, x, y + 12 * MyGdxGame.scale + 0.5f * MyGdxGame.scale * (frameCount % 80 / 40));
     }
     public void move(double deltaX, double deltaY){
         x += deltaX * speed;

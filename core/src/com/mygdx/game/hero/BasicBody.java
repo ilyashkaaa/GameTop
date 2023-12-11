@@ -2,6 +2,7 @@ package com.mygdx.game.hero;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.mygdx.game.MyGdxGame;
 
 public class BasicBody extends Body {
     public BasicBody() {
@@ -16,5 +17,11 @@ public class BasicBody extends Body {
                 new Sprite(new Texture("textures/player/body/body_blue_1.png")),
                 new Sprite(new Texture("textures/player/body/body_blue_2.png"))
         };
+        rest.setOrigin(8, 8);
+        rest.scale(MyGdxGame.scale);
+        for(int i = 0; i < walking.length; i ++){
+            walking[i].setOrigin(8, 8);
+            walking[i].scale(MyGdxGame.scale);
+        }
     }
 }
