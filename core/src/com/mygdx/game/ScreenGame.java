@@ -3,18 +3,18 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.hero.Hero;
-import com.mygdx.game.utils.Bullet;
 
-import java.util.logging.Handler;
+import control.FireButton1;
+import control.Joystick;
 
 public class ScreenGame implements Screen {
     BitmapFont bitmapFont;
     Joystick joystick;
     Hero hero;
+    FireButton1 fireButton1;
     boolean keepTouching;
     private final MyGdxGame myGdxGame;
     int frameCount;
@@ -28,6 +28,7 @@ public class ScreenGame implements Screen {
 
         joystick = new Joystick();
         hero = new Hero();
+        fireButton1 = new FireButton1(MyGdxGame.SCR_WIDTH - FireButton1.widht / 2 - 50, MyGdxGame.SCR_HEIGHT / 2);
 
         myGdxGame.batch.setProjectionMatrix(myGdxGame.camera.combined);
         myGdxGame.camera.update();
@@ -45,7 +46,7 @@ public class ScreenGame implements Screen {
         ScreenUtils.clear(0.65f, 0.49f, 0.22f, 0.5f);
         myGdxGame.batch.begin();
 
-//        bitmapFont.draw(myGdxGame.batch, Gdx.input.getX(indexNotJoystic(countOfTouching())) + " " + lastFinger, MyGdxGame.SCR_WIDTH / 30, MyGdxGame.SCR_HEIGHT / 20 * 19);
+//        bitmapFont.draw(myGdxGame.batch, " " + fireButton1.isTouched(Gdx.input.getX(indexNotJoystic(countOfTouching())),MyGdxGame.SCR_HEIGHT - Gdx.input.getY(indexNotJoystic(countOfTouching()))), MyGdxGame.SCR_WIDTH / 30, MyGdxGame.SCR_HEIGHT / 20 * 19);
 
         if (Gdx.input.isTouched(indexJoystick(countOfTouching())) && Gdx.input.getX(indexJoystick(countOfTouching())) <= MyGdxGame.SCR_WIDTH / 2){
             if(keepTouching) joystick.draw(myGdxGame.batch, indexJoystick(countOfTouching()));
@@ -58,7 +59,7 @@ public class ScreenGame implements Screen {
         if (Gdx.input.isTouched(indexNotJoystic(countOfTouching())) && Gdx.input.getX(indexNotJoystic(countOfTouching())) > MyGdxGame.SCR_WIDTH / 2) lastFinger++;
         hero.draw(myGdxGame.batch, frameCount, keepTouching);
 
-
+        fireButton1.draw(myGdxGame.batch);
         myGdxGame.batch.end();
     }
 
