@@ -16,7 +16,7 @@ import control.Joystick;
 public class ScreenGame implements Screen {
     BitmapFont bitmapFont;
     Joystick joystick;
-    Enemies enemie;
+    Enemies enemy;
     Hero hero;
     Button fireButton1;
     Button fireButton2;
@@ -35,7 +35,7 @@ public class ScreenGame implements Screen {
         bitmapFont.setColor(Color.WHITE);
 
         joystick = new Joystick();
-        enemie = new Enemies();
+        enemy = new Enemies();
         shapeRenderer = new ShapeRenderer();
         hero = new Hero();
         fireButton1 = new Button(MyGdxGame.SCR_WIDTH - Button.widht / 2 - 75, MyGdxGame.SCR_HEIGHT / 2 - 25);
@@ -72,11 +72,11 @@ public class ScreenGame implements Screen {
             keepTouching = false;
         }
         hero.draw(myGdxGame.batch, frameCount, keepTouching, lastCos, lastSyn);
-        enemie.draw(myGdxGame.batch);
+        enemy.draw(myGdxGame.batch);
         if (buttonHandler(fireButton1)) hero.shoot(lastCos, lastSyn, false);
         if (buttonHandler(fireButton2)) hero.shoot(lastCos, lastSyn, true);
 
-        bitmapFont.draw(myGdxGame.batch, " " , MyGdxGame.SCR_WIDTH / 30, MyGdxGame.SCR_HEIGHT / 20 * 19);
+//        bitmapFont.draw(myGdxGame.batch, " " + joystick.getX(indexJoystick(countOfTouching())), MyGdxGame.SCR_WIDTH / 30, MyGdxGame.SCR_HEIGHT / 20 * 19);
 
         fireButton1.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
         fireButton2.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);

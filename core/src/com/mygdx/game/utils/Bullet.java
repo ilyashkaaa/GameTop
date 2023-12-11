@@ -50,7 +50,5 @@ public class Bullet {
         sprite.setPosition(x, y);
         sprite.draw(batch);
         sprite.setRotation((float) moveAngle);
-
     }
-
 }
