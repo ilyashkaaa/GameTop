@@ -26,6 +26,7 @@ public class ScreenGame implements Screen {
     int frameCount;
     int lastFinger;
     double lastCos, lastSyn;
+
     ScreenGame(MyGdxGame myGdxGame) {
         this.myGdxGame = myGdxGame;
 
@@ -37,8 +38,8 @@ public class ScreenGame implements Screen {
         enemie = new Enemies();
         shapeRenderer = new ShapeRenderer();
         hero = new Hero();
-        fireButton1 = new Button(MyGdxGame.SCR_WIDTH - Button.widht / 2 - 50, MyGdxGame.SCR_HEIGHT / 2);
-        fireButton2 = new Button(MyGdxGame.SCR_WIDTH - Button.widht * 2 + 50, MyGdxGame.SCR_HEIGHT / 3);
+        fireButton1 = new Button(MyGdxGame.SCR_WIDTH - Button.widht / 2 - 75, MyGdxGame.SCR_HEIGHT / 2 - 25);
+        fireButton2 = new Button(MyGdxGame.SCR_WIDTH - Button.widht * 2 + 25, Button.height / 2 + 75);
 
         myGdxGame.batch.setProjectionMatrix(myGdxGame.camera.combined);
         myGdxGame.camera.update();
@@ -52,30 +53,30 @@ public class ScreenGame implements Screen {
     @Override
     public void render(float delta) {
         frameCount++;
-        lastFinger+=150;
-        myGdxGame.camera.position.set(Hero.x, Hero.y, 0);
-        myGdxGame.camera.update();
-        myGdxGame.batch.setProjectionMatrix(myGdxGame.camera.combined);
+        lastFinger += 150;
+
         ScreenUtils.clear(0.65f, 0.49f, 0.22f, 0.5f);
         myGdxGame.batch.begin();
         BulletStorage.draw(myGdxGame.batch);
-
-        if (Gdx.input.isTouched(indexJoystick(countOfTouching())) && Gdx.input.getX(indexJoystick(countOfTouching())) <= MyGdxGame.SCR_WIDTH / 2){
-            if(keepTouching) joystick.draw(myGdxGame.batch, indexJoystick(countOfTouching()), myGdxGame.camera.position.x, myGdxGame.camera.position.y);
-            else joystick.changeXY (Gdx.input.getX(indexJoystick(countOfTouching())),(MyGdxGame.SCR_HEIGHT - Gdx.input.getY(indexJoystick(countOfTouching()))));
+        moveCamera();
+        if (Gdx.input.isTouched(indexJoystick(countOfTouching())) && Gdx.input.getX(indexJoystick(countOfTouching())) <= MyGdxGame.SCR_WIDTH / 2) {
+            if (keepTouching)
+                joystick.draw(myGdxGame.batch, indexJoystick(countOfTouching()), myGdxGame.camera.position.x, myGdxGame.camera.position.y);
+            else
+                joystick.changeXY(Gdx.input.getX(indexJoystick(countOfTouching())), (MyGdxGame.SCR_HEIGHT - Gdx.input.getY(indexJoystick(countOfTouching()))));
             hero.move(joystick.getX(indexJoystick(countOfTouching())), joystick.getY(indexJoystick(countOfTouching())));
             lastCos = joystick.getX(indexJoystick(countOfTouching()));
             lastSyn = joystick.getY(indexJoystick(countOfTouching()));
             keepTouching = true;
-        }else{
+        } else {
             keepTouching = false;
         }
         hero.draw(myGdxGame.batch, frameCount, keepTouching, lastCos, lastSyn);
         enemie.draw(myGdxGame.batch);
-        if(buttonHandler(fireButton1)) hero.shoot(lastCos, lastSyn, false);
-        if(buttonHandler(fireButton2)) hero.shoot(lastCos, lastSyn, true);
+        if (buttonHandler(fireButton1)) hero.shoot(lastCos, lastSyn, false);
+        if (buttonHandler(fireButton2)) hero.shoot(lastCos, lastSyn, true);
 
-        bitmapFont.draw(myGdxGame.batch, " " + myGdxGame.camera.position.y, MyGdxGame.SCR_WIDTH / 30, MyGdxGame.SCR_HEIGHT / 20 * 19);
+        bitmapFont.draw(myGdxGame.batch, " " , MyGdxGame.SCR_WIDTH / 30, MyGdxGame.SCR_HEIGHT / 20 * 19);
 
         fireButton1.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
         fireButton2.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
@@ -111,38 +112,50 @@ public class ScreenGame implements Screen {
     public void dispose() {
 
     }
-    private int countOfTouching(){
+
+    private int countOfTouching() {
         int i = 0;
-        while (i < Gdx.input.getMaxPointers()){
+        while (i < Gdx.input.getMaxPointers()) {
             i++;
-            if(Gdx.input.getPressure(i) == 0) break;
+            if (Gdx.input.getPressure(i) == 0) break;
         }
         return i - 1;
     }
-    private int indexJoystick(int countOfTouching){
+
+    private int indexJoystick(int countOfTouching) {
         int returned = 0;
-        for (int i = 0; i < countOfTouching + 1; i++){
-            if(Gdx.input.getX(i) <= MyGdxGame.SCR_WIDTH / 2){
+        for (int i = 0; i < countOfTouching + 1; i++) {
+            if (Gdx.input.getX(i) <= MyGdxGame.SCR_WIDTH / 2) {
                 returned = i;
                 break;
             }
         }
         return returned;
     }
-    private int indexNotJoystic(int countOfTouching){
+
+    private int indexNotJoystic(int countOfTouching) {
         int returned = 0;
-        for (int i = 0; i < countOfTouching + 1; i++){
-            if(Gdx.input.getX(i) > MyGdxGame.SCR_WIDTH / 2){
+        for (int i = 0; i < countOfTouching + 1; i++) {
+            if (Gdx.input.getX(i) > MyGdxGame.SCR_WIDTH / 2) {
                 returned = i;
                 break;
             }
         }
         return returned;
     }
-    public boolean buttonHandler(Button button){
-        for( int i = 0; i < countOfTouching() + 1; i++){
-            if((button.isTouched(Gdx.input.getX(i),MyGdxGame.SCR_HEIGHT - Gdx.input.getY(i), i) && (Gdx.input.getX(i) > MyGdxGame.SCR_WIDTH / 2) && (lastSyn != 0 || lastCos != 0)))    return true;
+
+    public boolean buttonHandler(Button button) {
+        for (int i = 0; i < countOfTouching() + 1; i++) {
+            if ((button.isTouched(Gdx.input.getX(i), MyGdxGame.SCR_HEIGHT - Gdx.input.getY(i), i) && (Gdx.input.getX(i) > MyGdxGame.SCR_WIDTH / 2) && (lastSyn != 0 || lastCos != 0)))
+                return true;
         }
         return false;
+    }
+    private void moveCamera(){
+        double x = myGdxGame.camera.position.x - (myGdxGame.camera.position.x - Hero.x) / 16;
+        double y = myGdxGame.camera.position.y - (myGdxGame.camera.position.y - Hero.y) / 16;
+        myGdxGame.camera.position.set((float) x,(float) y, 0);
+        myGdxGame.camera.update();
+        myGdxGame.batch.setProjectionMatrix(myGdxGame.camera.combined);
     }
 }
