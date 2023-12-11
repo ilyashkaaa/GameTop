@@ -64,7 +64,7 @@ public class ScreenGame implements Screen {
         }else{
             keepTouching = false;
         }
-        hero.draw(myGdxGame.batch, frameCount, keepTouching);
+        hero.draw(myGdxGame.batch, frameCount, keepTouching, joystick.getX(indexJoystick(countOfTouching())), joystick.getY(indexJoystick(countOfTouching())));
 
         if(buttonHandler(fireButton1)) hero.shoot(lastCos, lastSyn, false);
         if(buttonHandler(fireButton2)) hero.shoot(lastCos, lastSyn, true);

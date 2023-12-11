@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.items.weapon.BasicLaser;
+import com.mygdx.game.items.weapon.CyberBow;
 import com.mygdx.game.items.weapon.Gun;
 import com.mygdx.game.items.weapon.Ledashnikov;
 import com.mygdx.game.items.weapon.RusRoulette;
@@ -19,17 +20,25 @@ public class Hero {
     float x = (float) MyGdxGame.SCR_WIDTH / 2;
     float y = (float) MyGdxGame.SCR_HEIGHT / 2;
     boolean wasTurned;
-
+    double moveAngle;
 
     public Hero(){
         head = new Head();
         body = new BasicBody();
         gun1 = new CyberBow();
         gun2 = new BasicLaser();
+        gun1.init(8, 8, (int) MyGdxGame.scale);
+        gun2.init(8, 8, (int) MyGdxGame.scale);
     }
-    public void draw(SpriteBatch batch, int frameCount, boolean isMoving){
+    public void draw(SpriteBatch batch, int frameCount, boolean isMoving, double cosinus, double sinus){
+        if (sinus > 0) moveAngle = Math.toDegrees(Math.acos(cosinus));
+        else moveAngle = 360 - Math.toDegrees(Math.acos(cosinus));
+        if (wasTurned) gun2.draw(batch, x, y, (float) moveAngle);
+        else gun1.draw(batch, x, y, (float) moveAngle);
         body.draw(batch, x, y, frameCount, isMoving);
         head.draw(batch, x, y + 12 * MyGdxGame.scale + 0.5f * MyGdxGame.scale * (frameCount % 80 / 40));
+        if (wasTurned) gun1.draw(batch, x, y, (float) moveAngle);
+        else gun2.draw(batch, x, y, (float) moveAngle);
     }
     public void move(double deltaX, double deltaY){
         x += deltaX * speed;
@@ -44,5 +53,4 @@ public class Hero {
         if(!gun) gun1.shoot(x, y, cosinus, sinus);
         else gun2.shoot(x, y, cosinus, sinus);
     }
-
 }
