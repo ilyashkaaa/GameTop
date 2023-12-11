@@ -13,6 +13,7 @@ public class Bullet {
     double damage, distance, bulletSpeed;
     double sinus, cosinus;
     float x, y;
+    float x0, y0;
     double moveAngle;
 
     public Bullet(Sprite texture, double damage, double distance, double bulletSpeed, float x, float y, double cosinus, double sinus) {
@@ -22,22 +23,27 @@ public class Bullet {
         this.bulletSpeed = bulletSpeed;
         sprite = new Sprite(texture);
         sprite.setOrigin(8, 8);
-        sprite.scale(MyGdxGame.scale);
+        sprite.scale(MyGdxGame.scaleBullet);
         this.x = x;
         this.y = y;
+        x0 = x;
+        y0 = y;
         this.cosinus = cosinus;
         this.sinus = sinus;
-        if(sinus > 0) this.moveAngle = Math.toDegrees(Math.acos(cosinus));
+        if (sinus > 0) this.moveAngle = Math.toDegrees(Math.acos(cosinus));
         else this.moveAngle = 180 - Math.toDegrees(Math.acos(cosinus));
 
     }
     //float x0, float y0, double sinus, double cosinus
 
     //float x, float y, float moveAngle
-    public boolean move() {
-        x+=bulletSpeed*cosinus;
-        y+=bulletSpeed*sinus;
-        return true;
+    public void move() {
+        x += bulletSpeed * cosinus;
+        y += bulletSpeed * sinus;
+    }
+    public boolean isAlive(){
+        return ((x0 - x) * (x0 - x) + (y0 - y) * (y0 - y) <= distance * distance);
+
     }
 
     public void draw(SpriteBatch batch) {

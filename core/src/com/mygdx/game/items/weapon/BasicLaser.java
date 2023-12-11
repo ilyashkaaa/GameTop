@@ -10,7 +10,7 @@ public class BasicLaser extends Gun {
         description="Простой лазер похож на пистолет,";
         property = "1 урон, дальность 50м, перезарядка 0,25 секунд";
         damage = 1;
-        distance = 50;
+        distance = 500;
         clip = 10;
         reload = 2;
         shotDelay = 0.25;
