@@ -57,8 +57,10 @@ public class Enemies {
         hypo = Math.pow((x0 - x) * (x0 - x) + (y0 - y) * (y0 - y), 0.5);
         cosinus = (x0 - x) / hypo;
         sinus = (y0 - y) / hypo;
-        x0 -= speed * cosinus;
-        y0 -= speed * sinus;
+        if(hypo >= 16 * MyGdxGame.scale) {
+            x0 -= speed * cosinus;
+            y0 -= speed * sinus;
+        }
     }
 
     public boolean isAlive() {

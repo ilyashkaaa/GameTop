@@ -65,8 +65,10 @@ public class ScreenGame implements Screen {
             else
                 joystick.changeXY(Gdx.input.getX(indexJoystick(countOfTouching())), (MyGdxGame.SCR_HEIGHT - Gdx.input.getY(indexJoystick(countOfTouching()))));
             hero.move(joystick.getX(indexJoystick(countOfTouching())), joystick.getY(indexJoystick(countOfTouching())));
-            lastCos = joystick.getX(indexJoystick(countOfTouching()));
-            lastSyn = joystick.getY(indexJoystick(countOfTouching()));
+            if(joystick.getX(indexJoystick(countOfTouching())) != 0 && joystick.getY(indexJoystick(countOfTouching())) != 0) {
+                lastCos = joystick.getX(indexJoystick(countOfTouching()));
+                lastSyn = joystick.getY(indexJoystick(countOfTouching()));
+            }
             keepTouching = true;
         } else {
             keepTouching = false;
