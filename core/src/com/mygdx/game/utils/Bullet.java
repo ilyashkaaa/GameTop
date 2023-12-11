@@ -2,6 +2,7 @@ package com.mygdx.game.utils;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.MyGdxGame;
 
@@ -11,8 +12,8 @@ public class Bullet {
     Sprite sprite;
     double damage, distance, bulletSpeed;
 
-    public Bullet(Texture texture, double damage, double distance, double bulletSpeed) {
-        //this.sprite = texture;
+    public Bullet(Sprite texture, double damage, double distance, double bulletSpeed) {
+        this.sprite = texture;
         this.damage = damage;
         this.distance = distance;
         this.bulletSpeed = bulletSpeed;
