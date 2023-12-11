@@ -3,6 +3,7 @@ package com.mygdx.game.hero;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.MyGdxGame;
+import com.mygdx.game.items.weapon.BasicLaser;
 import com.mygdx.game.items.weapon.Gun;
 import com.mygdx.game.items.weapon.Weapon;
 
@@ -19,6 +20,7 @@ public class Hero {
     public Hero(){
         head = new Head();
         body = new BasicBody();
+        gun = new BasicLaser();
     }
     public void draw(SpriteBatch batch, int frameCount, boolean isMoving){
         body.draw(batch, x, y, frameCount, isMoving);

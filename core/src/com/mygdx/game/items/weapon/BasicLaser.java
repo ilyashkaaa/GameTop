@@ -13,5 +13,6 @@ public class BasicLaser extends Gun {
         distance = 50;
         clip = 1;
         reload = 0.25;
+        bulletSpeed = 5;
     }
 }

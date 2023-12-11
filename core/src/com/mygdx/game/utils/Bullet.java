@@ -26,6 +26,7 @@ public class Bullet {
         this.x = x;
         this.y = y;
         this.cosinus = cosinus;
+        this.sinus = sinus;
         this.moveAngle = Math.toDegrees(Math.acos(cosinus));
 
     }
@@ -33,16 +34,15 @@ public class Bullet {
 
     //float x, float y, float moveAngle
     public boolean move() {
-        x+=bulletSpeed*cosinus;
-        y+=bulletSpeed*sinus;
+        x+=bulletSpeed*sinus;
+        y+=bulletSpeed*cosinus;
         return true;
-
     }
 
     public void draw(SpriteBatch batch) {
         sprite.setPosition(x, y);
         sprite.draw(batch);
-        sprite.setRotation((float) moveAngle);
+        sprite.setRotation((float) moveAngle - 90);
         move();
 
     }
