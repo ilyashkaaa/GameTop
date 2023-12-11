@@ -15,7 +15,6 @@ public class ScreenGame implements Screen {
     BitmapFont bitmapFont;
     Joystick joystick;
     Hero hero;
-    Bullet bullet;
     boolean keepTouching;
     private final MyGdxGame myGdxGame;
     int frameCount;
@@ -29,7 +28,6 @@ public class ScreenGame implements Screen {
 
         joystick = new Joystick();
         hero = new Hero();
-        bullet = new Bullet(new Texture("textures/weapons/bullets/lazer_bullet.png"), 1, 1, 1);
 
         myGdxGame.batch.setProjectionMatrix(myGdxGame.camera.combined);
         myGdxGame.camera.update();
@@ -44,9 +42,7 @@ public class ScreenGame implements Screen {
     public void render(float delta) {
         frameCount++;
         myGdxGame.camera.update();
-
         ScreenUtils.clear(0.65f, 0.49f, 0.22f, 0.5f);
-
         myGdxGame.batch.begin();
 
 //        bitmapFont.draw(myGdxGame.batch, Gdx.input.getX(indexNotJoystic(countOfTouching())) + " " + lastFinger, MyGdxGame.SCR_WIDTH / 30, MyGdxGame.SCR_HEIGHT / 20 * 19);
