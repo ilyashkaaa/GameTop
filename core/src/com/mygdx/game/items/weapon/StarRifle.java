@@ -6,7 +6,7 @@ public class StarRifle extends Gun{
         description="Выстрелы в форме звёзд упала вместе с прицелом";
         property = "урон 20 дальность 400 м перезарядка 2 сек";
         damage = 100;
-        distance = 5400;
+        distance = 6000;
         clip = 5;
         shotDelay=0.5;
         reload = 2;
