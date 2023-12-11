@@ -3,6 +3,7 @@ package control;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.MyGdxGame;
 
 public class Button {
     Texture filledCircle;
@@ -25,9 +26,9 @@ public class Button {
             return false;
         }
     }
-    public void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch, float cx, float cy) {
         batch.setColor(1, 1, 1, par);
-        batch.draw(filledCircle, x - widht / 2, y - height / 2, widht, height);
+        batch.draw(filledCircle, x - widht / 2 - MyGdxGame.SCR_WIDTH / 2 + cx, y - height / 2 - MyGdxGame.SCR_HEIGHT / 2 + cy, widht, height);
         batch.setColor(1, 1, 1, 1);
     }
 }

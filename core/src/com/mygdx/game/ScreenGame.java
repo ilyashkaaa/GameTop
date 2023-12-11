@@ -79,8 +79,8 @@ public class ScreenGame implements Screen {
 
 //        bitmapFont.draw(myGdxGame.batch, " " + joystick.getX(indexJoystick(countOfTouching())), MyGdxGame.SCR_WIDTH / 30, MyGdxGame.SCR_HEIGHT / 20 * 19);
 
-        fireButton1.draw(myGdxGame.batch);
-        fireButton2.draw(myGdxGame.batch);
+        fireButton1.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
+        fireButton2.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
         myGdxGame.batch.end();
 
 //        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);

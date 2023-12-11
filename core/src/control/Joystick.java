@@ -33,15 +33,15 @@ public class Joystick {
         int tapY = MyGdxGame.SCR_HEIGHT - Gdx.input.getY(index);
         return (tapY - y) / calculateHypotinase(tapX, tapY);
     }
-    public void draw(SpriteBatch batch, int index) {
+    public void draw(SpriteBatch batch, int index, float cx, float cy) {
         batch.setColor(1, 1, 1, 0.4f);
-        batch.draw(circle, x - width / 2, y - height / 2, width, height);
+        batch.draw(circle, x - MyGdxGame.SCR_WIDTH / 2 + cx - width / 2, y - MyGdxGame.SCR_HEIGHT / 2 + cy - height / 2, width, height);
         int tapX = Gdx.input.getX();
         int tapY = MyGdxGame.SCR_HEIGHT - Gdx.input.getY();
         batch.setColor(1, 1, 1, 0.7f);
         if (calculateHypotinase(tapX, tapY) <= width / 3)
-            batch.draw(filledCircle, Gdx.input.getX() - width / 8, MyGdxGame.SCR_HEIGHT - Gdx.input.getY() - height / 8, width / 4, height / 4);
-        else batch.draw(filledCircle, (float)getX(index) * width / 3 + x - width / 8, (float)getY(index) * height / 3 + y - height / 8, width / 4, height / 4);
+            batch.draw(filledCircle, Gdx.input.getX() - MyGdxGame.SCR_WIDTH / 2 + cx - width / 8, MyGdxGame.SCR_HEIGHT - Gdx.input.getY() - MyGdxGame.SCR_HEIGHT / 2 + cy - height / 8, width / 4, height / 4);
+        else batch.draw(filledCircle, (float)getX(index) * width / 3 + x - MyGdxGame.SCR_WIDTH / 2 + cx - width / 8, (float)getY(index) * height / 3 + y - MyGdxGame.SCR_HEIGHT / 2 + cy - height / 8, width / 4, height / 4);
         batch.setColor(1, 1, 1, 1);
     }
 }
