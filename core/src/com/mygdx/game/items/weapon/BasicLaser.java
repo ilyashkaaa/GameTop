@@ -14,6 +14,6 @@ public class BasicLaser extends Gun {
         clip = 10;
         reload = 2;
         shotDelay = 0.25;
-        bulletSpeed = 5;
+        bulletSpeed = 10;
     }
 }

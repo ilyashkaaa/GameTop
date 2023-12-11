@@ -69,7 +69,7 @@ public class ScreenGame implements Screen {
             if((fireButton1.isTouched(Gdx.input.getX(i),MyGdxGame.SCR_HEIGHT - Gdx.input.getY(i), i) && (Gdx.input.getX(i) > MyGdxGame.SCR_WIDTH / 2) && (lastSyn != 0 || lastCos != 0))) hero.shoot(lastCos, lastSyn);
         }
 
-        bitmapFont.draw(myGdxGame.batch, " " + joystick.getX(indexJoystick(countOfTouching())), MyGdxGame.SCR_WIDTH / 30, MyGdxGame.SCR_HEIGHT / 20 * 19);
+//        bitmapFont.draw(myGdxGame.batch, " " + joystick.getX(indexJoystick(countOfTouching())), MyGdxGame.SCR_WIDTH / 30, MyGdxGame.SCR_HEIGHT / 20 * 19);
 
         fireButton1.draw(myGdxGame.batch);
         fireButton2.draw(myGdxGame.batch);
