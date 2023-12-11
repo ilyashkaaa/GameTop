@@ -4,12 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class FireButton {
+public class Button {
     Texture filledCircle;
     public static int widht = 300, height = 300;
     int x, y;
     float par = 0.7f;
-    public FireButton(int x, int y) {
+    public Button(int x, int y) {
         filledCircle = new Texture("joystik/filled_circle.png");
         this.x = x;
         this.y = y;

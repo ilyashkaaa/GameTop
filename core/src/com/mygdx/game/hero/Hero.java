@@ -4,9 +4,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.items.weapon.BasicLaser;
-import com.mygdx.game.items.weapon.CyberBow;
-import com.mygdx.game.items.weapon.DoomShotgun;
-import com.mygdx.game.items.weapon.GasRifle;
 import com.mygdx.game.items.weapon.Gun;
 import com.mygdx.game.items.weapon.Ledashnikov;
 import com.mygdx.game.items.weapon.RusRoulette;
@@ -16,7 +13,8 @@ import com.mygdx.game.items.weapon.Weapon;
 public class Hero {
     Head head;
     Body body;
-    Gun gun;
+    Gun gun1;
+    Gun gun2;
     int speed = 5;
     float x = (float) MyGdxGame.SCR_WIDTH / 2;
     float y = (float) MyGdxGame.SCR_HEIGHT / 2;
@@ -26,7 +24,8 @@ public class Hero {
     public Hero(){
         head = new Head();
         body = new BasicBody();
-        gun = new BasicLaser();
+        gun1 = new CyberBow();
+        gun2 = new BasicLaser();
     }
     public void draw(SpriteBatch batch, int frameCount, boolean isMoving){
         body.draw(batch, x, y, frameCount, isMoving);
@@ -41,8 +40,9 @@ public class Hero {
             wasTurned = !wasTurned;
         }
     }
-    public void shoot(double sinus, double cosinus) {
-        gun.shoot(x, y, sinus, cosinus);
+    public void shoot(double cosinus, double sinus, boolean gun) {
+        if(!gun) gun1.shoot(x, y, cosinus, sinus);
+        else gun2.shoot(x, y, cosinus, sinus);
     }
 
 }
