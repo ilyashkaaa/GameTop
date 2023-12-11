@@ -4,8 +4,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.items.weapon.BasicLaser;
-import com.mygdx.game.items.weapon.CyberBow;
 import com.mygdx.game.items.weapon.Gun;
+import com.mygdx.game.items.weapon.Ledashnikov;
+import com.mygdx.game.items.weapon.RusRoulette;
+import com.mygdx.game.items.weapon.StarRifle;
 import com.mygdx.game.items.weapon.Weapon;
 
 public class Hero {

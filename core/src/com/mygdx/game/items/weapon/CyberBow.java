@@ -12,8 +12,8 @@ public class CyberBow extends Gun {
         damage = 10;
         distance = 200;
         clip = 1;
-        reload = 0.1;
-        shotDelay = 0.25;
-        bulletSpeed = 10;
+        reload = 1;
+        bulletSpeed=20;
+        shotDelay = 0.5;
     }
 }
