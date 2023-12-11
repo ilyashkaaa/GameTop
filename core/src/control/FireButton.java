@@ -1,5 +1,6 @@
 package control;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -14,8 +15,8 @@ public class FireButton {
         this.y = y;
     }
 
-    public boolean isTouched(int touchedX, int touchedY) {
-        if (Math.pow(Math.pow(x - touchedX, 2) + Math.pow(y - touchedY, 2), 0.5) <= widht / 2){
+    public boolean isTouched(int touchedX, int touchedY, int index) {
+        if (Math.pow(Math.pow(x - touchedX, 2) + Math.pow(y - touchedY, 2), 0.5) <= widht / 2 && Gdx.input.getPressure(index) != 0){
          par = 0.5f;
          return true;
         }
@@ -24,7 +25,6 @@ public class FireButton {
             return false;
         }
     }
-
     public void draw(SpriteBatch batch) {
         batch.setColor(1, 1, 1, par);
         batch.draw(filledCircle, x - widht / 2, y - height / 2, widht, height);

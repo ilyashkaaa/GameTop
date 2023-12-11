@@ -15,7 +15,7 @@ public class Bullet {
     float x, y;
     double moveAngle;
 
-    public Bullet(Sprite texture, double damage, double distance, double bulletSpeed, float x, float y, double sinus, double cosinus) {
+    public Bullet(Sprite texture, double damage, double distance, double bulletSpeed, float x, float y, double cosinus, double sinus) {
         this.sprite = texture;
         this.damage = damage;
         this.distance = distance;
@@ -27,22 +27,23 @@ public class Bullet {
         this.y = y;
         this.cosinus = cosinus;
         this.sinus = sinus;
-        this.moveAngle = Math.toDegrees(Math.acos(cosinus));
+        if(sinus > 0) this.moveAngle = Math.toDegrees(Math.acos(cosinus));
+        else this.moveAngle = 180 - Math.toDegrees(Math.acos(cosinus));
 
     }
     //float x0, float y0, double sinus, double cosinus
 
     //float x, float y, float moveAngle
     public boolean move() {
-        x+=bulletSpeed*sinus;
-        y+=bulletSpeed*cosinus;
+        x+=bulletSpeed*cosinus;
+        y+=bulletSpeed*sinus;
         return true;
     }
 
     public void draw(SpriteBatch batch) {
         sprite.setPosition(x, y);
         sprite.draw(batch);
-        sprite.setRotation((float) moveAngle - 90);
+        sprite.setRotation((int) moveAngle);
         move();
 
     }

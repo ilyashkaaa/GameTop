@@ -23,6 +23,7 @@ public class ScreenGame implements Screen {
     private final MyGdxGame myGdxGame;
     int frameCount;
     int lastFinger;
+    double lastCos, lastSyn;
     ScreenGame(MyGdxGame myGdxGame) {
         this.myGdxGame = myGdxGame;
 
@@ -52,21 +53,23 @@ public class ScreenGame implements Screen {
         myGdxGame.batch.begin();
         BulletStorage.draw(myGdxGame.batch);
 
-        bitmapFont.draw(myGdxGame.batch, " " + fireButton1.isTouched(Gdx.input.getX(indexNotJoystic(countOfTouching())),MyGdxGame.SCR_HEIGHT - Gdx.input.getY(indexNotJoystic(countOfTouching()))), MyGdxGame.SCR_WIDTH / 30, MyGdxGame.SCR_HEIGHT / 20 * 19);
-
         if (Gdx.input.isTouched(indexJoystick(countOfTouching())) && Gdx.input.getX(indexJoystick(countOfTouching())) <= MyGdxGame.SCR_WIDTH / 2){
             if(keepTouching) joystick.draw(myGdxGame.batch, indexJoystick(countOfTouching()));
             else joystick.changeXY(Gdx.input.getX(indexJoystick(countOfTouching())),MyGdxGame.SCR_HEIGHT - Gdx.input.getY(indexJoystick(countOfTouching())));
             hero.move(joystick.getX(indexJoystick(countOfTouching())), joystick.getY(indexJoystick(countOfTouching())));
+            lastCos = joystick.getX(indexJoystick(countOfTouching()));
+            lastSyn = joystick.getY(indexJoystick(countOfTouching()));
             keepTouching = true;
         }else{
             keepTouching = false;
         }
-        if (Gdx.input.isTouched(indexNotJoystic(countOfTouching())) && Gdx.input.getX(indexNotJoystic(countOfTouching())) > MyGdxGame.SCR_WIDTH / 2) lastFinger++;
         hero.draw(myGdxGame.batch, frameCount, keepTouching);
-        if (fireButton1.isTouched(Gdx.input.getX(indexNotJoystic(countOfTouching())),MyGdxGame.SCR_HEIGHT - Gdx.input.getY(indexNotJoystic(countOfTouching())))){
-            hero.shoot(joystick.getX(indexJoystick(countOfTouching())), joystick.getY(indexJoystick(countOfTouching())));
+
+        for( int i = 0; i < countOfTouching() + 1; i++){
+            if((fireButton1.isTouched(Gdx.input.getX(i),MyGdxGame.SCR_HEIGHT - Gdx.input.getY(i), i) && (Gdx.input.getX(i) > MyGdxGame.SCR_WIDTH / 2) && (lastSyn != 0 || lastCos != 0))) hero.shoot(lastCos, lastSyn);
         }
+
+        bitmapFont.draw(myGdxGame.batch, " " + joystick.getX(indexJoystick(countOfTouching())), MyGdxGame.SCR_WIDTH / 30, MyGdxGame.SCR_HEIGHT / 20 * 19);
 
         fireButton1.draw(myGdxGame.batch);
         fireButton2.draw(myGdxGame.batch);
@@ -125,4 +128,10 @@ public class ScreenGame implements Screen {
         }
         return returned;
     }
+//    public void servayButtons(){
+//        for (int i = 0; i < countOfTouching + 1; i++){
+//            if(Gdx.input.getX(i) > MyGdxGame.SCR_WIDTH / 2){
+//                break;
+//            }
+//    }
 }

@@ -16,7 +16,7 @@ public class Gun extends Weapon {
     //объем обоймы
     int clip;
 
-    public void shoot(float x, float y, double sinus, double cosinus) {
-        BulletStorage.bullets.add(new Bullet(bulletTexture, damage, distance, bulletSpeed, x, y, sinus, cosinus));
+    public void shoot(float x, float y, double cosinus, double sinus) {
+        BulletStorage.bullets.add(new Bullet(bulletTexture, damage, distance, bulletSpeed, x, y, cosinus, sinus));
     }
 }
