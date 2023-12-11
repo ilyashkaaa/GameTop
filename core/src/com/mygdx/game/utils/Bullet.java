@@ -23,7 +23,7 @@ public class Bullet {
         this.bulletSpeed = bulletSpeed;
         sprite = new Sprite(texture);
         sprite.setOrigin(8, 8);
-        sprite.scale(MyGdxGame.scaleBullet);
+        sprite.scale(MyGdxGame.scaleBullet * 2);
         this.x = x;
         this.y = y;
         x0 = x;
@@ -31,7 +31,7 @@ public class Bullet {
         this.cosinus = cosinus;
         this.sinus = sinus;
         if (sinus > 0) this.moveAngle = Math.toDegrees(Math.acos(cosinus));
-        else this.moveAngle = 180 - Math.toDegrees(Math.acos(cosinus));
+        else this.moveAngle = 360 - Math.toDegrees(Math.acos(cosinus));
 
     }
     //float x0, float y0, double sinus, double cosinus

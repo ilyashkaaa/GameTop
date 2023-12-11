@@ -4,21 +4,21 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.hero.Hero;
-import com.mygdx.game.utils.Bullet;
 import com.mygdx.game.utils.BulletStorage;
 
-import control.FireButton;
+import control.Button;
 import control.Joystick;
 
 public class ScreenGame implements Screen {
     BitmapFont bitmapFont;
     Joystick joystick;
     Hero hero;
-    FireButton fireButton1;
-    FireButton fireButton2;
+    Button fireButton1;
+    Button fireButton2;
+    ShapeRenderer shapeRenderer;
     boolean keepTouching;
     private final MyGdxGame myGdxGame;
     int frameCount;
@@ -32,9 +32,10 @@ public class ScreenGame implements Screen {
         bitmapFont.setColor(Color.WHITE);
 
         joystick = new Joystick();
+        shapeRenderer = new ShapeRenderer();
         hero = new Hero();
-        fireButton1 = new FireButton(MyGdxGame.SCR_WIDTH - FireButton.widht / 2 - 50, MyGdxGame.SCR_HEIGHT / 2);
-        fireButton2 = new FireButton(MyGdxGame.SCR_WIDTH - FireButton.widht * 2 + 50, MyGdxGame.SCR_HEIGHT / 3);
+        fireButton1 = new Button(MyGdxGame.SCR_WIDTH - Button.widht / 2 - 50, MyGdxGame.SCR_HEIGHT / 2);
+        fireButton2 = new Button(MyGdxGame.SCR_WIDTH - Button.widht * 2 + 50, MyGdxGame.SCR_HEIGHT / 3);
 
         myGdxGame.batch.setProjectionMatrix(myGdxGame.camera.combined);
         myGdxGame.camera.update();
@@ -65,15 +66,19 @@ public class ScreenGame implements Screen {
         }
         hero.draw(myGdxGame.batch, frameCount, keepTouching);
 
-        for( int i = 0; i < countOfTouching() + 1; i++){
-            if((fireButton1.isTouched(Gdx.input.getX(i),MyGdxGame.SCR_HEIGHT - Gdx.input.getY(i), i) && (Gdx.input.getX(i) > MyGdxGame.SCR_WIDTH / 2) && (lastSyn != 0 || lastCos != 0))) hero.shoot(lastCos, lastSyn);
-        }
+        if(buttonHandler(fireButton1)) hero.shoot(lastCos, lastSyn, false);
+        if(buttonHandler(fireButton2)) hero.shoot(lastCos, lastSyn, true);
 
 //        bitmapFont.draw(myGdxGame.batch, " " + joystick.getX(indexJoystick(countOfTouching())), MyGdxGame.SCR_WIDTH / 30, MyGdxGame.SCR_HEIGHT / 20 * 19);
 
         fireButton1.draw(myGdxGame.batch);
         fireButton2.draw(myGdxGame.batch);
         myGdxGame.batch.end();
+
+//        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+//        shapeRenderer.setColor(Color.RED);
+//        shapeRenderer.rect(25, 25, 50, 50);
+//        shapeRenderer.end();
     }
 
     @Override
@@ -128,10 +133,10 @@ public class ScreenGame implements Screen {
         }
         return returned;
     }
-//    public void servayButtons(){
-//        for (int i = 0; i < countOfTouching + 1; i++){
-//            if(Gdx.input.getX(i) > MyGdxGame.SCR_WIDTH / 2){
-//                break;
-//            }
-//    }
+    public boolean buttonHandler(Button button){
+        for( int i = 0; i < countOfTouching() + 1; i++){
+            if((button.isTouched(Gdx.input.getX(i),MyGdxGame.SCR_HEIGHT - Gdx.input.getY(i), i) && (Gdx.input.getX(i) > MyGdxGame.SCR_WIDTH / 2) && (lastSyn != 0 || lastCos != 0)))    return true;
+        }
+        return false;
+    }
 }
