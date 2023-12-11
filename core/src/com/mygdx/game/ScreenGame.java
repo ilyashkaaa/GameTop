@@ -52,7 +52,10 @@ public class ScreenGame implements Screen {
     @Override
     public void render(float delta) {
         frameCount++;
+        lastFinger+=150;
+        myGdxGame.camera.position.set(Hero.x, Hero.y, 0);
         myGdxGame.camera.update();
+        myGdxGame.batch.setProjectionMatrix(myGdxGame.camera.combined);
         ScreenUtils.clear(0.65f, 0.49f, 0.22f, 0.5f);
         myGdxGame.batch.begin();
         BulletStorage.draw(myGdxGame.batch);
@@ -67,7 +70,7 @@ public class ScreenGame implements Screen {
         }else{
             keepTouching = false;
         }
-        hero.draw(myGdxGame.batch, frameCount, keepTouching);
+        hero.draw(myGdxGame.batch, frameCount, keepTouching, lastCos, lastSyn);
         enemie.draw(myGdxGame.batch);
         if(buttonHandler(fireButton1)) hero.shoot(lastCos, lastSyn, false);
         if(buttonHandler(fireButton2)) hero.shoot(lastCos, lastSyn, true);

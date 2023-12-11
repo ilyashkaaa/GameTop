@@ -20,17 +20,25 @@ public class Hero {
     public static float x = (float) MyGdxGame.SCR_WIDTH / 2;
     public static float y = (float) MyGdxGame.SCR_HEIGHT / 2;
     boolean wasTurned;
-
+    double moveAngle;
 
     public Hero(){
         head = new Head();
         body = new BasicBody();
         gun1 = new CyberBow();
         gun2 = new BasicLaser();
+        gun1.init(8, 8, (int) MyGdxGame.scale);
+        gun2.init(8, 8, (int) MyGdxGame.scale);
     }
-    public void draw(SpriteBatch batch, int frameCount, boolean isMoving){
+    public void draw(SpriteBatch batch, int frameCount, boolean isMoving, double cosinus, double sinus){
+        if (sinus > 0) moveAngle = Math.toDegrees(Math.acos(cosinus));
+        else moveAngle = 360 - Math.toDegrees(Math.acos(cosinus));
+        if (wasTurned) gun2.draw(batch, x, y, (float) moveAngle);
+        else gun1.draw(batch, x, y, (float) moveAngle);
         body.draw(batch, x, y, frameCount, isMoving);
-        head.draw(batch, x, y + 12 * MyGdxGame.scale + 0.5f * MyGdxGame.scale * (frameCount % 80 / 40));
+        head.draw(batch, x, y, frameCount);
+        if (wasTurned) gun1.draw(batch, x, y, (float) moveAngle);
+        else gun2.draw(batch, x, y, (float) moveAngle);
     }
     public void move(double deltaX, double deltaY){
         x += deltaX * speed;
@@ -45,5 +53,4 @@ public class Hero {
         if(!gun) gun1.shoot(x, y, cosinus, sinus);
         else gun2.shoot(x, y, cosinus, sinus);
     }
-
 }

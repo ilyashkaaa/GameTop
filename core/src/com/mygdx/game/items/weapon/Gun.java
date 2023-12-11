@@ -2,11 +2,15 @@ package com.mygdx.game.items.weapon;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.utils.Bullet;
 import com.mygdx.game.utils.BulletStorage;
 
 public class Gun extends Weapon {
-    Sprite bulletTexture = new Sprite(new Texture("textures/weapons/bullets/lazer_bullet.png"));
+    Sprite bulletTexture;
+    Sprite weaponTexture;
+    //Sprite weaponTexture = new Sprite()
     double bulletSpeed = 5;
     // урон
     double damage = 5;
@@ -18,12 +22,15 @@ public class Gun extends Weapon {
     int clip = 10;
     int currentClip;
     double shotDelay = 0.25;
-
-
     long lastBulletTime = 0L;
     long reloadStarted = 0L;
+    int extraRotate = 0;
+    boolean wasFliped;
 
-
+    public void init(int originX, int orinigY, int scale){
+        weaponTexture.setOrigin(originX, orinigY);
+        weaponTexture.scale((float) (scale * 0.75));
+    }
     public void shoot(float x, float y, double sinus, double cosinus) {
         long currentTime = System.currentTimeMillis();
         if (currentClip == 0) {
@@ -41,5 +48,11 @@ public class Gun extends Weapon {
             }
             BulletStorage.bullets.add(new Bullet(bulletTexture, damage, distance, bulletSpeed, x, y, sinus, cosinus));
         }
+    }
+    public void draw(SpriteBatch batch, float x, float y, float angel){
+        weaponTexture.setPosition(x, y);
+        weaponTexture.setRotation(angel - extraRotate);
+        if((extraRotate > 180 && wasFliped) && (extraRotate < 180 && !wasFliped)) weaponTexture.flip(false, true);
+        weaponTexture.draw(batch);
     }
 }
