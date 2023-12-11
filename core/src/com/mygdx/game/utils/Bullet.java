@@ -11,24 +11,40 @@ import java.awt.ScrollPane;
 public class Bullet {
     Sprite sprite;
     double damage, distance, bulletSpeed;
+    double sinus, cosinus;
+    float x, y;
+    double moveAngle;
 
-    public Bullet(Sprite texture, double damage, double distance, double bulletSpeed) {
+    public Bullet(Sprite texture, double damage, double distance, double bulletSpeed, float x, float y, double sinus, double cosinus) {
         this.sprite = texture;
         this.damage = damage;
         this.distance = distance;
         this.bulletSpeed = bulletSpeed;
         sprite = new Sprite(texture);
-        sprite.setOrigin(8,8);
+        sprite.setOrigin(8, 8);
         sprite.scale(MyGdxGame.scale);
+        this.x = x;
+        this.y = y;
+        this.cosinus = cosinus;
+        this.moveAngle = Math.toDegrees(Math.acos(cosinus));
+
     }
-    public void move(float x0, float y0, double sinus, double cosinus) {
-        // TODO math
+    //float x0, float y0, double sinus, double cosinus
+
+    //float x, float y, float moveAngle
+    public boolean move() {
+        x+=bulletSpeed*cosinus;
+        y+=bulletSpeed*sinus;
+        return true;
+
     }
-    public void draw(SpriteBatch batch, float x, float y){
+
+    public void draw(SpriteBatch batch) {
         sprite.setPosition(x, y);
         sprite.draw(batch);
+        sprite.setRotation((float) moveAngle);
+        move();
+
     }
-    public void rotate(int moveAngel){
-        sprite.setRotation(moveAngel);
-    }
+
 }

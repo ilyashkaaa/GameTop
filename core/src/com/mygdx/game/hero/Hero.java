@@ -3,14 +3,18 @@ package com.mygdx.game.hero;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.MyGdxGame;
+import com.mygdx.game.items.weapon.Gun;
+import com.mygdx.game.items.weapon.Weapon;
 
 public class Hero {
     Head head;
     Body body;
+    Gun gun;
     int speed = 5;
     float x = (float) MyGdxGame.SCR_WIDTH / 2;
     float y = (float) MyGdxGame.SCR_HEIGHT / 2;
     boolean wasTurned;
+
 
     public Hero(){
         head = new Head();
@@ -29,4 +33,8 @@ public class Hero {
             wasTurned = !wasTurned;
         }
     }
+    public void shoot(double sinus, double cosinus) {
+        gun.shoot(x, y, sinus, cosinus);
+    }
+
 }
