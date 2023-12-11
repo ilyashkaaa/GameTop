@@ -7,14 +7,15 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.hero.Hero;
 
-import control.FireButton1;
+import control.FireButton;
 import control.Joystick;
 
 public class ScreenGame implements Screen {
     BitmapFont bitmapFont;
     Joystick joystick;
     Hero hero;
-    FireButton1 fireButton1;
+    FireButton fireButton1;
+    FireButton fireButton2;
     boolean keepTouching;
     private final MyGdxGame myGdxGame;
     int frameCount;
@@ -28,7 +29,8 @@ public class ScreenGame implements Screen {
 
         joystick = new Joystick();
         hero = new Hero();
-        fireButton1 = new FireButton1(MyGdxGame.SCR_WIDTH - FireButton1.widht / 2 - 50, MyGdxGame.SCR_HEIGHT / 2);
+        fireButton1 = new FireButton(MyGdxGame.SCR_WIDTH - FireButton.widht / 2 - 50, MyGdxGame.SCR_HEIGHT / 2);
+        fireButton2 = new FireButton(MyGdxGame.SCR_WIDTH - FireButton.widht * 2 + 50, MyGdxGame.SCR_HEIGHT / 3);
 
         myGdxGame.batch.setProjectionMatrix(myGdxGame.camera.combined);
         myGdxGame.camera.update();
@@ -46,7 +48,7 @@ public class ScreenGame implements Screen {
         ScreenUtils.clear(0.65f, 0.49f, 0.22f, 0.5f);
         myGdxGame.batch.begin();
 
-//        bitmapFont.draw(myGdxGame.batch, " " + fireButton1.isTouched(Gdx.input.getX(indexNotJoystic(countOfTouching())),MyGdxGame.SCR_HEIGHT - Gdx.input.getY(indexNotJoystic(countOfTouching()))), MyGdxGame.SCR_WIDTH / 30, MyGdxGame.SCR_HEIGHT / 20 * 19);
+        bitmapFont.draw(myGdxGame.batch, " " + fireButton1.isTouched(Gdx.input.getX(indexNotJoystic(countOfTouching())),MyGdxGame.SCR_HEIGHT - Gdx.input.getY(indexNotJoystic(countOfTouching()))), MyGdxGame.SCR_WIDTH / 30, MyGdxGame.SCR_HEIGHT / 20 * 19);
 
         if (Gdx.input.isTouched(indexJoystick(countOfTouching())) && Gdx.input.getX(indexJoystick(countOfTouching())) <= MyGdxGame.SCR_WIDTH / 2){
             if(keepTouching) joystick.draw(myGdxGame.batch, indexJoystick(countOfTouching()));
@@ -60,6 +62,7 @@ public class ScreenGame implements Screen {
         hero.draw(myGdxGame.batch, frameCount, keepTouching);
 
         fireButton1.draw(myGdxGame.batch);
+        fireButton2.draw(myGdxGame.batch);
         myGdxGame.batch.end();
     }
 
