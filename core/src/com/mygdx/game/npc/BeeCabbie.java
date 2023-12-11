@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class BeeCabbie extends BaseNPC{
     BeeCabbie() {
         dialog = new Dialog(new ArrayList<Message>() {{
-            new Message("Спасибо за то что спас это вся моя заработка за день держи.", "Да", "Нет");
+            new Message("Спасибо за то что спас это вся моя заработка за день держи.", "Спасибо?");
         }});
     }
 }
