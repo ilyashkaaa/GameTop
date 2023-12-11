@@ -4,8 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.hero.Hero;
+import com.mygdx.game.utils.Bullet;
+import com.mygdx.game.utils.BulletStorage;
 
 import control.FireButton;
 import control.Joystick;
@@ -47,6 +50,7 @@ public class ScreenGame implements Screen {
         myGdxGame.camera.update();
         ScreenUtils.clear(0.65f, 0.49f, 0.22f, 0.5f);
         myGdxGame.batch.begin();
+        BulletStorage.draw(myGdxGame.batch);
 
         bitmapFont.draw(myGdxGame.batch, " " + fireButton1.isTouched(Gdx.input.getX(indexNotJoystic(countOfTouching())),MyGdxGame.SCR_HEIGHT - Gdx.input.getY(indexNotJoystic(countOfTouching()))), MyGdxGame.SCR_WIDTH / 30, MyGdxGame.SCR_HEIGHT / 20 * 19);
 
