@@ -29,7 +29,7 @@ public class Gun extends Weapon {
 
     public void init(int originX, int orinigY, int scale){
         weaponTexture.setOrigin(originX, orinigY);
-        weaponTexture.scale(scale);
+        weaponTexture.scale((float) (scale * 0.75));
     }
     public void shoot(float x, float y, double sinus, double cosinus) {
         long currentTime = System.currentTimeMillis();

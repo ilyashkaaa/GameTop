@@ -17,8 +17,8 @@ public class Hero {
     Gun gun1;
     Gun gun2;
     int speed = 5;
-    float x = (float) MyGdxGame.SCR_WIDTH / 2;
-    float y = (float) MyGdxGame.SCR_HEIGHT / 2;
+    public static float x = (float) MyGdxGame.SCR_WIDTH / 2;
+    public static float y = (float) MyGdxGame.SCR_HEIGHT / 2;
     boolean wasTurned;
     double moveAngle;
 
@@ -36,7 +36,7 @@ public class Hero {
         if (wasTurned) gun2.draw(batch, x, y, (float) moveAngle);
         else gun1.draw(batch, x, y, (float) moveAngle);
         body.draw(batch, x, y, frameCount, isMoving);
-        head.draw(batch, x, y + 12 * MyGdxGame.scale + 0.5f * MyGdxGame.scale * (frameCount % 80 / 40));
+        head.draw(batch, x, y, frameCount);
         if (wasTurned) gun1.draw(batch, x, y, (float) moveAngle);
         else gun2.draw(batch, x, y, (float) moveAngle);
     }
