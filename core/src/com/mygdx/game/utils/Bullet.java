@@ -15,7 +15,7 @@ public class Bullet {
     float x, y;
     double moveAngle;
 
-    public Bullet(Sprite texture, double damage, double distance, double bulletSpeed, float x, float y, double cosinus, double sinus) {
+    public Bullet(Sprite texture, double damage, double distance, double bulletSpeed, float x, float y, double sinus, double cosinus) {
         this.sprite = texture;
         this.damage = damage;
         this.distance = distance;
@@ -43,8 +43,7 @@ public class Bullet {
     public void draw(SpriteBatch batch) {
         sprite.setPosition(x, y);
         sprite.draw(batch);
-        sprite.setRotation((int) moveAngle);
-        move();
+        sprite.setRotation((float) moveAngle - 90);
 
     }
 

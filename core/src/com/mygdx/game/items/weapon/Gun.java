@@ -15,8 +15,30 @@ public class Gun extends Weapon {
     double distance;
     //объем обоймы
     int clip;
+    int currentClip;
+    double shotDelay;
 
-    public void shoot(float x, float y, double cosinus, double sinus) {
-        BulletStorage.bullets.add(new Bullet(bulletTexture, damage, distance, bulletSpeed, x, y, cosinus, sinus));
+
+    long lastBulletTime = 0L;
+    long reloadStarted = 0L;
+
+
+    public void shoot(float x, float y, double sinus, double cosinus) {
+        long currentTime = System.currentTimeMillis();
+        if (currentClip == 0) {
+            if (((double) currentTime - reloadStarted) / 1000 >= reload) {
+                currentClip = clip;
+            } else {
+                return;
+            }
+        }
+        if (((double) currentTime - lastBulletTime) / 1000 >= shotDelay) {
+            lastBulletTime = currentTime;
+            currentClip--;
+            if (currentClip == 0) {
+                reloadStarted = currentTime;
+            }
+            BulletStorage.bullets.add(new Bullet(bulletTexture, damage, distance, bulletSpeed, x, y, sinus, cosinus));
+        }
     }
 }
