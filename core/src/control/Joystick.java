@@ -1,8 +1,9 @@
-package com.mygdx.game;
+package control;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.MyGdxGame;
 
 public class Joystick {
     Texture circle;
@@ -10,7 +11,7 @@ public class Joystick {
     int width = 400, height = 400;
     int x = MyGdxGame.SCR_WIDTH / 2, y = MyGdxGame.SCR_HEIGHT / 2;
 
-    Joystick() {
+    public Joystick() {
         circle = new Texture("joystik/circle.png");
         filledCircle = new Texture("joystik/filled_circle.png");
     }
