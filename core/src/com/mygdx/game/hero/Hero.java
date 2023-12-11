@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.items.weapon.BasicLaser;
+import com.mygdx.game.items.weapon.CyberBow;
 import com.mygdx.game.items.weapon.Gun;
 import com.mygdx.game.items.weapon.Ledashnikov;
 import com.mygdx.game.items.weapon.RusRoulette;
@@ -16,8 +17,8 @@ public class Hero {
     Gun gun1;
     Gun gun2;
     int speed = 5;
-    float x = (float) MyGdxGame.SCR_WIDTH / 2;
-    float y = (float) MyGdxGame.SCR_HEIGHT / 2;
+    public static float x = (float) MyGdxGame.SCR_WIDTH / 2;
+    public static float y = (float) MyGdxGame.SCR_HEIGHT / 2;
     boolean wasTurned;
 
 

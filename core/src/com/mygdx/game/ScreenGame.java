@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.game.enemies.Enemies;
 import com.mygdx.game.hero.Hero;
 import com.mygdx.game.utils.BulletStorage;
 
@@ -15,6 +16,7 @@ import control.Joystick;
 public class ScreenGame implements Screen {
     BitmapFont bitmapFont;
     Joystick joystick;
+    Enemies enemie;
     Hero hero;
     Button fireButton1;
     Button fireButton2;
@@ -32,6 +34,7 @@ public class ScreenGame implements Screen {
         bitmapFont.setColor(Color.WHITE);
 
         joystick = new Joystick();
+        enemie = new Enemies();
         shapeRenderer = new ShapeRenderer();
         hero = new Hero();
         fireButton1 = new Button(MyGdxGame.SCR_WIDTH - Button.widht / 2 - 50, MyGdxGame.SCR_HEIGHT / 2);
@@ -65,7 +68,7 @@ public class ScreenGame implements Screen {
             keepTouching = false;
         }
         hero.draw(myGdxGame.batch, frameCount, keepTouching);
-
+        enemie.draw(myGdxGame.batch);
         if(buttonHandler(fireButton1)) hero.shoot(lastCos, lastSyn, false);
         if(buttonHandler(fireButton2)) hero.shoot(lastCos, lastSyn, true);
 
