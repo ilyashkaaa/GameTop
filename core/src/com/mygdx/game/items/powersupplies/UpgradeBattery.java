@@ -1,9 +1,12 @@
 package com.mygdx.game.items.powersupplies;
 
+import com.badlogic.gdx.graphics.Texture;
+
 public class UpgradeBattery extends PowerSupplies {
     UpgradeBattery() {
-        title = "Оливье";
-        description = "кормить врагов звучит как крутая идея";
-        ability = "Кормит всех врагов в комнате и накладывает эффект оглушения";
+        title = "Улучшенная батарейка";
+        description = "Ваша батарейка, но без надписи с Maid in China";
+        ability = "Вы получаете гипер заряд на 4 секунды. Гипер заряд ускоряет вас на 50% и увеличивает урон на 30%";
+        texture = new Texture("double_battery.png");
     }
 }
