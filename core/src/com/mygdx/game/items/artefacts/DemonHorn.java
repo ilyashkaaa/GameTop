@@ -10,6 +10,6 @@ public class DemonHorn extends Artefacts {
         Power = "Добавляет пулям эффект огня и увеличивает урон";
         damageUP = 2;
         effects = Effects.Fire;
-        texture = new Texture("demon_horn.png");
+        texture = new Texture("texture/artifacts/demon_horn.png");
     }
 }

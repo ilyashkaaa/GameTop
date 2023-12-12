@@ -7,6 +7,6 @@ public class WhiteMask extends PowerSupplies {
         title = "Бледная маска";
         description = "Выглядит как шляпа может надеть";
         ability = "Появляется незримая защита блокирующая 25% урона работает 4 секунды";
-        texture = new Texture("pale_mask.png");
+        texture = new Texture("texture/energy_sources/pale_mask.png");
     }
 }

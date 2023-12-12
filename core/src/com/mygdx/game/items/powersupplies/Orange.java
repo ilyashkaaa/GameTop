@@ -7,7 +7,7 @@ public class Orange extends PowerSupplies {
         title = "Апельсин";
         description = "Кормить врагов звучит как крутая идея";
         ability = "Кормит половину врагов в комнате и накладывает эффект оглушения";
-        texture = new Texture("mandarin.png");
+        texture = new Texture("texture/energy_sources/mandarin.png");
     }
 }
 

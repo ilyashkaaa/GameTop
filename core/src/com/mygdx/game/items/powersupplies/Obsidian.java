@@ -7,6 +7,6 @@ public class Obsidian extends PowerSupplies {
         title = "Кусок обсидиана";
         description = "Вы чуствуете как от него исходит чума ,но прошлый его владелец думал наоборот";
         ability = "заменяет пули на 5 секунд на обсидиан при попадание разлетается на осколки которые при попадании во врага наносят урон";
-        texture = new Texture("obsidian.png");
+        texture = new Texture("texture/energy_sources/obsidian.png");
     }
 }

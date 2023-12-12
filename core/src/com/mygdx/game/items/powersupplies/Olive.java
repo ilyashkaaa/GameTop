@@ -7,6 +7,6 @@ public class Olive extends PowerSupplies {
         title = "Оливье";
         description = "кормить врагов звучит как крутая идея";
         ability = "Кормит всех врагов в комнате и накладывает эффект оглушения";
-        texture = new Texture("olivie.png");
+        texture = new Texture("texture/energy_sources/olivie.png");
     }
 }
