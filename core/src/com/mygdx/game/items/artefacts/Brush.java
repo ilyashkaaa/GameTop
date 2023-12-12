@@ -1,5 +1,7 @@
 package com.mygdx.game.items.artefacts;
 
+import com.badlogic.gdx.graphics.Texture;
+
 public class Brush extends Artefacts {
     public Brush() {
         title = "Кисть";
@@ -7,6 +9,8 @@ public class Brush extends Artefacts {
         Power = "На месте попадания в объект оставляют лужу";
         effects = Effects.Color;
         damageOst = 1;
+        texture = new Texture("texture/artifacts/brush.png");
+
     }
 
 }
