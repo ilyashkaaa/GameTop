@@ -60,9 +60,9 @@ public class ScreenGame implements Screen {
     public void render(float delta) {
         frameCount++;
         myGdxGame.batch.begin();
-        city.draw(myGdxGame.batch);
-
         ScreenUtils.clear(0.65f, 0.49f, 0.22f, 0.5f);
+
+        city.draw(myGdxGame.batch);
         BulletStorage.draw(myGdxGame.batch);
         moveCamera();
         if (Gdx.input.isTouched(indexJoystick(countOfTouching())) && Gdx.input.getX(indexJoystick(countOfTouching())) <= MyGdxGame.SCR_WIDTH / 2) {
