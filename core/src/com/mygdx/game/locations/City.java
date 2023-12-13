@@ -56,9 +56,9 @@ public class City extends Locations {
         twoWaysRoom1Left.scale(scale);
 
 //        twoWaysRoom2.setOriginCenter();
-        twoWaysRoom2Up = new Sprite(new Texture("textures/locations/1_city/room_2_straight_up.png"));
+        twoWaysRoom2Up = new Sprite(new Texture("textures/locations/1_city/room_2_straight_vert.png"));
         twoWaysRoom2Up.scale(scale);
-        twoWaysRoom2Side = new Sprite(new Texture("textures/locations/1_city/room_2_straight_side.png"));
+        twoWaysRoom2Side = new Sprite(new Texture("textures/locations/1_city/room_2_straight_hor.png"));
         twoWaysRoom2Side.scale(scale);
 
 //        twoWaysRoom1.setOriginCenter();
@@ -104,118 +104,62 @@ public class City extends Locations {
 //                    close = 1;
                     switch (close){
                         case 1:
-                            if(matrix[j][i - 1]){
-                                oneWaysRoomLeft.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 65 / 32), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadUp.getHeight() * scale * 65 / 32));
+                            if(matrix[j][i + 1]){
+                                oneWaysRoomLeft.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale));
                                 oneWaysRoomLeft.draw(batch);
-                                roadSide.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) - oneWaysRoomLeft.getWidth() / 2 * scale - roadSide.getWidth() / 8 * 6 * scale, (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadUp.getHeight() * scale * 65 / 32) + roadUp.getHeight());
-                                roadSide.draw(batch);
                             }
-                             else if(matrix[j][i + 1]){
-                                oneWaysRoomRight.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 65 / 32), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 65 / 32));
+                             else if(matrix[j][i - 1]){
+                                oneWaysRoomRight.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale));
                                 oneWaysRoomRight.draw(batch);
-                                roadSide.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) + oneWaysRoomLeft.getWidth() / 2 * scale + roadSide.getWidth() / 8 * 7 * scale, (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadUp.getHeight() * scale * 65 / 32) + roadUp.getHeight());
-                                roadSide.draw(batch);
                              }
                              else if(matrix[j - 1][i]){
-                                oneWaysRoomDown.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 65 / 32), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 65 / 32));
+                                oneWaysRoomDown.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale));
                                 oneWaysRoomDown.draw(batch);
-                                roadUp.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) + roadSide.getWidth(), (MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) - oneWaysRoomLeft.getWidth() / 2 * scale - roadSide.getWidth() / 8 * 6 * scale - roadUp.getHeight());
-                                roadUp.draw(batch);
                              }else{
-                                oneWaysRoomUp.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 65 / 32), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 65 / 32));
+                                oneWaysRoomUp.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale));
                                 oneWaysRoomUp.draw(batch);
-                                roadUp.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) + roadSide.getWidth(), (MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) - oneWaysRoomLeft.getWidth() / 2 * scale - roadSide.getWidth() / 8 * 6 * scale - roadUp.getHeight());
-                                roadUp.draw(batch);
                             }
                             break;
                         case 2:
                             if (matrix[j + 1][i] && matrix[j][i + 1]) {
-                                twoWaysRoom1Up.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 65 / 32), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadUp.getHeight() * scale * 65 / 32));
+                                twoWaysRoom1Up.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale));
                                 twoWaysRoom1Up.draw(batch);
-                                roadSide.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) - oneWaysRoomLeft.getWidth() / 2 * scale - roadSide.getWidth() / 8 * 6 * scale, (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadUp.getHeight() * scale * 65 / 32) + roadUp.getHeight());
-                                roadSide.draw(batch);
-                                roadUp.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) + roadSide.getWidth(), (MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) - oneWaysRoomLeft.getWidth() / 2 * scale - roadSide.getWidth() / 8 * 6 * scale - roadUp.getHeight());
-                                roadUp.draw(batch);
                             }else if (matrix[j][i + 1] && matrix[j - 1][i]){
-                                twoWaysRoom1Right.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 65 / 32), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadUp.getHeight() * scale * 65 / 32));
+                                twoWaysRoom1Right.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale));
                                 twoWaysRoom1Right.draw(batch);
-                                roadSide.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) + oneWaysRoomLeft.getWidth() / 2 * scale + roadSide.getWidth() / 8 * 7 * scale, (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadUp.getHeight() * scale * 65 / 32) + roadUp.getHeight());
-                                roadSide.draw(batch);
-                                roadUp.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) + roadSide.getWidth(), (MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) - oneWaysRoomLeft.getWidth() / 2 * scale - roadSide.getWidth() / 8 * 6 * scale - roadUp.getHeight());
-                                roadUp.draw(batch);
                             }else if (matrix[j - 1][i] && matrix[j][i - 1]){
-                                twoWaysRoom1Down.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 65 / 32), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadUp.getHeight() * scale * 65 / 32));
+                                twoWaysRoom1Down.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale));
                                 twoWaysRoom1Down.draw(batch);
-                                roadUp.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) + roadSide.getWidth(), (MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) - oneWaysRoomLeft.getWidth() / 2 * scale - roadSide.getWidth() / 8 * 6 * scale - roadUp.getHeight());
-                                roadUp.draw(batch);
-                                roadSide.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) + oneWaysRoomLeft.getWidth() / 2 * scale + roadSide.getWidth() / 8 * 7 * scale, (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadUp.getHeight() * scale * 65 / 32) + roadUp.getHeight());
-                                roadSide.draw(batch);
                             }else if (matrix[j][i - 1] && matrix[j + 1][i]){
-                                twoWaysRoom1Left.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 65 / 32), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadUp.getHeight() * scale * 65 / 32));
+                                twoWaysRoom1Left.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale));
                                 twoWaysRoom1Left.draw(batch);
-                                roadSide.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) + oneWaysRoomLeft.getWidth() / 2 * scale + roadSide.getWidth() / 8 * 7 * scale, (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadUp.getHeight() * scale * 65 / 32) + roadUp.getHeight());
-                                roadSide.draw(batch);
-                                roadUp.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) + roadSide.getWidth(), (MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) - oneWaysRoomLeft.getWidth() / 2 * scale - roadSide.getWidth() / 8 * 6 * scale);
-                                roadUp.draw(batch);
                             }else if (matrix[j + 1][i] && matrix[j - 1][i]){
-                                twoWaysRoom2Up.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 65 / 32), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadUp.getHeight() * scale * 65 / 32));
+                                twoWaysRoom2Up.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale));
                                 twoWaysRoom2Up.draw(batch);
-                                roadUp.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) + roadSide.getWidth(), (MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) - oneWaysRoomLeft.getWidth() / 2 * scale - roadSide.getWidth() / 8 * 6 * scale);
-                                roadUp.draw(batch);
-                                roadUp.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) + roadSide.getWidth(), (MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) - oneWaysRoomLeft.getWidth() / 2 * scale - roadSide.getWidth() / 8 * 6 * scale);
-                                roadUp.draw(batch);
                             }else{
-                                twoWaysRoom2Side.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 65 / 32), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadUp.getHeight() * scale * 65 / 32));
+                                twoWaysRoom2Side.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale));
                                 twoWaysRoom2Side.draw(batch);
-                                roadSide.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) - oneWaysRoomLeft.getWidth() / 2 * scale - roadSide.getWidth() / 8 * 6 * scale, (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadUp.getHeight() * scale * 65 / 32) + roadUp.getHeight());
-                                roadSide.draw(batch);
-                                roadSide.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) + oneWaysRoomLeft.getWidth() / 2 * scale + roadSide.getWidth() / 8 * 7 * scale, (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadUp.getHeight() * scale * 65 / 32) + roadUp.getHeight());
-                                roadSide.draw(batch);
                             }
                             break;
                         case 3:
-                            if(!matrix[j][i - 1]){
-                                treeWaysRoomLeft.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 65 / 32), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadUp.getHeight() * scale * 65 / 32));
+                            if(!matrix[j][i + 1]){
+                                treeWaysRoomLeft.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale));
                                 treeWaysRoomLeft.draw(batch);
-                                roadSide.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) + oneWaysRoomLeft.getWidth() / 2 * scale + roadSide.getWidth() / 8 * 7 * scale, (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadUp.getHeight() * scale * 65 / 32) + roadUp.getHeight());
-                                roadSide.draw(batch);
-                                roadUp.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) + roadSide.getWidth(), (MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) - oneWaysRoomLeft.getWidth() / 2 * scale - roadSide.getWidth() / 8 * 6 * scale);
-                                roadUp.draw(batch);
-                                roadUp.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) + roadSide.getWidth(), (MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) - oneWaysRoomLeft.getWidth() / 2 * scale - roadSide.getWidth() / 8 * 6 * scale);
-                                roadUp.draw(batch);
                             }
-                            else if(!matrix[j][i + 1]){
-                                treeWaysRoomRight.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 65 / 32), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadUp.getHeight() * scale * 65 / 32));
+                            else if(!matrix[j][i - 1]){
+                                treeWaysRoomRight.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale));
                                 treeWaysRoomRight.draw(batch);
-                                roadSide.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) - oneWaysRoomLeft.getWidth() / 2 * scale - roadSide.getWidth() / 8 * 6 * scale, (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadUp.getHeight() * scale * 65 / 32) + roadUp.getHeight());
-                                roadSide.draw(batch);
-                                roadUp.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) + roadSide.getWidth(), (MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) - oneWaysRoomLeft.getWidth() / 2 * scale - roadSide.getWidth() / 8 * 6 * scale);
-                                roadUp.draw(batch);
-                                roadUp.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) + roadSide.getWidth(), (MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) - oneWaysRoomLeft.getWidth() / 2 * scale - roadSide.getWidth() / 8 * 6 * scale);
-                                roadUp.draw(batch);
                             }
                             else if(!matrix[j - 1][i]){
-                                treeWaysRoomDown.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 65 / 32), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadUp.getHeight() * scale * 65 / 32));
+                                treeWaysRoomDown.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale));
                                 treeWaysRoomDown.draw(batch);
-                                roadSide.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) - oneWaysRoomLeft.getWidth() / 2 * scale - roadSide.getWidth() / 8 * 6 * scale, (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadUp.getHeight() * scale * 65 / 32) + roadUp.getHeight());
-                                roadSide.draw(batch);
-                                roadUp.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) + roadSide.getWidth(), (MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) - oneWaysRoomLeft.getWidth() / 2 * scale - roadSide.getWidth() / 8 * 6 * scale);
-                                roadUp.draw(batch);
-                                roadSide.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) + oneWaysRoomLeft.getWidth() / 2 * scale + roadSide.getWidth() / 8 * 7 * scale, (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadUp.getHeight() * scale * 65 / 32) + roadUp.getHeight());
-                                roadSide.draw(batch);
                             }else{
-                                treeWaysRoomUp.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 65 / 32), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadUp.getHeight() * scale * 65 / 32));
+                                treeWaysRoomUp.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale));
                                 treeWaysRoomUp.draw(batch);
-                                roadSide.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) - oneWaysRoomLeft.getWidth() / 2 * scale - roadSide.getWidth() / 8 * 6 * scale, (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadUp.getHeight() * scale * 65 / 32) + roadUp.getHeight());
-                                roadSide.draw(batch);
-                                roadUp.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) + roadSide.getWidth(), (MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) - oneWaysRoomLeft.getWidth() / 2 * scale - roadSide.getWidth() / 8 * 6 * scale);
-                                roadUp.draw(batch);
-                                roadSide.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 2) + oneWaysRoomLeft.getWidth() / 2 * scale + roadSide.getWidth() / 8 * 7 * scale, (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadUp.getHeight() * scale * 65 / 32) + roadUp.getHeight());
-                                roadSide.draw(batch);
                             }
                             break;
                         case 4:
-                            fourWaysRoom.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 65 / 32), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadUp.getHeight() * scale * 65 / 32));
+                            fourWaysRoom.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale));
                             fourWaysRoom.draw(batch);
                             break;
                         default:

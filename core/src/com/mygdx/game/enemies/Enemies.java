@@ -26,7 +26,7 @@ public class Enemies {
 
     //Sprite texture, double damage, double hp, double speed, float x0, float y0
     public Enemies() {
-        sprite = new Sprite(new Texture("textures/enemies/bubble_city.png"));
+        sprite = new Sprite(new Texture("textures/enemies/bubble_city_0.png"));
         sprite.setOrigin(8, 8);
         sprite.scale(MyGdxGame.scale);
         this.hp = 5;
