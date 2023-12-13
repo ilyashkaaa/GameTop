@@ -18,7 +18,7 @@ public class Pause {
     }
 
     public boolean isTouched(int touchedX, int touchedY) {
-        if (x < touchedX && widht * 15 > touchedX && y < touchedY && y+height * 20 > touchedY) {
+        if (x < touchedX && x + widht * 15 > touchedX && y < touchedY && y+height * 20 > touchedY) {
             return true;
         } else {
             return false;

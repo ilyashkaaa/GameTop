@@ -43,7 +43,7 @@ public class ScreenGame implements Screen {
         bitmapFont = new BitmapFont();
         bitmapFont.getData().scale(5f);
         bitmapFont.setColor(Color.WHITE);
-
+        enemy = new Enemies();
         joystick = new Joystick();
         shapeRenderer = new ShapeRenderer();
         hero = new Hero();
@@ -53,7 +53,7 @@ public class ScreenGame implements Screen {
         continueButton = new Continue(MyGdxGame.SCR_WIDTH-Continue.widht*20, (float) (MyGdxGame.SCR_HEIGHT - Continue.height * 20));
 
         //cityRoom = new CityRoom();
-        city = new City();
+       city = new City();
 
         myGdxGame.batch.setProjectionMatrix(myGdxGame.camera.combined);
         myGdxGame.camera.update();
@@ -66,20 +66,19 @@ public class ScreenGame implements Screen {
 
     @Override
     public void render(float delta) {
+        myGdxGame.batch.begin();
         if (paused) {
             ScreenUtils.clear(0.65f, 0.49f, 0.22f, 0.5f);
-            myGdxGame.batch.begin();
+
             continueButton.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
-            myGdxGame.batch.end();
+
             if (continueButton.isTouched(Gdx.input.getX(), MyGdxGame.SCR_HEIGHT - Gdx.input.getY())) {
                 paused = false;
             }
         } else {
             frameCount++;
-            lastFinger += 150;
-
             ScreenUtils.clear(0.65f, 0.49f, 0.22f, 0.5f);
-            myGdxGame.batch.begin();
+            city.draw(myGdxGame.batch);
             BulletStorage.draw(myGdxGame.batch);
             moveCamera();
             if (Gdx.input.isTouched(indexJoystick(countOfTouching())) && Gdx.input.getX(indexJoystick(countOfTouching())) <= MyGdxGame.SCR_WIDTH / 2) {
@@ -93,36 +92,12 @@ public class ScreenGame implements Screen {
                     lastSyn = joystick.getY(indexJoystick(countOfTouching()));
                 }
                 keepTouching = true;
-            } else {
-                keepTouching = false;
-            }
-            hero.draw(myGdxGame.batch, frameCount, keepTouching, lastCos, lastSyn);
-            if (buttonHandler(fireButton1)) hero.shoot(lastCos, lastSyn, false);
-            if (buttonHandler(fireButton2)) hero.shoot(lastCos, lastSyn, true);
-            if (pausedClick()) {
-                paused = true;
-            }
-        frameCount++;
-        myGdxGame.batch.begin();
-        ScreenUtils.clear(0.65f, 0.49f, 0.22f, 0.5f);
+            } else keepTouching = false;
 
-        city.draw(myGdxGame.batch);
-        BulletStorage.draw(myGdxGame.batch);
-        moveCamera();
-        if (Gdx.input.isTouched(indexJoystick(countOfTouching())) && Gdx.input.getX(indexJoystick(countOfTouching())) <= MyGdxGame.SCR_WIDTH / 2) {
-            if (keepTouching)
-                joystick.draw(myGdxGame.batch, indexJoystick(countOfTouching()), myGdxGame.camera.position.x, myGdxGame.camera.position.y);
-            else
-                joystick.changeXY(Gdx.input.getX(indexJoystick(countOfTouching())), (MyGdxGame.SCR_HEIGHT - Gdx.input.getY(indexJoystick(countOfTouching()))));
-            hero.move(joystick.getX(indexJoystick(countOfTouching())), joystick.getY(indexJoystick(countOfTouching())));
-            if (joystick.getX(indexJoystick(countOfTouching())) != 0 && joystick.getY(indexJoystick(countOfTouching())) != 0) {
-                lastCos = joystick.getX(indexJoystick(countOfTouching()));
-                lastSyn = joystick.getY(indexJoystick(countOfTouching()));
-            }
-            keepTouching = true;
-        } else {
-            keepTouching = false;
-        }
+//            if (pausedClick()) {
+//                paused = true;
+//            }
+
         hero.draw(myGdxGame.batch, frameCount, keepTouching, lastCos, lastSyn);
         enemy.draw(myGdxGame.batch);
         if (buttonHandler(fireButton1)) hero.shoot(lastCos, lastSyn, false);
@@ -133,13 +108,14 @@ public class ScreenGame implements Screen {
             fireButton1.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
             fireButton2.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
             pausedButton.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
-            myGdxGame.batch.end();
 
 //        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 //        shapeRenderer.setColor(Color.RED);
 //        shapeRenderer.rect(25, 25, 50, 50);
 //        shapeRenderer.end();
         }
+        myGdxGame.batch.end();
+
     }
 
     @Override
