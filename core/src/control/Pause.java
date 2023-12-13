@@ -26,7 +26,6 @@ public class Pause {
     }
 
     public void draw(SpriteBatch batch, float cx, float cy) {
-        System.out.println( x + " " + y);
         batch.draw(pauseTexture, cx - 1200,  cy+300, widht * 15, height * 20);
     }
 }

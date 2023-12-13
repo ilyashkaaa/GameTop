@@ -4,9 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.enemies.Enemies;
+import com.mygdx.game.enemies.EnemiesStorage;
 import com.mygdx.game.hero.Hero;
 import com.mygdx.game.utils.Bullet;
 import com.mygdx.game.locations.City;
@@ -21,7 +23,6 @@ import control.Pause;
 public class ScreenGame implements Screen {
     BitmapFont bitmapFont;
     Joystick joystick;
-    Enemies enemy;
     Hero hero;
     Button fireButton1;
     Button fireButton2;
@@ -39,11 +40,9 @@ public class ScreenGame implements Screen {
 
     ScreenGame(MyGdxGame myGdxGame) {
         this.myGdxGame = myGdxGame;
-
         bitmapFont = new BitmapFont();
         bitmapFont.getData().scale(5f);
         bitmapFont.setColor(Color.WHITE);
-        enemy = new Enemies();
         joystick = new Joystick();
         shapeRenderer = new ShapeRenderer();
         hero = new Hero();
@@ -57,6 +56,9 @@ public class ScreenGame implements Screen {
 
         myGdxGame.batch.setProjectionMatrix(myGdxGame.camera.combined);
         myGdxGame.camera.update();
+        for (int i = 0; i < 3; i++){
+            EnemiesStorage.enemiesList.add(new Enemies(MyGdxGame.SCR_WIDTH / 4, 100 * i));
+        }
     }
 
     @Override
@@ -64,12 +66,12 @@ public class ScreenGame implements Screen {
 
     }
 
+    @SuppressWarnings("SuspiciousIndentation")
     @Override
     public void render(float delta) {
         myGdxGame.batch.begin();
         if (paused) {
             ScreenUtils.clear(0.65f, 0.49f, 0.22f, 0.5f);
-
             continueButton.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
 
             if (continueButton.isTouched(Gdx.input.getX(), MyGdxGame.SCR_HEIGHT - Gdx.input.getY())) {
@@ -81,6 +83,7 @@ public class ScreenGame implements Screen {
             city.draw(myGdxGame.batch);
             BulletStorage.draw(myGdxGame.batch);
             moveCamera();
+            EnemiesStorage.draw(myGdxGame.batch, frameCount);
             if (Gdx.input.isTouched(indexJoystick(countOfTouching())) && Gdx.input.getX(indexJoystick(countOfTouching())) <= MyGdxGame.SCR_WIDTH / 2) {
                 if (keepTouching)
                     joystick.draw(myGdxGame.batch, indexJoystick(countOfTouching()), myGdxGame.camera.position.x, myGdxGame.camera.position.y);
@@ -99,7 +102,7 @@ public class ScreenGame implements Screen {
 //            }
 
         hero.draw(myGdxGame.batch, frameCount, keepTouching, lastCos, lastSyn);
-        enemy.draw(myGdxGame.batch);
+        //enemy.draw(myGdxGame.batch);
         if (buttonHandler(fireButton1)) hero.shoot(lastCos, lastSyn, false);
         if (buttonHandler(fireButton2)) hero.shoot(lastCos, lastSyn, true);
 
