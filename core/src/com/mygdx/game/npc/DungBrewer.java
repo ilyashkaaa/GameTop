@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class DungBrewer extends BaseNPC{
     DungBrewer() {
-        texture=new Texture("dung_beetle.png");
+        texture=new Texture("textures/npc/dung_beetle.png");
         Dialog dialog1 = new Dialog(new ArrayList<Message>() {{
             new Message("Спасибо, я пришёл в этот город за реликвией нашей семьи - бочонком пива 400-летней давности.", "?");
 
