@@ -12,7 +12,7 @@ public class StarRifle extends Gun{
         damage = 100;
         distance = 6000;
         clip = 5;
-        shotDelay=0.5;
+        shotDelay=0.4;
         reload = 2;
         bulletSpeed=100;
     }
