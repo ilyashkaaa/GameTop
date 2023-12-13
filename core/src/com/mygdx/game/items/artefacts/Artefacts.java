@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 public class Artefacts {
     protected String title;
     protected String description;
-    protected String Power;
+    protected String power;
     Effects effects;
     int damageUP;
     int speedUP;
