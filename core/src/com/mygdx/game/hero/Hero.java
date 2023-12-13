@@ -1,22 +1,17 @@
 package com.mygdx.game.hero;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.items.weapon.BasicLaser;
 import com.mygdx.game.items.weapon.CyberBow;
 import com.mygdx.game.items.weapon.Gun;
-import com.mygdx.game.items.weapon.Ledashnikov;
-import com.mygdx.game.items.weapon.RusRoulette;
-import com.mygdx.game.items.weapon.StarRifle;
-import com.mygdx.game.items.weapon.Weapon;
 
 public class Hero {
     Head head;
     Body body;
     Gun gun1;
     Gun gun2;
-    public int speed = 5;
+    public int speed = 15;
     public static float x = (float) MyGdxGame.SCR_WIDTH / 2;
     public static float y = (float) MyGdxGame.SCR_HEIGHT / 2;
     boolean wasTurned;
