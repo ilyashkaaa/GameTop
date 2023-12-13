@@ -70,8 +70,9 @@ public class ScreenGame implements Screen {
     @Override
     public void render(float delta) {
         myGdxGame.batch.begin();
+        ScreenUtils.clear(0.32f, 0.5f, 0.66f, 0.5f);
+
         if (paused) {
-            ScreenUtils.clear(0.65f, 0.49f, 0.22f, 0.5f);
             continueButton.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
 
             if (continueButton.isTouched(Gdx.input.getX(), MyGdxGame.SCR_HEIGHT - Gdx.input.getY())) {
@@ -79,7 +80,6 @@ public class ScreenGame implements Screen {
             }
         } else {
             frameCount++;
-            ScreenUtils.clear(0.65f, 0.49f, 0.22f, 0.5f);
             city.draw(myGdxGame.batch);
             BulletStorage.draw(myGdxGame.batch);
             moveCamera();

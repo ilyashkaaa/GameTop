@@ -2,9 +2,9 @@ package com.mygdx.game.items.artefacts;
 
 public class Awl extends Artefacts{
     public Awl(){
-        title = "Шило";
+        title = "Игла";
         description = "А когда Silksong выйдет";
-        Power = "Когда вас бьёт враг вылетает шило которое вылетает в сторону удара и летит 20м нанося 5 урона каждому на линии полёта";
+        power = "Когда вас бьёт враг вылетает игла ,она вылетает в сторону удара и летит 20м нанося 5 урона каждому на линии полёта";
         damageOst = 5;
     }
 }
