@@ -16,7 +16,7 @@ public class Hero {
     Body body;
     Gun gun1;
     Gun gun2;
-    public int speed = 5;
+    public int speed = 10;
     public static float x = (float) MyGdxGame.SCR_WIDTH / 2;
     public static float y = (float) MyGdxGame.SCR_HEIGHT / 2;
     boolean wasTurned;
