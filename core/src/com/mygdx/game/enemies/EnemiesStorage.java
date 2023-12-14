@@ -14,14 +14,14 @@ public class EnemiesStorage {
 
     public static void draw(SpriteBatch batch, int frameCounter) {
         for (Enemies enemy : enemiesList) {
-            System.out.println("тест0");
+            //System.out.println("тест0");
             if (!enemy.isAlive()) {
                 enemiesList.remove(enemy);
                 break;
             }
         }
         for (Enemies enemy : enemiesList) {
-            System.out.println("тест1");
+            //System.out.println("тест1");
             enemy.draw(batch, frameCounter);
         }
     }

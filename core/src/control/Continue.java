@@ -1,23 +1,19 @@
 package control;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.MyGdxGame;
 
 public class Continue {
-    public static float height = 16, widht = 16;
-    float x,y;
+    public static float heightContinue = 16, widhtContinue = 16;
     Texture continueTexture;
 
-    public Continue(float x, float y) {
-        continueTexture = new Texture("joystik/continue.png");
-        this.x = x;
-        this.y = y;
 
+    public Continue() {
+        continueTexture = new Texture("textures/gui/continue_icon.png");
     }
     public boolean isTouched(int touchedX, int touchedY) {
-        if (x < touchedX && x + widht * 15 > touchedX && y < touchedY && y + height * 15 > touchedY) {
+        if (MyGdxGame.SCR_WIDTH/2 - widhtContinue*15/2 < touchedX && MyGdxGame.SCR_WIDTH/2 + widhtContinue * 15/2 > touchedX && 0 < touchedY && heightContinue * 15 > touchedY) {
             return true;
         } else {
             return false;
@@ -25,7 +21,7 @@ public class Continue {
     }
 
     public void draw(SpriteBatch batch, float cx, float cy) {
-        batch.draw(continueTexture, cx + 900, cy+300, widht*15, height*15);
+        batch.draw(continueTexture, cx -widhtContinue*15/2, cy-MyGdxGame.SCR_HEIGHT/2, widhtContinue*15, heightContinue *15);
     }
 }
 
