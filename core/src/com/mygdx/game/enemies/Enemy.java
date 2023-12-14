@@ -2,19 +2,14 @@ package com.mygdx.game.enemies;
 
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.hero.Hero;
-import com.mygdx.game.utils.Bullet;
-import com.mygdx.game.utils.BulletStorage;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Random;
 
-public class Enemies {
+public class Enemy {
     protected String title;
     protected String description;
     Sprite[] walking;
@@ -30,9 +25,12 @@ public class Enemies {
     int counter = 0;
     double moveAngle;
 
+    double heh4 = new Random().nextDouble();
+
+
 
     //Sprite texture, double damage, double hp, double speed, float x0, float y0
-    public Enemies(float x, float y) {
+    public Enemy(float x, float y) {
         x0 = x;
         y0 = y;
         walking = new Sprite[]{
@@ -49,6 +47,7 @@ public class Enemies {
     }
 
     public void draw(SpriteBatch batch, int frameCount) {
+
         for (int i = 0; i < walking.length; i++) {
             walking[i].setPosition(x0, y0);
             walking[i].setOrigin(8, 8);
@@ -65,16 +64,19 @@ public class Enemies {
     }
 
     public void move(SpriteBatch batch) {
-        float x = Hero.x;
+        float x = Hero.x ;
         float y = Hero.y;
         hypo = Math.pow((x0 - x) * (x0 - x) + (y0 - y) * (y0 - y), 0.5);
         cosinus = (x0 - x) / hypo;
         sinus = (y0 - y) / hypo;
         if (hypo >= distanceHero) {
-            x0 -= speed * cosinus;
-            y0 -= speed * sinus;
+            if (!isEnemyOnTheWay(x0 - speed * cosinus - heh4, y0 - speed * sinus - heh4, this)) {
+                x0 -= speed * cosinus - heh4;
+                y0 -= speed * sinus - heh4;
+            }
+
         } else {
-            attack(batch, Hero.x, Hero.y);
+            attack(batch, x- width / 2 * MyGdxGame.scale, y- height / 4 * 3 * MyGdxGame.scale);
         }
     }
 
@@ -97,7 +99,7 @@ public class Enemies {
             hypo = Math.pow((x0 - x) * (x0 - x) + (y0 - y) * (y0 - y), 0.5);
             cosinus = (x0 - x) / hypo;
             sinus = (y0 - y) / hypo;
-            EnemiesBullets.bullets.add(new EnemiesBullets(x0, y0, cosinus, sinus));
+            EnemiesBullets.bullets.add(new EnemiesBullets(x0 + width / 2 * MyGdxGame.scale, y0 + height / 4 * 3 * MyGdxGame.scale, cosinus, sinus));
             lastDamageTime = System.currentTimeMillis();
             if (sinus > 0) {
                 moveAngle = Math.toDegrees(Math.acos(cosinus));
@@ -106,6 +108,29 @@ public class Enemies {
                 sprite.setRotation((float) moveAngle);
             }
         }
+    }
+
+    public boolean isEnemyOnTheWay(double x, double y, Enemy enemies) {
+        double minC = Double.MAX_VALUE;
+        for (Enemy enemy : EnemiesStorage.enemyList) {
+            System.out.println("11");
+            if (enemy == enemies) {
+                System.out.println("2222");
+                continue;
+            }
+            double a = enemy.x0 - x;
+            double b = enemy.y0 - y;
+            double c = Math.sqrt(a * a + b * b);
+//                if (enemy.x0 >= x && enemy.x0 <= x + width*MyGdxGame.scale + 10
+//                        && enemy.y0 >=y && enemy.y0 <= y + height*MyGdxGame.scale + 10) {
+//                    System.out.println("3333");
+//                    return false;
+            if (c < minC) {
+                minC = c;
+            }
+        }
+
+        return minC < enemies.width * 3;
     }
 }
 
