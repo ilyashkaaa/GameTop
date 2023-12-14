@@ -13,6 +13,7 @@ public class FastBasic extends Enemies {
         };
         speed = 5;
         melee = true;
+        height = 32;
         distanceHero = 4* MyGdxGame.scale;
         title = "Быстрый пузырь";
         description = "Аналог обычного, но быстрее по скорости и слабее по хп и урону";

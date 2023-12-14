@@ -122,7 +122,7 @@ public class ScreenGame implements Screen {
             if (buttonHandler(fireButton1)) hero.shoot(lastCos, lastSyn, false);
             if (buttonHandler(fireButton2)) hero.shoot(lastCos, lastSyn, true);
 
-//        bitmapFont.draw(myGdxGame.batch, " " + Hero.hp, MyGdxGame.SCR_WIDTH / 30, MyGdxGame.SCR_HEIGHT / 20 * 19);
+            bitmapFont.draw(myGdxGame.batch, " " + Hero.hp, MyGdxGame.SCR_WIDTH / 30, MyGdxGame.SCR_HEIGHT / 20 * 19);
 
             fireButton1.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
             fireButton2.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);

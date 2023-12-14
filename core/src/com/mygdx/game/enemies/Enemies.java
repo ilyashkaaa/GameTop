@@ -19,7 +19,7 @@ public class Enemies {
     protected String description;
     Sprite[] walking;
     Sprite sprite;
-    double hp, damage, speed = 3, distanceHero = 16 * MyGdxGame.scale;
+    double hp, damage, speed = 3, distanceHero = 8 * MyGdxGame.scale;
     float x0, y0;
     boolean[] wasTurned = new boolean[10];
     double hypo;
@@ -29,7 +29,6 @@ public class Enemies {
     long lastDamageTime;
     int counter = 0;
     double moveAngle;
-
 
 
     //Sprite texture, double damage, double hp, double speed, float x0, float y0
@@ -99,7 +98,6 @@ public class Enemies {
             cosinus = (x0 - x) / hypo;
             sinus = (y0 - y) / hypo;
             EnemiesBullets.bullets.add(new EnemiesBullets(x0, y0, cosinus, sinus));
-            System.out.println("bullet");
             lastDamageTime = System.currentTimeMillis();
             if (sinus > 0) {
                 moveAngle = Math.toDegrees(Math.acos(cosinus));
@@ -107,7 +105,6 @@ public class Enemies {
                 moveAngle = 360 - Math.toDegrees(Math.acos(cosinus));
                 sprite.setRotation((float) moveAngle);
             }
-
         }
     }
 }

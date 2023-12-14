@@ -12,6 +12,8 @@ public class TallBasic extends Enemies{
         description = "Аналог обычного, только держится на расстоянии и стреляет";
         distanceHero = 64 * MyGdxGame.scale;
         melee = false;
+        width = 16;
+        height = 32;
         walking = new Sprite[]{
                 new Sprite(new Texture("textures/enemies/melee_city_0.png")),
                 new Sprite(new Texture("textures/enemies/melee_city_1.png")),
