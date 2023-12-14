@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 public class Ledashnikov extends Gun {
     public Ledashnikov() {
         weaponTexture = new Sprite(new Texture("textures/weapons/ice_rifle.png"));
+        bulletTexture = new Sprite(new Texture("textures/weapons/bullet/ice_bullet.png"));
         title = "Автомат Ледашникова";
         description="Калашников, но с ледяным уроном";
         property = "урон 10, накладывает эффект заморозки, дальность 200м, перезарядка 0.01";
