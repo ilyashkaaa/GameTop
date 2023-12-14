@@ -1,13 +1,8 @@
 package com.mygdx.game.utils;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.MyGdxGame;
-import com.mygdx.game.enemies.Enemies;
-
-import java.awt.ScrollPane;
 
 public class Bullet {
     Sprite sprite;

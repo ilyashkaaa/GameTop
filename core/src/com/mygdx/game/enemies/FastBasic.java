@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.MyGdxGame;
 
-public class FastBasic extends Enemies {
+public class FastBasic extends Enemy {
     public FastBasic(float x0, float y0) {
         super(x0, y0);
         walking = new Sprite[]{
