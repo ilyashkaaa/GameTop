@@ -12,13 +12,13 @@ public class Pause {
     Texture pauseTexture;
 
     public Pause(float x, float y) {
-        pauseTexture = new Texture("joystik/pause.png");
+        pauseTexture = new Texture("textures/gui/pause_icon.png");
         this.x = x;
         this.y = y;
     }
 
     public boolean isTouched(int touchedX, int touchedY) {
-        if (x < touchedX && x + widht * 15 > touchedX && y < touchedY && y+height * 20 > touchedY) {
+        if (MyGdxGame.SCR_WIDTH - widht * 15 < touchedX && MyGdxGame.SCR_WIDTH > touchedX && MyGdxGame.SCR_HEIGHT - height * 20 < touchedY && MyGdxGame.SCR_HEIGHT > touchedY) {
             return true;
         } else {
             return false;
@@ -26,6 +26,6 @@ public class Pause {
     }
 
     public void draw(SpriteBatch batch, float cx, float cy) {
-        batch.draw(pauseTexture, cx - 1200,  cy+300, widht * 15, height * 20);
+        batch.draw(pauseTexture, cx + MyGdxGame.SCR_WIDTH / 2 - widht * 15, cy + MyGdxGame.SCR_HEIGHT / 2 - height * 20, widht * 15, height * 20);
     }
 }

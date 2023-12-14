@@ -55,4 +55,8 @@ public class Gun extends Weapon {
         if((extraRotate > 180 && wasFliped) && (extraRotate < 180 && !wasFliped)) weaponTexture.flip(false, true);
         weaponTexture.draw(batch);
     }
+    public void drawMenu(SpriteBatch batch, float x, float y) {
+        weaponTexture.setPosition(x, y);
+        weaponTexture.draw(batch);
+    }
 }

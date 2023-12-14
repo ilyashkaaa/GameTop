@@ -8,5 +8,6 @@ public class SteelMask extends PowerSupplies {
         description = "Выглядит как шляпа ,но от неё исходит сильная негативная энергия";
         ability = "Появляется незримая защита блокирующая 50% урона работает 4 секунды";
         texture = new Texture("texture/energy_sources/steel_mask.png");
+        defenseUp=0.5;
     }
 }

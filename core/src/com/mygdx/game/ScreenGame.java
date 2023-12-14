@@ -4,20 +4,32 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.mygdx.game.enemies.Enemies;
+import com.mygdx.game.enemies.Basic;
+import com.mygdx.game.enemies.EnemiesBullets;
 import com.mygdx.game.enemies.EnemiesStorage;
+import com.mygdx.game.enemies.FastBasic;
+import com.mygdx.game.enemies.Small;
+import com.mygdx.game.enemies.TallBasic;
 import com.mygdx.game.hero.Hero;
+import com.mygdx.game.items.weapon.Gun;
+import com.mygdx.game.items.weapon.Weapon;
 import com.mygdx.game.locations.City;
+import com.mygdx.game.locations.CityRoom;
 import com.mygdx.game.utils.BulletStorage;
+
+import java.util.Random;
 
 import control.Button;
 import control.Continue;
+import control.Inventory;
 import control.Joystick;
 import control.Pause;
 
 public class ScreenGame implements Screen {
+    Random random;
     BitmapFont bitmapFont;
     Joystick joystick;
     Hero hero;
@@ -25,6 +37,7 @@ public class ScreenGame implements Screen {
     Button fireButton2;
     Pause pausedButton;
     Continue continueButton;
+    Inventory inventory;
     ShapeRenderer shapeRenderer;
     City city;
     //CityRoom cityRoom;
@@ -34,6 +47,8 @@ public class ScreenGame implements Screen {
     int lastFinger;
     double lastCos, lastSyn;
     boolean paused = false;
+    int numberOfMonsters, maxMonsters = 10, form;
+    float x0, y0;
 
     ScreenGame(MyGdxGame myGdxGame) {
         this.myGdxGame = myGdxGame;
@@ -43,19 +58,21 @@ public class ScreenGame implements Screen {
         joystick = new Joystick();
         shapeRenderer = new ShapeRenderer();
         hero = new Hero();
+        inventory = new Inventory();
+        random = new Random();
         fireButton1 = new Button(MyGdxGame.SCR_WIDTH - Button.widht / 2 - 75, MyGdxGame.SCR_HEIGHT / 2 - 25);
         fireButton2 = new Button(MyGdxGame.SCR_WIDTH - Button.widht * 2 + 25, Button.height / 2 + 75);
-        pausedButton = new Pause(0, (float) (MyGdxGame.SCR_HEIGHT - Pause.height * 20));
-        continueButton = new Continue(MyGdxGame.SCR_WIDTH-Continue.widht*20, (float) (MyGdxGame.SCR_HEIGHT - Continue.height * 20));
-
+        pausedButton = new Pause(MyGdxGame.SCR_WIDTH / 2 + myGdxGame.camera.position.x - Pause.widht * 15, MyGdxGame.SCR_HEIGHT / 2 + myGdxGame.camera.position.y - Pause.height * 20);
+        continueButton = new Continue();
         //cityRoom = new CityRoom();
-       city = new City();
+        city = new City();
 
         myGdxGame.batch.setProjectionMatrix(myGdxGame.camera.combined);
         myGdxGame.camera.update();
-        for (int i = 0; i < 3; i++){
-            EnemiesStorage.enemiesList.add(new Enemies(MyGdxGame.SCR_WIDTH / 4, 100 * i));
-        }
+        spawnMonsters();
+        //     for (int i = 0; i < 3; i++) {
+        //       EnemiesStorage.enemiesList.add(new Enemies(MyGdxGame.SCR_WIDTH / 4, 100 * i));
+        // }
     }
 
     @Override
@@ -67,16 +84,19 @@ public class ScreenGame implements Screen {
     @Override
     public void render(float delta) {
         myGdxGame.batch.begin();
-        ScreenUtils.clear(0.40625f, 0.5f, 0.515625f, 0.5f);
 
         if (paused) {
+            ScreenUtils.clear(0.6f, 0.6f, 0.6f, 1);
             continueButton.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
+            inventory.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
+
 
             if (continueButton.isTouched(Gdx.input.getX(), MyGdxGame.SCR_HEIGHT - Gdx.input.getY())) {
                 paused = false;
             }
         } else {
             frameCount++;
+            ScreenUtils.clear(0.40625f, 0.5f, 0.515625f, 0.5f);
             moveCamera();
             city.draw(myGdxGame.batch, 0);
             BulletStorage.draw(myGdxGame.batch);
@@ -87,7 +107,6 @@ public class ScreenGame implements Screen {
                 else
                     joystick.changeXY(Gdx.input.getX(indexJoystick(countOfTouching())), (MyGdxGame.SCR_HEIGHT - Gdx.input.getY(indexJoystick(countOfTouching()))));
                 hero.move(joystick.getX(indexJoystick(countOfTouching())), joystick.getY(indexJoystick(countOfTouching())));
-//                city.checkHeroColision();
                 if (joystick.getX(indexJoystick(countOfTouching())) != 0 && joystick.getY(indexJoystick(countOfTouching())) != 0) {
                     lastCos = joystick.getX(indexJoystick(countOfTouching()));
                     lastSyn = joystick.getY(indexJoystick(countOfTouching()));
@@ -182,18 +201,39 @@ public class ScreenGame implements Screen {
         return false;
     }
 
-    public boolean pausedClick() {
-        if (pausedButton.isTouched(Gdx.input.getX(), MyGdxGame.SCR_HEIGHT - Gdx.input.getY())) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    private void moveCamera(){
+    private void moveCamera() {
         double x = myGdxGame.camera.position.x - (myGdxGame.camera.position.x - Hero.x) / 16;
         double y = myGdxGame.camera.position.y - (myGdxGame.camera.position.y - Hero.y) / 16;
         myGdxGame.camera.position.set((float) x, (float) y, 0);
         myGdxGame.camera.update();
         myGdxGame.batch.setProjectionMatrix(myGdxGame.camera.combined);
+    }
+
+    public void spawnMonsters() {
+        numberOfMonsters = random.nextInt(maxMonsters) + 1;
+        for (int i = 0; i < numberOfMonsters; i++) {
+            form = random.nextInt(4) + 1;
+            x0 = random.nextInt(609) + 16 * MyGdxGame.scale;
+            y0 = random.nextInt(609) + 16 * MyGdxGame.scale;
+            switch (form) {
+                case 1:
+                    EnemiesStorage.enemiesList.add(new Basic(x0, y0));
+                    break;
+                case 2:
+                    EnemiesStorage.enemiesList.add(new Small(x0, y0));
+                    break;
+                case 3:
+                    EnemiesStorage.enemiesList.add(new FastBasic(x0, y0));
+                    break;
+                //              case 4:
+                //                  EnemiesStorage.enemiesList.add(new Big(x0, y0));
+                //                  break;
+                            case 4:
+                               EnemiesStorage.enemiesList.add(new TallBasic(x0, y0));
+                            break;
+                default:
+                    System.out.println("default");
+            }
+        }
     }
 }
