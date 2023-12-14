@@ -7,4 +7,7 @@ public class PowerSupplies {
     protected String description;
     protected String ability;
     Texture texture;
+    double damageUp;
+    double speedUp;
+    double defenseUp;
 }
