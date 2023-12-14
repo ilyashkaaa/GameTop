@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.enemies.Basic;
@@ -14,10 +13,7 @@ import com.mygdx.game.enemies.FastBasic;
 import com.mygdx.game.enemies.Small;
 import com.mygdx.game.enemies.TallBasic;
 import com.mygdx.game.hero.Hero;
-import com.mygdx.game.items.weapon.Gun;
-import com.mygdx.game.items.weapon.Weapon;
 import com.mygdx.game.locations.City;
-import com.mygdx.game.locations.CityRoom;
 import com.mygdx.game.utils.BulletStorage;
 
 import java.util.Random;
@@ -101,6 +97,7 @@ public class ScreenGame implements Screen {
             city.draw(myGdxGame.batch, 0);
             BulletStorage.draw(myGdxGame.batch);
             EnemiesStorage.draw(myGdxGame.batch, frameCount);
+            EnemiesBullets.draw(myGdxGame.batch);
             if (Gdx.input.isTouched(indexJoystick(countOfTouching())) && Gdx.input.getX(indexJoystick(countOfTouching())) <= MyGdxGame.SCR_WIDTH / 2) {
                 if (keepTouching)
                     joystick.draw(myGdxGame.batch, indexJoystick(countOfTouching()), myGdxGame.camera.position.x, myGdxGame.camera.position.y);
@@ -210,26 +207,27 @@ public class ScreenGame implements Screen {
     }
 
     public void spawnMonsters() {
-        numberOfMonsters = random.nextInt(maxMonsters) + 1;
+       //numberOfMonsters = random.nextInt(maxMonsters) + 1;
+        numberOfMonsters = 5;
         for (int i = 0; i < numberOfMonsters; i++) {
             form = random.nextInt(4) + 1;
             x0 = random.nextInt(609) + 16 * MyGdxGame.scale;
             y0 = random.nextInt(609) + 16 * MyGdxGame.scale;
             switch (form) {
                 case 1:
-                    EnemiesStorage.enemiesList.add(new Basic(x0, y0));
+                    EnemiesStorage.enemyList.add(new Basic(x0, y0));
                     break;
                 case 2:
-                    EnemiesStorage.enemiesList.add(new Small(x0, y0));
+                    EnemiesStorage.enemyList.add(new Small(x0, y0));
                     break;
                 case 3:
-                    EnemiesStorage.enemiesList.add(new FastBasic(x0, y0));
+                    EnemiesStorage.enemyList.add(new FastBasic(x0, y0));
                     break;
                 //              case 4:
                 //                  EnemiesStorage.enemiesList.add(new Big(x0, y0));
                 //                  break;
                             case 4:
-                               EnemiesStorage.enemiesList.add(new TallBasic(x0, y0));
+                               EnemiesStorage.enemyList.add(new TallBasic(x0, y0));
                             break;
                 default:
                     System.out.println("default");
