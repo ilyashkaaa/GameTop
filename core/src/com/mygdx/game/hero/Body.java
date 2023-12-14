@@ -29,6 +29,8 @@ public class Body {
     }
     public void flip(){
         rest.flip(true,false);
-        for(int i = 0; i < walking.length; i++) walking[i].flip(true, false);
+        for(int i = 0; i < walking.length; i++) {
+            walking[i].flip(true, false);
+        }
     }
 }
