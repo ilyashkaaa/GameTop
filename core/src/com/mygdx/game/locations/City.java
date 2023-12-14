@@ -9,158 +9,138 @@ import com.mygdx.game.hero.Hero;
 import java.util.Random;
 
 public class City extends Locations {
-    Sprite fourWaysRoom;
-    Sprite treeWaysRoomUp;
-    Sprite treeWaysRoomRight;
-    Sprite treeWaysRoomDown;
-    Sprite treeWaysRoomLeft;
-    Sprite twoWaysRoom1Up;
-    Sprite twoWaysRoom1Right;
-    Sprite twoWaysRoom1Down;
-    Sprite twoWaysRoom1Left;
-    Sprite twoWaysRoom2Up;
-    Sprite twoWaysRoom2Side;
-    Sprite oneWaysRoomUp;
-    Sprite oneWaysRoomRight;
-    Sprite oneWaysRoomDown;
-    Sprite oneWaysRoomLeft;
-    Sprite roadUp;
-    Sprite roadSide;
     Random random;
-    int scale = 3;
+    Hero hero;
+    public static float scale = 4;
     int countOfRooms = 0;
+    int lastRoom;
     boolean[][] matrix = new boolean[12][12];
 
     public City() {
         title = "Захваченный город";
         description = "В этот город прилетели пришельцы, полностью зачищен от людей. В ценре стоит их замок - космический корабль";
         random = new Random();
+        hero = new Hero();
 
-        oneWaysRoomUp = new Sprite(new Texture("textures/locations/1_city/room_1_up.png"));
-        oneWaysRoomUp.scale(scale);
-        oneWaysRoomRight = new Sprite(new Texture("textures/locations/1_city/room_1_right.png"));
-        oneWaysRoomRight.scale(scale);
-        oneWaysRoomDown = new Sprite(new Texture("textures/locations/1_city/room_1_down.png"));
-        oneWaysRoomDown.scale(scale);
-        oneWaysRoomLeft = new Sprite(new Texture("textures/locations/1_city/room_1_left.png"));
-        oneWaysRoomLeft.scale(scale);
 
-//        oneWaysRoom.setOriginCenter();
-        twoWaysRoom1Up = new Sprite(new Texture("textures/locations/1_city/room_2_corner_up.png"));
-        twoWaysRoom1Up.scale(scale);
-        twoWaysRoom1Right = new Sprite(new Texture("textures/locations/1_city/room_2_corner_right.png"));
-        twoWaysRoom1Right.scale(scale);
-        twoWaysRoom1Down = new Sprite(new Texture("textures/locations/1_city/room_2_corner_down.png"));
-        twoWaysRoom1Down.scale(scale);
-        twoWaysRoom1Left = new Sprite(new Texture("textures/locations/1_city/room_2_corner_left.png"));
-        twoWaysRoom1Left.scale(scale);
-
-//        twoWaysRoom2.setOriginCenter();
-        twoWaysRoom2Up = new Sprite(new Texture("textures/locations/1_city/room_2_straight_vert.png"));
-        twoWaysRoom2Up.scale(scale);
-        twoWaysRoom2Side = new Sprite(new Texture("textures/locations/1_city/room_2_straight_hor.png"));
-        twoWaysRoom2Side.scale(scale);
-
-//        twoWaysRoom1.setOriginCenter();
-        treeWaysRoomUp = new Sprite(new Texture("textures/locations/1_city/room_3_up.png"));
-        treeWaysRoomUp.scale(scale);
-        treeWaysRoomRight = new Sprite(new Texture("textures/locations/1_city/room_3_right.png"));
-        treeWaysRoomRight.scale(scale);
-        treeWaysRoomDown = new Sprite(new Texture("textures/locations/1_city/room_3_down.png"));
-        treeWaysRoomDown.scale(scale);
-        treeWaysRoomLeft = new Sprite(new Texture("textures/locations/1_city/room_3_left.png"));
-        treeWaysRoomLeft.scale(scale);
-
-//        treeWaysRoom.setOriginCenter();
-        fourWaysRoom = new Sprite(new Texture("textures/locations/1_city/room_4.png"));
-        fourWaysRoom.scale(scale);
-
-        roadSide = new Sprite(new Texture(("textures/locations/1_city/passage_horizontal.png")));
-        roadSide.scale(scale);
-        roadUp = new Sprite(new Texture(("textures/locations/1_city/passage_vecrtical.png")));
-        roadUp.scale(scale);
 //        fourWaysRoom.setOriginCenter();
         generate();
+        createRooms();
         System.out.println(countOfRooms);
-        for (int i = 0; i < 11; i++){
-            for (int j = 0; j < 11; j++){
+        for (int i = 0; i < 11; i++) {
+            for (int j = 0; j < 11; j++) {
                 System.out.print(matrix[j][i] + "  ");
             }
             System.out.println();
         }
     }
 
-    public void draw(SpriteBatch batch) {
-        for (int i = 0; i < 11; i++){
-            for (int j = 0; j < 11; j++){
-                if(matrix[j][i]){
+    public void draw(SpriteBatch batch, int fence) {
+        Room.draw(batch, fence);
+    }
+
+    private void generate() {
+        matrix[5][5] = true;
+        while (countOfRooms < 6) {
+            for (int x = 0; x < 11; x++) {
+                for (int y = 0; y < 11; y++) {
+                    if (matrix[x][y]) {
+                        if (random.nextBoolean() && !matrix[x - 1][y]) {
+                            matrix[x - 1][y] = true;
+                            countOfRooms++;
+                            if (countOfRooms >= 6) return;
+                        }
+                        if (random.nextBoolean() && !matrix[x + 1][y]) {
+                            matrix[x + 1][y] = true;
+                            countOfRooms++;
+                            if (countOfRooms >= 6) return;
+                        }
+                        if (random.nextBoolean() && !matrix[x][y - 1]) {
+                            matrix[x][y - 1] = true;
+                            countOfRooms++;
+                            if (countOfRooms >= 6) return;
+                        }
+                        if (random.nextBoolean() && !matrix[x][y + 1]) {
+                            matrix[x][y + 1] = true;
+                            countOfRooms++;
+                            if (countOfRooms >= 6) return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    public void createRooms(){
+        for (int i = 0; i < 11; i++) {
+            for (int j = 0; j < 11; j++) {
+                if (matrix[j][i]) {
                     int close = 0;
-                    if(matrix[j - 1][i]) close++;
-                    if(matrix[j + 1][i]) close++;
-                    if(matrix[j][i - 1]) close++;
-                    if(matrix[j][i + 1]) close++;
+                    if (matrix[j - 1][i]) close++;
+                    if (matrix[j + 1][i]) close++;
+                    if (matrix[j][i - 1]) close++;
+                    if (matrix[j][i + 1]) close++;
 //                    System.out.println(close);
-                    float deltax = 0, deltay = 0;
 //                    close = 1;
-                    switch (close){
+                    switch (close) {
                         case 1:
-                            if(matrix[j][i + 1]){
-                                oneWaysRoomLeft.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale));
-                                oneWaysRoomLeft.draw(batch);
+                            if (matrix[j][i + 1]) {
+                                new Room("textures/locations/1_city/room_1_left.png", i, j);
+                                new Room("textures/locations/1_city/room_1_right_fance.png", i, j);
                             }
-                             else if(matrix[j][i - 1]){
-                                oneWaysRoomRight.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale));
-                                oneWaysRoomRight.draw(batch);
-                             }
-                             else if(matrix[j - 1][i]){
-                                oneWaysRoomDown.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale));
-                                oneWaysRoomDown.draw(batch);
-                             }else{
-                                oneWaysRoomUp.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale));
-                                oneWaysRoomUp.draw(batch);
+                            else if (matrix[j][i - 1]) {
+                                new Room("textures/locations/1_city/room_1_right.png", i, j);
+                                new Room("textures/locations/1_city/room_1_left_fance.png", i, j);
+                            } else if (matrix[j - 1][i]) {
+
+                                new Room("textures/locations/1_city/room_1_down.png", i, j);
+
+                                new Room("textures/locations/1_city/room_1_down_fance.png", i, j);
+                            }
+                            else{
+                                new Room("textures/locations/1_city/room_1_up.png", i, j);
+                                new Room("textures/locations/1_city/room_1_up_fance.png", i, j);
                             }
                             break;
                         case 2:
                             if (matrix[j + 1][i] && matrix[j][i + 1]) {
-                                twoWaysRoom1Up.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale));
-                                twoWaysRoom1Up.draw(batch);
-                            }else if (matrix[j][i + 1] && matrix[j - 1][i]){
-                                twoWaysRoom1Right.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale));
-                                twoWaysRoom1Right.draw(batch);
-                            }else if (matrix[j - 1][i] && matrix[j][i - 1]){
-                                twoWaysRoom1Down.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale));
-                                twoWaysRoom1Down.draw(batch);
-                            }else if (matrix[j][i - 1] && matrix[j + 1][i]){
-                                twoWaysRoom1Left.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale));
-                                twoWaysRoom1Left.draw(batch);
-                            }else if (matrix[j + 1][i] && matrix[j - 1][i]){
-                                twoWaysRoom2Up.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale));
-                                twoWaysRoom2Up.draw(batch);
-                            }else{
-                                twoWaysRoom2Side.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale));
-                                twoWaysRoom2Side.draw(batch);
+                                new Room("textures/locations/1_city/room_2_corner_up.png", i, j);
+                                new Room("textures/locations/1_city/room_2_corner_up_fance.png", i, j);
+                            } else if (matrix[j][i + 1] && matrix[j - 1][i]) {
+                                new Room("textures/locations/1_city/room_2_corner_right.png", i, j);
+                                new Room("textures/locations/1_city/room_2_corner_right_fance.png", i, j);
+                            } else if (matrix[j - 1][i] && matrix[j][i - 1]) {
+                                new Room("textures/locations/1_city/room_2_corner_down.png", i, j);
+                                new Room("textures/locations/1_city/room_2_corner_down_fance.png", i, j);
+                            } else if (matrix[j][i - 1] && matrix[j + 1][i]) {
+                                new Room("textures/locations/1_city/room_2_corner_left.png", i, j);
+                                new Room("textures/locations/1_city/room_2_corner_left_fance.png", i, j);
+                            } else if (matrix[j + 1][i] && matrix[j - 1][i]) {
+                                new Room("textures/locations/1_city/room_2_straight_vert.png", i, j);
+                                new Room("textures/locations/1_city/room_2_straight_vert_fance.png", i, j);
+                            }
+                            else{
+                                new Room("textures/locations/1_city/room_2_straight_hor.png", i, j);
+                                new Room("textures/locations/1_city/room_2_straight_hor_fance.png", i, j);
                             }
                             break;
                         case 3:
-                            if(!matrix[j][i + 1]){
-                                treeWaysRoomLeft.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale));
-                                treeWaysRoomLeft.draw(batch);
-                            }
-                            else if(!matrix[j][i - 1]){
-                                treeWaysRoomRight.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale));
-                                treeWaysRoomRight.draw(batch);
-                            }
-                            else if(!matrix[j - 1][i]){
-                                treeWaysRoomDown.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale));
-                                treeWaysRoomDown.draw(batch);
+                            if (!matrix[j][i + 1]) {
+                                new Room("textures/locations/1_city/room_3_left.png", i, j);
+                                new Room("textures/locations/1_city/room_3_left_fance.png", i, j);
+                            } else if (!matrix[j][i - 1]) {
+                                new Room("textures/locations/1_city/room_3_right.png", i, j);
+                                new Room("textures/locations/1_city/room_3_right_fance.png", i, j);
+                            } else if (!matrix[j - 1][i]) {
+                                new Room("textures/locations/1_city/room_3_down.png", i, j);
+                                new Room("textures/locations/1_city/room_3_down_fance.png", i, j);
                             }else{
-                                treeWaysRoomUp.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale));
-                                treeWaysRoomUp.draw(batch);
+                                new Room("textures/locations/1_city/room_3_up.png", i, j);
+                                new Room("textures/locations/1_city/room_3_up_fance.png", i, j);
                             }
                             break;
                         case 4:
-                            fourWaysRoom.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoomLeft.getWidth() * scale / 2) / 2 + (i - 5) * (oneWaysRoomLeft.getWidth() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale), (MyGdxGame.SCR_HEIGHT - oneWaysRoomLeft.getHeight() * scale / 2) / 2 + (j - 5) * (oneWaysRoomLeft.getHeight() * scale + roadSide.getWidth() * scale * 1.5f - 16 * scale));
-                            fourWaysRoom.draw(batch);
+                            new Room("textures/locations/1_city/room_4.png", i, j);
+                            new Room("textures/locations/1_city/room_4_fance.png", i, j);
                             break;
                         default:
                             System.out.println("default");
@@ -168,93 +148,19 @@ public class City extends Locations {
                 }
             }
         }
-//        oneWaysRoom.setPosition((MyGdxGame.SCR_WIDTH - oneWaysRoom.getWidth()) / 2, (MyGdxGame.SCR_HEIGHT - oneWaysRoom.getHeight()) / 2);
-//        oneWaysRoom.draw(batch);
     }
-
-    /*private void generate() {
-        while (countOfRooms == 0) {
-            System.out.println("else if");
-            for (int i = 0; i < 1; i++) {
-                //System.out.println(i);
-                if (random.nextInt(3) < 2) {
-                    countOfRooms++;
-                    matrix[countOfRooms][0] = matrix[countOfRooms - 1][0] + ((i + 1) % 2) * (i - 1);
-                    matrix[countOfRooms][1] = matrix[countOfRooms - 1][1] + (i % 2) * (i - 2);
-                }
-            }
+    public int indexRoomWithHero(){
+        for (int i = 0; i < Room.rooms.size(); i++) {
+            if (Room.rooms.get(i).x - 256 * scale + 16 * 5 <= Hero.x && Room.rooms.get(i).x + 512 * scale >= Hero.x && Room.rooms.get(i).y - 256 * scale + 16 * 5 <= Hero.y && Room.rooms.get(i).y + 512 * scale - 16 * 5 >= Hero.y)
+                return i;
         }
-        while (countOfRooms < 6) {
-            //System.out.println(countOfRooms);
-            //System.out.println("flag");
-            while (matrix[countOfRooms + 1][0] == 0 && matrix[countOfRooms + 1][1] == 0) {
-                for (int i = 0; i < 4; i++) {
-                    boolean canGenerate = true;
-                    for (int j = 0; j < 10; j++) {
-                        if (matrix[countOfRooms][0] + ((i + 1) % 2) * (i - 1) == matrix[j][0] && matrix[countOfRooms][1] + (i % 2) * (i - 2) == matrix[j][1]) {
-                            canGenerate = false;
-//                            System.out.println((matrix[countOfRooms][0] + ((i + 1) % 2) * (i - 1)) + " " + (matrix[countOfRooms][1] + (i % 2) * (i - 2)));
-                            break;
-                        }
-//                        else System.out.println(matrix[j][1]);
-                    }
-                    System.out.println(canGenerate);
-                    if (random.nextBoolean() && canGenerate) {
-                        matrix[countOfRooms + 1][0] = matrix[countOfRooms][0] + ((i + 1) % 2) * (i - 1);
-                        matrix[countOfRooms + 1][1] = matrix[countOfRooms][1] + (i % 2) * (i - 2);
-                        break;
-                    }
-                }
-            }
-            countOfRooms++;
-            if (countOfRooms >= 6){
-                for (int i = 0; i < countOfRooms; i++){
-                    System.out.println(matrix[i][0] + " " + matrix[i][1]);
-                }
-                return;
-            }
-        }
-
-    }*/
-    private void generate(){
-        matrix[5][5] = true;
-        /*while (countOfRooms <= 1){
-            for (int i = 0; i < 4; i++){
-//                System.out.println(i);
-                if(random.nextBoolean()) {
-                    if (i % 2 == 0) matrix[countOfRooms][0] = i - 1;
-                    else matrix[countOfRooms][1] = i - 2;
-                    countOfRooms++;
-                }
-            }
-        }*/
-        while (countOfRooms < 6){
-            for (int x = 0; x < 11; x++){
-                for (int y = 0; y < 11; y++){
-                    if(matrix[x][y]){
-                        if(random.nextBoolean() && !matrix[x - 1][y]){
-                            matrix[x - 1][y] = true;
-                            countOfRooms++;
-                            if(countOfRooms >= 6) return;
-                        }
-                        if(random.nextBoolean() && !matrix[x + 1][y]){
-                            matrix[x + 1][y] = true;
-                            countOfRooms++;
-                            if(countOfRooms >= 6) return;
-                        }
-                        if(random.nextBoolean() && !matrix[x][y - 1]){
-                            matrix[x][y - 1] = true;
-                            countOfRooms++;
-                            if(countOfRooms >= 6) return;
-                        }
-                        if(random.nextBoolean() && !matrix[x][y + 1]){
-                            matrix[x][y + 1] = true;
-                            countOfRooms++;
-                            if(countOfRooms >= 6) return;
-                        }
-                    }
-                }
-            }
-        }
+        return -1;
+    }
+    public void checkHeroColision(){
+        if(indexRoomWithHero() != -1) lastRoom = indexRoomWithHero();
+        if(Room.rooms.get(lastRoom).x - 256 * scale + 16 * 5 + 2 * 5 >= Hero.x) hero.changePosition(Room.rooms.get(lastRoom).x - 256 * scale + 16 * 5 - Hero.x + 2 * 5, 0);
+        if(Room.rooms.get(lastRoom).x + 512 * scale - 2 * 5 <= Hero.x) hero.changePosition(Room.rooms.get(lastRoom).x + 512 * scale - Hero.x - 2 * 5, 0);
+        if(Room.rooms.get(lastRoom).y - 256 * scale + 16 * 5 + 5 * 5 >= Hero.y) hero.changePosition(0, Room.rooms.get(lastRoom).y - 256 * scale + 16 * 5 - Hero.y + 5 * 5);
+        if(Room.rooms.get(lastRoom).y + 512 * scale - 16 * 5 - 5 <= Hero.y) hero.changePosition(0, Room.rooms.get(lastRoom).y + 512 * scale - 16 * 5 - Hero.y - 5);
     }
 }

@@ -4,15 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.enemies.Enemies;
 import com.mygdx.game.enemies.EnemiesStorage;
 import com.mygdx.game.hero.Hero;
-import com.mygdx.game.utils.Bullet;
 import com.mygdx.game.locations.City;
-import com.mygdx.game.locations.CityRoom;
 import com.mygdx.game.utils.BulletStorage;
 
 import control.Button;
@@ -70,7 +67,7 @@ public class ScreenGame implements Screen {
     @Override
     public void render(float delta) {
         myGdxGame.batch.begin();
-        ScreenUtils.clear(0.32f, 0.5f, 0.66f, 0.5f);
+        ScreenUtils.clear(0.40625f, 0.5f, 0.515625f, 0.5f);
 
         if (paused) {
             continueButton.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
@@ -80,9 +77,9 @@ public class ScreenGame implements Screen {
             }
         } else {
             frameCount++;
-            city.draw(myGdxGame.batch);
-            BulletStorage.draw(myGdxGame.batch);
             moveCamera();
+            city.draw(myGdxGame.batch, 0);
+            BulletStorage.draw(myGdxGame.batch);
             EnemiesStorage.draw(myGdxGame.batch, frameCount);
             if (Gdx.input.isTouched(indexJoystick(countOfTouching())) && Gdx.input.getX(indexJoystick(countOfTouching())) <= MyGdxGame.SCR_WIDTH / 2) {
                 if (keepTouching)
@@ -90,6 +87,7 @@ public class ScreenGame implements Screen {
                 else
                     joystick.changeXY(Gdx.input.getX(indexJoystick(countOfTouching())), (MyGdxGame.SCR_HEIGHT - Gdx.input.getY(indexJoystick(countOfTouching()))));
                 hero.move(joystick.getX(indexJoystick(countOfTouching())), joystick.getY(indexJoystick(countOfTouching())));
+//                city.checkHeroColision();
                 if (joystick.getX(indexJoystick(countOfTouching())) != 0 && joystick.getY(indexJoystick(countOfTouching())) != 0) {
                     lastCos = joystick.getX(indexJoystick(countOfTouching()));
                     lastSyn = joystick.getY(indexJoystick(countOfTouching()));
@@ -102,11 +100,14 @@ public class ScreenGame implements Screen {
 //            }
 
         hero.draw(myGdxGame.batch, frameCount, keepTouching, lastCos, lastSyn);
+        city.draw(myGdxGame.batch, 1);
+        city.checkHeroColision();
+
         //enemy.draw(myGdxGame.batch);
         if (buttonHandler(fireButton1)) hero.shoot(lastCos, lastSyn, false);
         if (buttonHandler(fireButton2)) hero.shoot(lastCos, lastSyn, true);
 
-//        bitmapFont.draw(myGdxGame.batch, " " + joystick.getX(indexJoystick(countOfTouching())), MyGdxGame.SCR_WIDTH / 30, MyGdxGame.SCR_HEIGHT / 20 * 19);
+       bitmapFont.draw(myGdxGame.batch, " " + city.indexRoomWithHero(), myGdxGame.camera.position.x, myGdxGame.camera.position.y);
 
             fireButton1.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
             fireButton2.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);

@@ -11,7 +11,7 @@ public class Hero {
     Body body;
     Gun gun1;
     Gun gun2;
-    public int speed = 15;
+    public int speed = 7;
     public static float x = (float) MyGdxGame.SCR_WIDTH / 2;
     public static float y = (float) MyGdxGame.SCR_HEIGHT / 2;
     boolean wasTurned;
@@ -50,5 +50,9 @@ public class Hero {
     public void shoot(double cosinus, double sinus, boolean gun) {
         if (!gun) gun1.shoot(x, y, cosinus, sinus);
         else gun2.shoot(x, y, cosinus, sinus);
+    }
+    public void changePosition(float deltaX, float deltaY){
+        x += deltaX;
+        y += deltaY;
     }
 }
