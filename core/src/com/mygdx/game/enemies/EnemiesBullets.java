@@ -27,7 +27,7 @@ public class EnemiesBullets {
         this.cosinus = cosinus;
         this.sinus = sinus;
         sprite = new Sprite(new Texture("textures/enemies/enemy_bullet.png"));
-        sprite.scale(MyGdxGame.scaleBullet * 2);
+        sprite.scale(MyGdxGame.scaleBullet);
     }
 
     public static void draw(SpriteBatch batch) {

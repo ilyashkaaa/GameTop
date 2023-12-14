@@ -16,7 +16,7 @@ public class MyGdxGame extends Game {
 
 	public static int SCR_WIDTH, SCR_HEIGHT;
 	public static final float scale = 5;
-	public static final float scaleBullet = 2;
+	public static final float scaleBullet = 4;
 	@Override
 	public void create () {
 		SCR_WIDTH = Gdx.graphics.getWidth();

@@ -3,6 +3,9 @@ package com.mygdx.game.utils;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.MyGdxGame;
+import com.mygdx.game.enemies.EnemiesBullets;
+import com.mygdx.game.enemies.EnemiesStorage;
+import com.mygdx.game.enemies.Enemy;
 
 public class Bullet {
     Sprite sprite;
@@ -13,6 +16,7 @@ public class Bullet {
     float x0, y0;
     double moveAngle;
 
+
     public Bullet(Sprite texture, double damage, double distance, double bulletSpeed, float x, float y, double cosinus, double sinus) {
         this.sprite = texture;
         this.damage = damage;
@@ -20,7 +24,7 @@ public class Bullet {
         this.bulletSpeed = bulletSpeed;
         sprite = new Sprite(texture);
         sprite.setOrigin(8, 8);
-        sprite.scale(MyGdxGame.scaleBullet * 2);
+        sprite.scale(MyGdxGame.scaleBullet);
         this.x = x;
         this.y = y;
         x0 = x;
@@ -39,7 +43,8 @@ public class Bullet {
         x += bulletSpeed * cosinus;
         y += bulletSpeed * sinus;
     }
-    public boolean isAlive(){
+
+    public boolean isAlive() {
         return ((x0 - x) * (x0 - x) + (y0 - y) * (y0 - y) <= distance * distance);
     }
 
@@ -48,4 +53,5 @@ public class Bullet {
         sprite.draw(batch);
         sprite.setRotation((float) moveAngle);
     }
+
 }
