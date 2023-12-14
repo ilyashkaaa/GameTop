@@ -14,6 +14,7 @@ public class City extends Locations {
     public static float scale = 4;
     int countOfRooms = 0;
     int lastRoom;
+    boolean inRoom;
     boolean[][] matrix = new boolean[12][12];
 
     public City() {
@@ -163,25 +164,33 @@ public class City extends Locations {
 
     public int indexRoomWithHero() {
         for (int i = 0; i < Room.rooms.size(); i++) {
-            if (Room.rooms.get(i).x - 256 * scale + 16 * 5 <= Hero.x && Room.rooms.get(i).x + 512 * scale >= Hero.x && Room.rooms.get(i).y - 256 * scale + 16 * 5 <= Hero.y && Room.rooms.get(i).y + 512 * scale - 16 * 5 >= Hero.y)
+            if (Room.rooms.get(i).x - 256 * scale + 16 * 5 <= Hero.x && Room.rooms.get(i).x + 512 * scale >= Hero.x && Room.rooms.get(i).y - 256 * scale <= Hero.y && Room.rooms.get(i).y + 512 * scale >= Hero.y)
                 return i;
         }
         return -1;
     }
 
     public void checkHeroColision() {
-        if (indexRoomWithHero() != -1) lastRoom = indexRoomWithHero();
-        System.out.println();
-        for (int i = 0; i < Room.rooms.get(lastRoom).direction.length; i++) {
-            System.out.println(Room.rooms.get(lastRoom).direction[i] + " " + i);
+        if (indexRoomWithHero() != -1) {
+            lastRoom = indexRoomWithHero();
+            if (Room.rooms.get(lastRoom).x - 256 * scale + 16 * 5 + 2 * 5 >= Hero.x && ((Room.rooms.get(lastRoom).y + 96 * scale * 2 <= Hero.y || Room.rooms.get(lastRoom).y + 96 * scale >= Hero.y) || !Room.rooms.get(lastRoom).direction[3]))
+                hero.changePosition(Room.rooms.get(lastRoom).x - 256 * scale + 16 * 5 - Hero.x + 2 * 5, 0);
+            else if (Room.rooms.get(lastRoom).x + 512 * scale - 2 * 8 <= Hero.x && ((Room.rooms.get(lastRoom).y + 96 * scale * 2 <= Hero.y || Room.rooms.get(lastRoom).y + 96 * scale >= Hero.y) || !Room.rooms.get(lastRoom).direction[1]))
+                hero.changePosition(Room.rooms.get(lastRoom).x + 512 * scale - Hero.x - 2 * 5, 0);
+            if (Room.rooms.get(lastRoom).y - 256 * scale + 16 * 5 + 5 * 5 >= Hero.y && ((Room.rooms.get(lastRoom).x + 88 * scale >= Hero.x || Room.rooms.get(lastRoom).x + 304 + 96 * 5 - 40 <= Hero.x) || !Room.rooms.get(lastRoom).direction[2]))
+                hero.changePosition(0, Room.rooms.get(lastRoom).y - 256 * scale + 16 * 5 - Hero.y + 5 * 5);
+            else if (Room.rooms.get(lastRoom).y + 512 * scale - 16 * 5 - 5 <= Hero.y && ((Room.rooms.get(lastRoom).x + 88 * scale >= Hero.x || Room.rooms.get(lastRoom).x + 304 + 96 * 5 - 40 <= Hero.x) || !Room.rooms.get(lastRoom).direction[0]))
+                hero.changePosition(0, Room.rooms.get(lastRoom).y + 512 * scale - 16 * 5 - Hero.y - 5);
         }
-        if (Room.rooms.get(lastRoom).x - 256 * scale + 16 * 5 + 2 * 5 >= Hero.x && ((Room.rooms.get(lastRoom).y + 96 * scale * 2 <= Hero.y || Room.rooms.get(lastRoom).y + 96 * scale >= Hero.y) || !Room.rooms.get(lastRoom).direction[3]))
-            hero.changePosition(Room.rooms.get(lastRoom).x - 256 * scale + 16 * 5 - Hero.x + 2 * 5, 0);
-        if (Room.rooms.get(lastRoom).x + 512 * scale - 2 * 5 <= Hero.x && ((Room.rooms.get(lastRoom).y + 96 * scale * 2 <= Hero.y || Room.rooms.get(lastRoom).y + 96 * scale >= Hero.y) || !Room.rooms.get(lastRoom).direction[1]))
-            hero.changePosition(Room.rooms.get(lastRoom).x + 512 * scale - Hero.x - 2 * 5, 0);
-        if (Room.rooms.get(lastRoom).y - 256 * scale + 16 * 5 + 5 * 5 >= Hero.y && ((Room.rooms.get(lastRoom).x + 88 * scale >= Hero.x || Room.rooms.get(lastRoom).x + 304 + 96 * 5 - 40 <= Hero.x) || !Room.rooms.get(lastRoom).direction[2]))
-            hero.changePosition(0, Room.rooms.get(lastRoom).y - 256 * scale + 16 * 5 - Hero.y + 5 * 5);
-        if (Room.rooms.get(lastRoom).y + 512 * scale - 16 * 5 - 5 <= Hero.y && ((Room.rooms.get(lastRoom).x + 88 * scale >= Hero.x || Room.rooms.get(lastRoom).x + 304 + 96 * 5 - 40 <= Hero.x) || !Room.rooms.get(lastRoom).direction[0]))
-            hero.changePosition(0, Room.rooms.get(lastRoom).y + 512 * scale - 16 * 5 - Hero.y - 5);
+        else{
+            if(Room.rooms.get(lastRoom).y + 96 * scale * 2 - 16 * 5 <= Hero.y && (Room.rooms.get(lastRoom).x - 256 * scale + 16 * 5 + 2 * 5 >= Hero.x || Room.rooms.get(lastRoom).x + 512 * scale - 2 * 5 <= Hero.x))
+                hero.changePosition(0, Room.rooms.get(lastRoom).y + 96 * scale * 2 - Hero.y - 16 * 5);
+            else if(Room.rooms.get(lastRoom).y + 96 * scale + 16 * 5 >= Hero.y && (Room.rooms.get(lastRoom).x - 256 * scale + 16 * 5 + 2 * 5 >= Hero.x || Room.rooms.get(lastRoom).x + 512 * scale - 2 * 5 <= Hero.x))
+                hero.changePosition(0, Room.rooms.get(lastRoom).y + 96 * scale + 16 * 5 - Hero.y);
+            if (Room.rooms.get(lastRoom).x + 88 * scale - 3 * 5 >= Hero.x && (Room.rooms.get(lastRoom).y + 512 * scale - 16 * 5 - 5 <= Hero.y || Room.rooms.get(lastRoom).y - 256 * scale + 16 * 5 + 5 * 5 >= Hero.y))
+                hero.changePosition(Room.rooms.get(lastRoom).x + 88 * scale - 3 * 5 - Hero.x, 0);
+            else if (Room.rooms.get(lastRoom).x + 304 + 96 * 5 - 40 + 3 * 5 <= Hero.x && (Room.rooms.get(lastRoom).y + 512 * scale - 16 * 5 - 5 <= Hero.y || Room.rooms.get(lastRoom).y - 256 * scale + 16 * 5 + 5 * 5 >= Hero.y))
+                hero.changePosition(Room.rooms.get(lastRoom).x + 304 + 96 * 5 - 40 - Hero.x + 3 * 5, 0);
+        }
     }
 }

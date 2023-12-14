@@ -113,9 +113,7 @@ public class Enemy {
     public boolean isEnemyOnTheWay(double x, double y, Enemy enemies) {
         double minC = Double.MAX_VALUE;
         for (Enemy enemy : EnemiesStorage.enemyList) {
-            System.out.println("11");
             if (enemy == enemies) {
-                System.out.println("2222");
                 continue;
             }
             double a = enemy.x0 - x;

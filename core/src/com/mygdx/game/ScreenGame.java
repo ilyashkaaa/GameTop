@@ -211,8 +211,8 @@ public class ScreenGame implements Screen {
         numberOfMonsters = 5;
         for (int i = 0; i < numberOfMonsters; i++) {
             form = random.nextInt(4) + 1;
-            x0 = random.nextInt(609) + 16 * MyGdxGame.scale;
-            y0 = random.nextInt(609) + 16 * MyGdxGame.scale;
+            x0 = random.nextInt(600 * 4) + 16 * MyGdxGame.scale;
+            y0 = random.nextInt(600 * 4) + 16 * MyGdxGame.scale;
             switch (form) {
                 case 1:
                     EnemiesStorage.enemyList.add(new Basic(x0, y0));
