@@ -13,7 +13,7 @@ public class EnemiesStorage {
 
     public static void draw(SpriteBatch batch, int frameCounter) {
         for (Enemy enemy : enemyList) {
-            if (!enemy.isAlive()) {
+            if (enemy.hp<=0) {
                 enemyList.remove(enemy);
                 break;
             }

@@ -208,7 +208,7 @@ public class ScreenGame implements Screen {
 
     public void spawnMonsters() {
        //numberOfMonsters = random.nextInt(maxMonsters) + 1;
-        numberOfMonsters = 5;
+        numberOfMonsters = 30;
         for (int i = 0; i < numberOfMonsters; i++) {
             form = random.nextInt(4) + 1;
             x0 = random.nextInt(600 * 4) + 16 * MyGdxGame.scale;

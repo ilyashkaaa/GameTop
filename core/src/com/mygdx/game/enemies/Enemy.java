@@ -14,12 +14,16 @@ public class Enemy {
     protected String description;
     Sprite[] walking;
     Sprite sprite;
-    double hp, damage, speed = 3, distanceHero = 8 * MyGdxGame.scale;
-    float x0, y0;
+   public double hp = 10;
+    double damage;
+    double speed = 3;
+    double distanceHero = 8 * MyGdxGame.scale;
+    public float x0;
+    public float y0;
     boolean[] wasTurned = new boolean[10];
     double hypo;
     double sinus, cosinus;
-    int width = 16, height = 16;
+    public int width = 16, height = 16;
     boolean melee = false;
     long lastDamageTime;
     int counter = 0;
@@ -128,7 +132,8 @@ public class Enemy {
             }
         }
 
-        return minC < enemies.width * 3;
+        return minC < enemies.width * 1.5;
     }
+
 }
 
