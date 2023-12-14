@@ -11,11 +11,12 @@ import java.util.List;
 public class Room {
     Sprite texture;
     public static List<Room> rooms = new ArrayList<>();
-
     public float x, y;
-    Room(String path, int i, int j){
+    public boolean[] direction;
+    Room(String path, int i, int j, boolean[] direction){
         texture = new Sprite(new Texture(path));
         texture.scale(CityRoom.scale);
+        this.direction = direction;
         x = (MyGdxGame.SCR_WIDTH - texture.getWidth() * City.scale / 2) / 2 + (i - 5) * (texture.getWidth() * City.scale + 256 * City.scale * 1.5f - 32 * City.scale * 4);
         y = (MyGdxGame.SCR_HEIGHT - texture.getHeight() * City.scale / 2) / 2 + (j - 5) * (texture.getHeight() * City.scale + 256 * City.scale * 1.5f - 16 * City.scale * 8);
         texture.setPosition(x, y);
