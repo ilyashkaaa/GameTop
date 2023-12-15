@@ -23,7 +23,6 @@ import com.mygdx.game.items.artefacts.Dice;
 import com.mygdx.game.items.artefacts.ElectromagneticCoil;
 import com.mygdx.game.items.artefacts.Glitch;
 import com.mygdx.game.items.artefacts.NitrogenCylinder;
-import com.mygdx.game.items.artefacts.PortableNuclearReactor;
 import com.mygdx.game.items.artefacts.Scaner3D;
 import com.mygdx.game.locations.City;
 import com.mygdx.game.utils.Bullet;
@@ -114,7 +113,7 @@ public class ScreenGame implements Screen {
             if(Hero.hp <= 0){
                 ScreenUtils.clear(0.6f, 0.6f, 0.6f, 1);
                 bitmapFont.draw(myGdxGame.batch, "You Lose!" + "\n" + "Loser", myGdxGame.camera.position.x - 250, myGdxGame.camera.position.y + 250, 500, 1, false);
-                restartButton.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y - 125);
+                restartButton.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y - 125, false);
                 if(restartButton.isTouched(Gdx.input.getX(), MyGdxGame.SCR_HEIGHT - Gdx.input.getY(), 0)){
                     Hero.hp = 100;
                     hero.changePosition(-Hero.x, -Hero.y);
@@ -179,8 +178,8 @@ public class ScreenGame implements Screen {
                     myGdxGame.batch.draw(heart, myGdxGame.camera.position.x - MyGdxGame.SCR_WIDTH / 2, MyGdxGame.SCR_HEIGHT / 2 - 16 * hpScale + myGdxGame.camera.position.y, 16 * hpScale, 16 * hpScale);
                     bitmapFont.getData().setScale(5, 5);
                     bitmapFont.draw(myGdxGame.batch, "" + (int) Hero.hp, myGdxGame.camera.position.x - MyGdxGame.SCR_WIDTH / 2 + 16 * hpScale * 1.7f, MyGdxGame.SCR_HEIGHT / 2 + myGdxGame.camera.position.y - 16 * hpScale / 4, 15, 1, false);
-                    fireButton1.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
-                    fireButton2.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
+                    fireButton1.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y, hero.getReload1());
+                    fireButton2.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y, hero.getReload2());
                     pausedButton.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
 
 //        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -319,7 +318,6 @@ public class ScreenGame implements Screen {
                 artefacts.add(new NitrogenCylinder());
                 break;
             case 8:
-                artefacts.add(new PortableNuclearReactor());
                 break;
             case 9:
                 artefacts.add(new Scaner3D());
