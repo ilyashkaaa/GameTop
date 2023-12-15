@@ -44,6 +44,7 @@ import control.Pause;
 
 public class ScreenGame implements Screen {
     Random random;
+    public static int score;
     Artefacts artefact;
     BitmapFont bitmapFont;
     Joystick joystick;
@@ -104,17 +105,17 @@ public class ScreenGame implements Screen {
     @Override
     public void render(float delta) {
         myGdxGame.batch.begin();
-        if(!isStarted){
+        if (!isStarted) {
             myGdxGame.batch.draw(startScreen, 0, 0, MyGdxGame.SCR_WIDTH, MyGdxGame.SCR_HEIGHT);
-            if(Gdx.input.justTouched()) isStarted = true;
-        }
-        else{
-            if(Hero.hp <= 0){
+            if (Gdx.input.justTouched()) isStarted = true;
+        } else {
+            if (Hero.hp <= 0) {
                 ScreenUtils.clear(0.6f, 0.6f, 0.6f, 1);
-                bitmapFont.draw(myGdxGame.batch, "You Lose!" + "\n" + "Loser", myGdxGame.camera.position.x - 250, myGdxGame.camera.position.y + 250, 500, 1, false);
-                restartButton.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y - 125);
-                if(restartButton.isTouched(Gdx.input.getX(), MyGdxGame.SCR_HEIGHT - Gdx.input.getY(), 0)){
+                bitmapFont.draw(myGdxGame.batch, "You Lose!" + "\n" + "Loser" + "\n" + score, myGdxGame.camera.position.x - 250, myGdxGame.camera.position.y + 250, 500, 1, false);
+                restartButton.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y - 125, false);
+                if (restartButton.isTouched(Gdx.input.getX(), MyGdxGame.SCR_HEIGHT - Gdx.input.getY(), 0)) {
                     Hero.hp = 100;
+                    score = 0;
                     hero.changePosition(-Hero.x, -Hero.y);
                     myGdxGame.camera.position.set(0, 0, 0);
                     Room.rooms.clear();
@@ -123,12 +124,11 @@ public class ScreenGame implements Screen {
                     BulletStorage.bullets.clear();
                     EnemiesBullets.bullets.clear();
                 }
-            }else {
+            } else {
                 if (paused) {
                     ScreenUtils.clear(0.6f, 0.6f, 0.6f, 1);
                     continueButton.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
                     inventory.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
-
 
 
                     if (continueButton.isTouched(Gdx.input.getX(), MyGdxGame.SCR_HEIGHT - Gdx.input.getY())) {
@@ -159,24 +159,24 @@ public class ScreenGame implements Screen {
 //                paused = true;
 //            }
 
-            hero.draw(myGdxGame.batch, frameCount, keepTouching, lastCos, lastSyn);
-            spawnArtefact();
-            BulletStorage.draw(myGdxGame.batch);
-            city.draw(myGdxGame.batch, 1);
-            city.checkHeroColision();
+                    hero.draw(myGdxGame.batch, frameCount, keepTouching, lastCos, lastSyn);
+                    spawnArtefact();
+                    BulletStorage.draw(myGdxGame.batch);
+                    city.draw(myGdxGame.batch, 1);
+                    city.checkHeroColision();
 
-            //enemy.draw(myGdxGame.batch);
-            if (buttonHandler(fireButton1)) hero.shoot(lastCos, lastSyn, false);
-            if (buttonHandler(fireButton2)) hero.shoot(lastCos, lastSyn, true);
-            hero.checkReload();
+                    //enemy.draw(myGdxGame.batch);
+                    if (buttonHandler(fireButton1)) hero.shoot(lastCos, lastSyn, false);
+                    if (buttonHandler(fireButton2)) hero.shoot(lastCos, lastSyn, true);
+                    hero.checkReload();
 
 //            bitmapFont.draw(myGdxGame.batch, " " + EnemiesStorage.enemyList.size(), myGdxGame.camera.position.x, myGdxGame.camera.position.y);
                     if (city.isActivate()) {
                         spawnMonsters(Room.rooms.get(City.lastRoom).x, Room.rooms.get(City.lastRoom).y);
                     }
-
-                    fireButton1.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
-                    fireButton2.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
+                    bitmapFont.draw(myGdxGame.batch, "" + score, myGdxGame.camera.position.x - MyGdxGame.SCR_WIDTH / 24 * 11, myGdxGame.camera.position.y + MyGdxGame.SCR_HEIGHT / 3, 500, 1, false);
+                    fireButton1.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y, hero.getReload1());
+                    fireButton2.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y, hero.getReload2());
                     pausedButton.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
 
 //        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -288,39 +288,39 @@ public class ScreenGame implements Screen {
     }
 
     public void spawnArtefact() {
-    if(EnemiesStorage.enemyList.size()==0) {
-        form = random.nextInt(8)+1;
-        switch (1) {
-            case 1:
-             //   Texture brush = new Texture("textures/artifacts/brush.png");
-              //  myGdxGame.batch.draw(brush, (int) Hero.x, (int) Hero.y, 256, 256);
-                artefacts.add(new Brush());
-                break;
-            case 2:
-                artefacts.add(new Crane());
-                break;
-            case 3:
-                artefacts.add(new DemonHorn());
-                break;
-            case 4:
-                artefacts.add(new Dice());
-                break;
-            case 5:
-                artefacts.add(new ElectromagneticCoil());
-                break;
-            case 6:
-                artefacts.add(new Glitch());
-                break;
-            case 7:
-                artefacts.add(new NitrogenCylinder());
-                break;
-            case 8:
-                artefacts.add(new PortableNuclearReactor());
-                break;
-            case 9:
-                artefacts.add(new Scaner3D());
-                break;
+        if (EnemiesStorage.enemyList.size() == 0) {
+            form = random.nextInt(8) + 1;
+            switch (1) {
+                case 1:
+                    //   Texture brush = new Texture("textures/artifacts/brush.png");
+                    //  myGdxGame.batch.draw(brush, (int) Hero.x, (int) Hero.y, 256, 256);
+                    artefacts.add(new Brush());
+                    break;
+                case 2:
+                    artefacts.add(new Crane());
+                    break;
+                case 3:
+                    artefacts.add(new DemonHorn());
+                    break;
+                case 4:
+                    artefacts.add(new Dice());
+                    break;
+                case 5:
+                    artefacts.add(new ElectromagneticCoil());
+                    break;
+                case 6:
+                    artefacts.add(new Glitch());
+                    break;
+                case 7:
+                    artefacts.add(new NitrogenCylinder());
+                    break;
+                case 8:
+                    artefacts.add(new PortableNuclearReactor());
+                    break;
+                case 9:
+                    artefacts.add(new Scaner3D());
+                    break;
+            }
         }
     }
-}
 }
