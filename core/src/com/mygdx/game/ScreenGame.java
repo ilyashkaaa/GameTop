@@ -58,6 +58,7 @@ public class ScreenGame implements Screen {
     ShapeRenderer shapeRenderer;
     City city;
     Texture startScreen;
+    Texture heart;
     //CityRoom cityRoom;
     boolean keepTouching;
     private final MyGdxGame myGdxGame;
@@ -73,6 +74,7 @@ public class ScreenGame implements Screen {
     ScreenGame(MyGdxGame myGdxGame) {
         this.myGdxGame = myGdxGame;
         startScreen = new Texture("textures/gui/splash.png");
+        heart = new Texture("textures/gui/hp.png");
         bitmapFont = new BitmapFont(Gdx.files.internal("font/font.fnt"));
         bitmapFont.getData().scale(5f);
         bitmapFont.setColor(Color.WHITE);
@@ -139,6 +141,7 @@ public class ScreenGame implements Screen {
                     ScreenUtils.clear(0.40625f, 0.5f, 0.515625f, 0.5f);
                     moveCamera();
                     city.draw(myGdxGame.batch, 0);
+                    int hpScale = 7;
 
                     EnemiesStorage.draw(myGdxGame.batch, frameCount);
                     EnemiesBullets.draw(myGdxGame.batch);
