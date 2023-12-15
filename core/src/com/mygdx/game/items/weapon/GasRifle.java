@@ -15,6 +15,6 @@ public class GasRifle extends Gun{
         clip = 10;
         shotDelay=0.1;
         reload = 0.5;
-        bulletSpeed=60;
+        bulletSpeed=50;
     }
 }
