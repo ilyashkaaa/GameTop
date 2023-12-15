@@ -14,6 +14,8 @@ import com.mygdx.game.enemies.Small;
 import com.mygdx.game.enemies.TallBasic;
 import com.mygdx.game.hero.Hero;
 import com.mygdx.game.locations.City;
+import com.mygdx.game.locations.Room;
+import com.mygdx.game.utils.Bullet;
 import com.mygdx.game.utils.BulletStorage;
 
 import java.util.Random;
@@ -31,6 +33,7 @@ public class ScreenGame implements Screen {
     Hero hero;
     Button fireButton1;
     Button fireButton2;
+    Button restartButton;
     Pause pausedButton;
     Continue continueButton;
     Inventory inventory;
@@ -58,6 +61,7 @@ public class ScreenGame implements Screen {
         random = new Random();
         fireButton1 = new Button(MyGdxGame.SCR_WIDTH - Button.widht / 2 - 75, MyGdxGame.SCR_HEIGHT / 2 - 25);
         fireButton2 = new Button(MyGdxGame.SCR_WIDTH - Button.widht * 2 + 25, Button.height / 2 + 75);
+        restartButton = new Button(MyGdxGame.SCR_WIDTH / 2, MyGdxGame.SCR_HEIGHT / 2 - 125);
         pausedButton = new Pause(MyGdxGame.SCR_WIDTH / 2 + myGdxGame.camera.position.x - Pause.widht * 15, MyGdxGame.SCR_HEIGHT / 2 + myGdxGame.camera.position.y - Pause.height * 20);
         continueButton = new Continue();
         //cityRoom = new CityRoom();
@@ -65,7 +69,6 @@ public class ScreenGame implements Screen {
 
         myGdxGame.batch.setProjectionMatrix(myGdxGame.camera.combined);
         myGdxGame.camera.update();
-        spawnMonsters();
         //     for (int i = 0; i < 3; i++) {
         //       EnemiesStorage.enemiesList.add(new Enemies(MyGdxGame.SCR_WIDTH / 4, 100 * i));
         // }
@@ -80,62 +83,79 @@ public class ScreenGame implements Screen {
     @Override
     public void render(float delta) {
         myGdxGame.batch.begin();
-
-        if (paused) {
+        if(Hero.hp <= 0){
             ScreenUtils.clear(0.6f, 0.6f, 0.6f, 1);
-            continueButton.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
-            inventory.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
-
-
-            if (continueButton.isTouched(Gdx.input.getX(), MyGdxGame.SCR_HEIGHT - Gdx.input.getY())) {
-                paused = false;
+            bitmapFont.draw(myGdxGame.batch, "You Lose!" + "\n" + "Loser", myGdxGame.camera.position.x - 250, myGdxGame.camera.position.y + 250, 500, 1, false);
+            restartButton.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y - 125);
+            if(restartButton.isTouched(Gdx.input.getX(), MyGdxGame.SCR_HEIGHT - Gdx.input.getY(), 0)){
+                Hero.hp = 100;
+                hero.changePosition(-Hero.x, -Hero.y);
+                myGdxGame.camera.position.set(0, 0, 0);
+                Room.rooms.clear();
+                city = new City();
+                EnemiesStorage.enemyList.clear();
+                BulletStorage.bullets.clear();
+                EnemiesBullets.bullets.clear();
             }
-        } else {
-            frameCount++;
-            ScreenUtils.clear(0.40625f, 0.5f, 0.515625f, 0.5f);
-            moveCamera();
-            city.draw(myGdxGame.batch, 0);
-            BulletStorage.draw(myGdxGame.batch);
-            EnemiesStorage.draw(myGdxGame.batch, frameCount);
-            EnemiesBullets.draw(myGdxGame.batch);
-            if (Gdx.input.isTouched(indexJoystick(countOfTouching())) && Gdx.input.getX(indexJoystick(countOfTouching())) <= MyGdxGame.SCR_WIDTH / 2) {
-                if (keepTouching)
-                    joystick.draw(myGdxGame.batch, indexJoystick(countOfTouching()), myGdxGame.camera.position.x, myGdxGame.camera.position.y);
-                else
-                    joystick.changeXY(Gdx.input.getX(indexJoystick(countOfTouching())), (MyGdxGame.SCR_HEIGHT - Gdx.input.getY(indexJoystick(countOfTouching()))));
-                hero.move(joystick.getX(indexJoystick(countOfTouching())), joystick.getY(indexJoystick(countOfTouching())));
-                if (joystick.getX(indexJoystick(countOfTouching())) != 0 && joystick.getY(indexJoystick(countOfTouching())) != 0) {
-                    lastCos = joystick.getX(indexJoystick(countOfTouching()));
-                    lastSyn = joystick.getY(indexJoystick(countOfTouching()));
+        }else {
+            if (paused) {
+                ScreenUtils.clear(0.6f, 0.6f, 0.6f, 1);
+                continueButton.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
+                inventory.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
+
+
+                if (continueButton.isTouched(Gdx.input.getX(), MyGdxGame.SCR_HEIGHT - Gdx.input.getY())) {
+                    paused = false;
                 }
-                keepTouching = true;
-            } else keepTouching = false;
+            } else {
+                frameCount++;
+                ScreenUtils.clear(0.40625f, 0.5f, 0.515625f, 0.5f);
+                moveCamera();
+                city.draw(myGdxGame.batch, 0);
+                BulletStorage.draw(myGdxGame.batch);
+                EnemiesStorage.draw(myGdxGame.batch, frameCount);
+                EnemiesBullets.draw(myGdxGame.batch);
+                if (Gdx.input.isTouched(indexJoystick(countOfTouching())) && Gdx.input.getX(indexJoystick(countOfTouching())) <= MyGdxGame.SCR_WIDTH / 2) {
+                    if (keepTouching)
+                        joystick.draw(myGdxGame.batch, indexJoystick(countOfTouching()), myGdxGame.camera.position.x, myGdxGame.camera.position.y);
+                    else
+                        joystick.changeXY(Gdx.input.getX(indexJoystick(countOfTouching())), (MyGdxGame.SCR_HEIGHT - Gdx.input.getY(indexJoystick(countOfTouching()))));
+                    hero.move(joystick.getX(indexJoystick(countOfTouching())), joystick.getY(indexJoystick(countOfTouching())));
+                    if (joystick.getX(indexJoystick(countOfTouching())) != 0 && joystick.getY(indexJoystick(countOfTouching())) != 0) {
+                        lastCos = joystick.getX(indexJoystick(countOfTouching()));
+                        lastSyn = joystick.getY(indexJoystick(countOfTouching()));
+                    }
+                    keepTouching = true;
+                } else keepTouching = false;
 
 //            if (pausedClick()) {
 //                paused = true;
 //            }
 
-        hero.draw(myGdxGame.batch, frameCount, keepTouching, lastCos, lastSyn);
-        city.draw(myGdxGame.batch, 1);
-        city.checkHeroColision();
+                hero.draw(myGdxGame.batch, frameCount, keepTouching, lastCos, lastSyn);
+                city.draw(myGdxGame.batch, 1);
+                city.checkHeroColision();
 
-        //enemy.draw(myGdxGame.batch);
-        if (buttonHandler(fireButton1)) hero.shoot(lastCos, lastSyn, false);
-        if (buttonHandler(fireButton2)) hero.shoot(lastCos, lastSyn, true);
+                //enemy.draw(myGdxGame.batch);
+                if (buttonHandler(fireButton1)) hero.shoot(lastCos, lastSyn, false);
+                if (buttonHandler(fireButton2)) hero.shoot(lastCos, lastSyn, true);
 
-       bitmapFont.draw(myGdxGame.batch, " " + city.indexRoomWithHero(), myGdxGame.camera.position.x, myGdxGame.camera.position.y);
+//            bitmapFont.draw(myGdxGame.batch, " " + EnemiesStorage.enemyList.size(), myGdxGame.camera.position.x, myGdxGame.camera.position.y);
+                if (city.isActivate()) {
+                    spawnMonsters(Room.rooms.get(City.lastRoom).x, Room.rooms.get(City.lastRoom).y);
+                }
 
-            fireButton1.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
-            fireButton2.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
-            pausedButton.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
+                fireButton1.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
+                fireButton2.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
+                pausedButton.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
 
 //        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 //        shapeRenderer.setColor(Color.RED);
 //        shapeRenderer.rect(25, 25, 50, 50);
 //        shapeRenderer.end();
+            }
         }
         myGdxGame.batch.end();
-
     }
 
     @Override
@@ -206,13 +226,13 @@ public class ScreenGame implements Screen {
         myGdxGame.batch.setProjectionMatrix(myGdxGame.camera.combined);
     }
 
-    public void spawnMonsters() {
-       //numberOfMonsters = random.nextInt(maxMonsters) + 1;
+    public void spawnMonsters(float roomX, float roomY) {
+        //numberOfMonsters = random.nextInt(maxMonsters) + 1;
         numberOfMonsters = 30;
         for (int i = 0; i < numberOfMonsters; i++) {
             form = random.nextInt(4) + 1;
-            x0 = random.nextInt(600 * 4) + 16 * MyGdxGame.scale;
-            y0 = random.nextInt(600 * 4) + 16 * MyGdxGame.scale;
+            x0 = random.nextInt(600 * 4) + 16 * MyGdxGame.scale + roomX;
+            y0 = random.nextInt(600 * 4) + 16 * MyGdxGame.scale + roomY;
             switch (form) {
                 case 1:
                     EnemiesStorage.enemyList.add(new Basic(x0, y0));
@@ -223,12 +243,9 @@ public class ScreenGame implements Screen {
                 case 3:
                     EnemiesStorage.enemyList.add(new FastBasic(x0, y0));
                     break;
-                //              case 4:
-                //                  EnemiesStorage.enemiesList.add(new Big(x0, y0));
-                //                  break;
-                            case 4:
-                               EnemiesStorage.enemyList.add(new TallBasic(x0, y0));
-                            break;
+                case 4:
+                    EnemiesStorage.enemyList.add(new TallBasic(x0, y0));
+                    break;
                 default:
                     System.out.println("default");
             }

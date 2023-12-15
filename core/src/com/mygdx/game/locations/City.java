@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.MyGdxGame;
+import com.mygdx.game.enemies.EnemiesStorage;
 import com.mygdx.game.hero.Hero;
 
 import java.util.Random;
@@ -13,7 +14,7 @@ public class City extends Locations {
     Hero hero;
     public static float scale = 4;
     int countOfRooms = 0;
-    int lastRoom;
+    public static int lastRoom;
     boolean inRoom;
     boolean[][] matrix = new boolean[12][12];
 
@@ -160,6 +161,7 @@ public class City extends Locations {
                 }
             }
         }
+        Room.rooms.get(indexRoomWithHero()).isActivate = true;
     }
 
     public int indexRoomWithHero() {
@@ -173,13 +175,13 @@ public class City extends Locations {
     public void checkHeroColision() {
         if (indexRoomWithHero() != -1) {
             lastRoom = indexRoomWithHero();
-            if (Room.rooms.get(lastRoom).x - 256 * scale + 16 * 5 + 2 * 5 >= Hero.x && ((Room.rooms.get(lastRoom).y + 96 * scale * 2 <= Hero.y || Room.rooms.get(lastRoom).y + 96 * scale >= Hero.y) || !Room.rooms.get(lastRoom).direction[3]))
+            if (Room.rooms.get(lastRoom).x - 256 * scale + 16 * 5 + 2 * 5 >= Hero.x && ((Room.rooms.get(lastRoom).y + 96 * scale * 2 <= Hero.y || Room.rooms.get(lastRoom).y + 96 * scale >= Hero.y) || !Room.rooms.get(lastRoom).direction[3] || EnemiesStorage.enemyList.size() != 0))
                 hero.changePosition(Room.rooms.get(lastRoom).x - 256 * scale + 16 * 5 - Hero.x + 2 * 5, 0);
-            else if (Room.rooms.get(lastRoom).x + 512 * scale - 2 * 8 <= Hero.x && ((Room.rooms.get(lastRoom).y + 96 * scale * 2 <= Hero.y || Room.rooms.get(lastRoom).y + 96 * scale >= Hero.y) || !Room.rooms.get(lastRoom).direction[1]))
+            else if (Room.rooms.get(lastRoom).x + 512 * scale - 2 * 8 <= Hero.x && ((Room.rooms.get(lastRoom).y + 96 * scale * 2 <= Hero.y || Room.rooms.get(lastRoom).y + 96 * scale >= Hero.y) || !Room.rooms.get(lastRoom).direction[1] || EnemiesStorage.enemyList.size() != 0))
                 hero.changePosition(Room.rooms.get(lastRoom).x + 512 * scale - Hero.x - 2 * 5, 0);
-            if (Room.rooms.get(lastRoom).y - 256 * scale + 16 * 5 + 5 * 5 >= Hero.y && ((Room.rooms.get(lastRoom).x + 88 * scale >= Hero.x || Room.rooms.get(lastRoom).x + 304 + 96 * 5 - 40 <= Hero.x) || !Room.rooms.get(lastRoom).direction[2]))
+            if (Room.rooms.get(lastRoom).y - 256 * scale + 16 * 5 + 5 * 5 >= Hero.y && ((Room.rooms.get(lastRoom).x + 88 * scale >= Hero.x || Room.rooms.get(lastRoom).x + 304 + 96 * 5 - 40 <= Hero.x) || !Room.rooms.get(lastRoom).direction[2] || EnemiesStorage.enemyList.size() != 0))
                 hero.changePosition(0, Room.rooms.get(lastRoom).y - 256 * scale + 16 * 5 - Hero.y + 5 * 5);
-            else if (Room.rooms.get(lastRoom).y + 512 * scale - 16 * 5 - 5 <= Hero.y && ((Room.rooms.get(lastRoom).x + 88 * scale >= Hero.x || Room.rooms.get(lastRoom).x + 304 + 96 * 5 - 40 <= Hero.x) || !Room.rooms.get(lastRoom).direction[0]))
+            else if (Room.rooms.get(lastRoom).y + 512 * scale - 16 * 5 - 5 <= Hero.y && ((Room.rooms.get(lastRoom).x + 88 * scale >= Hero.x || Room.rooms.get(lastRoom).x + 304 + 96 * 5 - 40 <= Hero.x) || !Room.rooms.get(lastRoom).direction[0] || EnemiesStorage.enemyList.size() != 0))
                 hero.changePosition(0, Room.rooms.get(lastRoom).y + 512 * scale - 16 * 5 - Hero.y - 5);
         }
         else{
@@ -192,5 +194,11 @@ public class City extends Locations {
             else if (Room.rooms.get(lastRoom).x + 304 + 96 * 5 - 40 + 3 * 5 <= Hero.x && (Room.rooms.get(lastRoom).y + 512 * scale - 16 * 5 - 5 <= Hero.y || Room.rooms.get(lastRoom).y - 256 * scale + 16 * 5 + 5 * 5 >= Hero.y))
                 hero.changePosition(Room.rooms.get(lastRoom).x + 304 + 96 * 5 - 40 - Hero.x + 3 * 5, 0);
         }
+    }
+    public boolean isActivate(){
+        if (!Room.rooms.get(lastRoom).isActivate){
+            Room.rooms.get(lastRoom).isActivate = true;
+            return true;
+        }else return false;
     }
 }

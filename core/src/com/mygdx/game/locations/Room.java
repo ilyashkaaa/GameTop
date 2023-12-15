@@ -13,6 +13,7 @@ public class Room {
     public static List<Room> rooms = new ArrayList<>();
     public float x, y;
     public boolean[] direction;
+    public boolean isActivate;
     Room(String path, int i, int j, boolean[] direction){
         texture = new Sprite(new Texture(path));
         texture.scale(CityRoom.scale);
