@@ -9,6 +9,7 @@ public class Head {
     Sprite head0;
     Sprite head1;
     Sprite head2;
+    Sprite head3;
     Head(){
         head0 = new Sprite(new Texture("textures/player/head/head_blue_0.png"));
         head0.setOrigin(8, 8);
@@ -19,24 +20,32 @@ public class Head {
         head2 = new Sprite(new Texture("textures/player/head/head_blue_2.png"));
         head2.setOrigin(8, 8);
         head2.scale(MyGdxGame.scale);
+        head3 = new Sprite(new Texture("textures/player/head/head_red.png"));
+        head3.setOrigin(8, 8);
+        head3.scale(MyGdxGame.scale);
     }
-    public void draw(SpriteBatch batch, float x, float y, int frameCount){
-        if(frameCount % 100 >= 0 && frameCount % 100 <= 5){
-            head2.setPosition(x, y + 12 * MyGdxGame.scale + 0.5f * MyGdxGame.scale * (frameCount % 80 / 40));
-            head2.draw(batch);
-        }
-        else if((frameCount / 8) % 2 == 0) {
-            head0.setPosition(x, y + 12 * MyGdxGame.scale + 0.5f * MyGdxGame.scale * (frameCount % 80 / 40));
-            head0.draw(batch);
-        }
-        else{
-            head1.setPosition(x, y + 12 * MyGdxGame.scale + 0.5f * MyGdxGame.scale * (frameCount % 80 / 40));
-            head1.draw(batch);
+    public void draw(SpriteBatch batch, float x, float y, int frameCount, boolean takeDamage){
+        if(!takeDamage) {
+            System.out.println(takeDamage);
+            if (frameCount % 100 >= 0 && frameCount % 100 <= 5) {
+                head2.setPosition(x, y + 12 * MyGdxGame.scale + 0.5f * MyGdxGame.scale * (frameCount % 80 / 40));
+                head2.draw(batch);
+            } else if ((frameCount / 8) % 2 == 0) {
+                head0.setPosition(x, y + 12 * MyGdxGame.scale + 0.5f * MyGdxGame.scale * (frameCount % 80 / 40));
+                head0.draw(batch);
+            } else {
+                head1.setPosition(x, y + 12 * MyGdxGame.scale + 0.5f * MyGdxGame.scale * (frameCount % 80 / 40));
+                head1.draw(batch);
+            }
+        }else{
+            head3.setPosition(x, y + 12 * MyGdxGame.scale + 0.5f * MyGdxGame.scale * (frameCount % 80 / 40));
+            head3.draw(batch);
         }
     }
     public void flip(){
         head0.flip(true,false);
         head1.flip(true,false);
         head2.flip(true,false);
+        head3.flip(true, false);
     }
 }
