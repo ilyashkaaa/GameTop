@@ -1,6 +1,7 @@
 package com.mygdx.game.enemies;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.ScreenGame;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,8 +14,9 @@ public class EnemiesStorage {
 
     public static void draw(SpriteBatch batch, int frameCounter) {
         for (Enemy enemy : enemyList) {
-            if (enemy.hp<=0) {
+            if (enemy.hp <= 0) {
                 enemyList.remove(enemy);
+                ScreenGame.score += 10;
                 break;
             }
         }
