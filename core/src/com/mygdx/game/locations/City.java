@@ -24,7 +24,6 @@ public class City extends Locations {
         random = new Random();
         hero = new Hero();
 
-
 //        fourWaysRoom.setOriginCenter();
         generate();
         createRooms();
@@ -114,7 +113,7 @@ public class City extends Locations {
                                 new Room("textures/locations/1_city/room_2_corner_right.png", i, j, direction);
                                 new Room("textures/locations/1_city/room_2_corner_right_fance.png", i, j, direction);
                             } else if (matrix[j - 1][i] && matrix[j][i - 1]) {
-                                boolean[] direction = {false, true, true, false};
+                                boolean[] direction = {false, false, true, true};
                                 new Room("textures/locations/1_city/room_2_corner_down.png", i, j, direction);
                                 new Room("textures/locations/1_city/room_2_corner_down_fance.png", i, j, direction);
                             } else if (matrix[j][i - 1] && matrix[j + 1][i]) {

@@ -43,6 +43,7 @@ public class ScreenGame implements Screen {
     ShapeRenderer shapeRenderer;
     City city;
     Texture startScreen;
+    Texture heart;
     //CityRoom cityRoom;
     boolean keepTouching;
     private final MyGdxGame myGdxGame;
@@ -57,6 +58,7 @@ public class ScreenGame implements Screen {
     ScreenGame(MyGdxGame myGdxGame) {
         this.myGdxGame = myGdxGame;
         startScreen = new Texture("textures/gui/splash.png");
+        heart = new Texture("textures/gui/hp.png");
         bitmapFont = new BitmapFont(Gdx.files.internal("font/font.fnt"));
         bitmapFont.getData().scale(5f);
         bitmapFont.setColor(Color.WHITE);
@@ -114,8 +116,6 @@ public class ScreenGame implements Screen {
                     continueButton.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
                     inventory.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
 
-
-
                     if (continueButton.isTouched(Gdx.input.getX(), MyGdxGame.SCR_HEIGHT - Gdx.input.getY())) {
                         paused = false;
                     }
@@ -124,6 +124,7 @@ public class ScreenGame implements Screen {
                     ScreenUtils.clear(0.40625f, 0.5f, 0.515625f, 0.5f);
                     moveCamera();
                     city.draw(myGdxGame.batch, 0);
+                    int hpScale = 7;
 
                     EnemiesStorage.draw(myGdxGame.batch, frameCount);
                     EnemiesBullets.draw(myGdxGame.batch);
@@ -158,6 +159,9 @@ public class ScreenGame implements Screen {
                         spawnMonsters(Room.rooms.get(City.lastRoom).x, Room.rooms.get(City.lastRoom).y);
                     }
 
+                    myGdxGame.batch.draw(heart, myGdxGame.camera.position.x - MyGdxGame.SCR_WIDTH / 2, MyGdxGame.SCR_HEIGHT / 2 - 16 * hpScale + myGdxGame.camera.position.y, 16 * hpScale, 16 * hpScale);
+                    bitmapFont.getData().setScale(5, 5);
+                    bitmapFont.draw(myGdxGame.batch, "" + (int) Hero.hp, myGdxGame.camera.position.x - MyGdxGame.SCR_WIDTH / 2 + 16 * hpScale * 1.7f, MyGdxGame.SCR_HEIGHT / 2 + myGdxGame.camera.position.y - 16 * hpScale / 4, 15, 1, false);
                     fireButton1.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
                     fireButton2.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
                     pausedButton.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
