@@ -14,6 +14,7 @@ public class Fog {
     Fog(){
         fogTexture = new Sprite( new Texture("textures/locations/1_city/fog.png"));
         fogTexture.scale(1);
+        fogTexture.setColor(1, 1,1, 0.5f);
     }
     public void draw(SpriteBatch batch, float cx, float cy){
         fogTexture.setPosition(x + cx, cy);
