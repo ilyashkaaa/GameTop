@@ -1,7 +1,10 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -23,8 +26,8 @@ import com.mygdx.game.items.artefacts.Dice;
 import com.mygdx.game.items.artefacts.ElectromagneticCoil;
 import com.mygdx.game.items.artefacts.Glitch;
 import com.mygdx.game.items.artefacts.NitrogenCylinder;
-import com.mygdx.game.items.artefacts.PortableNuclearReactor;
 import com.mygdx.game.items.artefacts.Scaner3D;
+//import com.mygdx.game.items.artefacts.portableNuclearReactor;
 import com.mygdx.game.items.weapon.BasicLaser;
 import com.mygdx.game.items.weapon.CyberBow;
 import com.mygdx.game.items.weapon.DoomShotgun;
@@ -40,6 +43,7 @@ import com.mygdx.game.locations.Room;
 import com.mygdx.game.utils.Bullet;
 import com.mygdx.game.utils.BulletStorage;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -71,6 +75,9 @@ public class ScreenGame implements Screen {
     Texture heart;
     Texture newGunTexture;
     Texture gameOver;
+    Fog fog;
+    Audio audio = Gdx.audio;
+    Music music = audio.newMusic(Gdx.files.internal("music/defalt.mp3"));
     //CityRoom cityRoom;
     boolean keepTouching;
     private final MyGdxGame myGdxGame;
@@ -84,6 +91,7 @@ public class ScreenGame implements Screen {
     float x0, y0;
 
     ScreenGame(MyGdxGame myGdxGame) {
+        music.setLooping(true);
         this.myGdxGame = myGdxGame;
         startScreen = new Texture("textures/gui/splash.png");
         heart = new Texture("textures/gui/hp.png");
@@ -96,6 +104,7 @@ public class ScreenGame implements Screen {
         hero = new Hero();
         inventory = new Inventory();
         random = new Random();
+        fog = new Fog();
         Hero.gunRandom();
         fireButton1 = new Button(MyGdxGame.SCR_WIDTH - Button.widht / 2 - 75, MyGdxGame.SCR_HEIGHT / 2 - 25);
         fireButton2 = new Button(MyGdxGame.SCR_WIDTH - Button.widht * 2 + 25, Button.height / 2 + 75);
@@ -125,9 +134,11 @@ public class ScreenGame implements Screen {
             if(Gdx.input.justTouched()) isStarted = true;
         }
         else{
+            music.play();
+
             if(Hero.hp <= 0){
                 myGdxGame.batch.draw(gameOver, myGdxGame.camera.position.x - MyGdxGame.SCR_WIDTH / 2, myGdxGame.camera.position.y - MyGdxGame.SCR_HEIGHT / 2, MyGdxGame.SCR_WIDTH, MyGdxGame.SCR_HEIGHT);
-                bitmapFont.draw(myGdxGame.batch, "You Lose!" + "\n" + "Loser", myGdxGame.camera.position.x - 250, myGdxGame.camera.position.y + 350, 500, 1, false);
+                bitmapFont.draw(myGdxGame.batch, "You Lose!" + "\n" + score, myGdxGame.camera.position.x - 250, myGdxGame.camera.position.y + 350, 500, 1, false);
 //                restartButton.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y - 125, false);
                 if(Gdx.input.justTouched()){
                     Hero.hp = 100;
@@ -191,14 +202,17 @@ public class ScreenGame implements Screen {
                     if (buttonHandler(fireButton2)) hero.shoot(lastCos, lastSyn, true);
                     hero.checkReload();
 
+
 //            bitmapFont.draw(myGdxGame.batch, " " + EnemiesStorage.enemyList.size(), myGdxGame.camera.position.x, myGdxGame.camera.position.y);
                     if (city.isActivate()) {
                         spawnMonsters(Room.rooms.get(City.lastRoom).x + 8 * CityRoom.scale + 8.1f * 16 * CityRoom.scale, Room.rooms.get(City.lastRoom).y - 3 * CityRoom.scale + 9 * 16 * CityRoom.scale);
                     }
+                    fog.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
+                    fog.move();
                     myGdxGame.batch.draw(heart, myGdxGame.camera.position.x - MyGdxGame.SCR_WIDTH / 2, MyGdxGame.SCR_HEIGHT / 2 - 16 * hpScale + myGdxGame.camera.position.y, 16 * hpScale, 16 * hpScale);
                     bitmapFont.getData().setScale(5, 5);
                     bitmapFont.draw(myGdxGame.batch, "" + (int) Hero.hp, myGdxGame.camera.position.x - MyGdxGame.SCR_WIDTH / 2 + 16 * hpScale * 1.7f, MyGdxGame.SCR_HEIGHT / 2 + myGdxGame.camera.position.y - 16 * hpScale / 4, 15, 1, false);
-                    bitmapFont.draw(myGdxGame.batch, "" + score, myGdxGame.camera.position.x - MyGdxGame.SCR_WIDTH/24*13  , myGdxGame.camera.position.y + MyGdxGame.SCR_HEIGHT/24*9 , 500, 1, false);
+                    bitmapFont.draw(myGdxGame.batch, "" + score, myGdxGame.camera.position.x - MyGdxGame.SCR_WIDTH/24*13.5f  , myGdxGame.camera.position.y + MyGdxGame.SCR_HEIGHT/24*9 , 500, 1, false);
                     fireButton1.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y, hero.getReload1());
                     fireButton2.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y, hero.getReload2());
                     pausedButton.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
@@ -339,7 +353,7 @@ public class ScreenGame implements Screen {
                     artefacts.add(new NitrogenCylinder());
                     break;
                 case 8:
-                    artefacts.add(new PortableNuclearReactor());
+//                    artefacts.add(new portableNuclearReactor());
                     break;
                 case 9:
                     artefacts.add(new Scaner3D());

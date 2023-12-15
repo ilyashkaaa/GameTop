@@ -19,13 +19,12 @@ public class Room {
     public boolean[] direction;
     public boolean isActivate;
     Room(String path, int i, int j, boolean[] direction){
-        int ran = random.nextInt(20);
+        int ran = random.nextInt(10) + 10;
         for(int t = 0; t < ran; t++){
             box.add (new Sprite(new Texture("textures/locations/1_city/box.png")));
         }
         texture = new Sprite(new Texture(path));
         texture.scale(CityRoom.scale);
-        box.scale(CityRoom.scale);
         this.direction = direction;
         x = (MyGdxGame.SCR_WIDTH - texture.getWidth() * City.scale / 2) / 2 + (i - 5) * (texture.getWidth() * City.scale + 256 * City.scale * 1.5f - 32 * City.scale * 4);
         y = (MyGdxGame.SCR_HEIGHT - texture.getHeight() * City.scale / 2) / 2 + (j - 5) * (texture.getHeight() * City.scale + 256 * City.scale * 1.5f - 16 * City.scale * 8);
