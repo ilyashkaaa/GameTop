@@ -9,7 +9,7 @@ public class Brush extends Artefacts {
         power = "Пули на месте попадания в объект оставляют лужу краски";
         effects = Effects.Color;
         damageOst = 1;
-        texture = new Texture("texture/artifacts/brush.png");
+        texture = new Texture("textures/artifacts/brush.png");
 
     }
 

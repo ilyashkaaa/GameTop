@@ -34,7 +34,6 @@ public class Hero {
     public Hero() {
         head = new Head();
         body = new BasicBody();
-
     }
 
     public void draw(SpriteBatch batch, int frameCount, boolean isMoving, double cosinus, double sinus) {
@@ -59,12 +58,20 @@ public class Hero {
             wasTurned = !wasTurned;
         }
     }
-
+    public boolean getReload1(){
+        return gun1.reloadStarted1;
+    }
+    public boolean getReload2(){
+        return gun2.reloadStarted1;
+    }
     public void shoot(double cosinus, double sinus, boolean gun) {
         if (!gun) gun1.shoot(x, y, cosinus, sinus);
         else gun2.shoot(x, y, cosinus, sinus);
     }
-
+    public void checkReload(){
+        gun1.checkReload();
+        gun2.checkReload();
+    }
     public void changePosition(float deltaX, float deltaY) {
         x += deltaX;
         y += deltaY;
@@ -72,7 +79,6 @@ public class Hero {
 
     public static void gunRandom() {
         type1 = random.nextInt(6) + 1;
-        float scale1 = 0;
         switch (type1) {
             case 1:
                 gun1 = new BasicLaser();
@@ -100,14 +106,13 @@ public class Hero {
                 break;
             case 6:
                 gun1 = new StarRifle();
-                gun1.init(24, 8, 5 / 2);
+                gun1.init(40, 8, 5);
                 break;
         }
         type2 = random.nextInt(7) + 1;
         while (type1 == type2) {
             type2 = random.nextInt(7) + 1;
         }
-        float scale2 = 0;
         switch (type2) {
             case 1:
                 gun2 = new BasicLaser();
@@ -131,7 +136,7 @@ public class Hero {
                 break;
             case 6:
                 gun2 = new StarRifle();
-                gun2.init(8, 8, 5 /4*3);
+                gun2.init(8, 8, 5);
                 break;
             case 7:
                 gun2 = new CyberBow();
@@ -139,7 +144,5 @@ public class Hero {
                 break;
         }
         gun1.flipX();
-
-
     }
 }

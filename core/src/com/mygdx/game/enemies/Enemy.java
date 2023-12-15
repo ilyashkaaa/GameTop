@@ -16,7 +16,7 @@ public class Enemy {
     Sprite sprite;
    public double hp = 10;
     double damage;
-    double speed = 3;
+    public double speed = 3;
     double distanceHero = 8 * MyGdxGame.scale;
     public float x0;
     public float y0;

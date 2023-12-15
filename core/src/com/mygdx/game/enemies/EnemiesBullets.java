@@ -42,15 +42,18 @@ public class EnemiesBullets {
             bullet.sprite.setPosition(bullet.x0, bullet.y0);
             bullet.sprite.draw(batch);
             bullet.sprite.setRotation((float) bullet.moveAngle);
-            if (Math.abs(bullet.x0 - Hero.x) < 100 && Math.abs(bullet.y0 - Hero.y) < 100 && (System.currentTimeMillis() - bullet.lastDamageTime)/1000 > 1) {
+            if (Math.abs(bullet.x0 - Hero.x) < 50 && Math.abs(bullet.y0 - Hero.y) < 50 && (System.currentTimeMillis() - bullet.lastDamageTime)/1000 > 1) {
                 Hero.hp -= bullet.damage;
+                bullets.remove(bullet);
                 bullet.lastDamageTime = System.currentTimeMillis();
+                break;
             }
         }
     }
 
     private boolean isAlive(float x0, float y0) {
         return ((x0 - Hero.x) * (x0 - Hero.x) + (y0 - Hero.y) * (y0 - Hero.y) <= distance * distance);
+
     }
 
     public void move() {

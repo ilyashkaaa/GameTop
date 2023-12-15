@@ -5,6 +5,5 @@ public enum Effects {
     Freeze,
     Fire,
     Radiation,
-    Color,
-    Stun;
+    Color;
 }
