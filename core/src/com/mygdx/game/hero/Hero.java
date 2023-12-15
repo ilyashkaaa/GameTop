@@ -19,8 +19,8 @@ import control.Inventory;
 public class Hero {
     Head head;
     Body body;
-    static Gun gun1;
-    static Gun gun2;
+    public static Gun gun1;
+    public static Gun gun2;
     public static float hp = 100;
     public int speed = 7;
     public static float x = (float) MyGdxGame.SCR_WIDTH / 2;

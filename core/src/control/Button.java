@@ -14,6 +14,7 @@ public class Button {
     public Button(int x, int y) {
         filledCircle = new Texture("joystik/filled_circle.png");
         filledCircleReload = new Texture("joystik/filled_circle_gray.png");
+
         this.x = x;
         this.y = y;
     }

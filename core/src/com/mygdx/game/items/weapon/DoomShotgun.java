@@ -11,8 +11,8 @@ public class DoomShotgun extends Gun {
         title = "Адский дробовик";
         description="вы слышите мелодию из DOOM и запах ультранасилия";
         property = "урон 6, дальность 10м, перезарядка после 2-ух выстрелов, зона 50 градусов";
-        damage = 40;
-        bulletSpeed = 10;
+        damage = 15;
+        bulletSpeed = 20;
         distance = 400;
         clip = 1;
         reload = 1;
