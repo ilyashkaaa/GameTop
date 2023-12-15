@@ -68,8 +68,8 @@ public class Enemy {
     }
 
     public void move(SpriteBatch batch) {
-        float x = Hero.x ;
-        float y = Hero.y;
+        float x = Hero.x - width / 2 * MyGdxGame.scale;
+        float y = Hero.y- height / 4 * 3 * MyGdxGame.scale;
         hypo = Math.pow((x0 - x) * (x0 - x) + (y0 - y) * (y0 - y), 0.5);
         cosinus = (x0 - x) / hypo;
         sinus = (y0 - y) / hypo;
@@ -80,7 +80,7 @@ public class Enemy {
             }
 
         } else {
-            attack(batch, x- width / 2 * MyGdxGame.scale, y- height / 4 * 3 * MyGdxGame.scale);
+            attack(batch, x, y);
         }
     }
 
