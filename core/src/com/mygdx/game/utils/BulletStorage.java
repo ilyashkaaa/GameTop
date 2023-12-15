@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.enemies.EnemiesStorage;
 import com.mygdx.game.enemies.Enemy;
+import com.mygdx.game.items.weapon.Gun;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -28,8 +29,7 @@ public class BulletStorage {
                 for (Bullet bullet : BulletStorage.bullets) {
                 if (bullet.x + 8 * MyGdxGame.scaleBullet >= enemy.x0 && bullet.x + 8 * MyGdxGame.scaleBullet <= enemy.x0 + enemy.width * MyGdxGame.scale
                         && bullet.y + 8 * MyGdxGame.scaleBullet >= enemy.y0 && bullet.y + 8 * MyGdxGame.scaleBullet <= enemy.y0 + enemy.height * MyGdxGame.scale) {
-                    --enemy.hp;
-                    System.out.println(enemy.hp);
+                    enemy.hp-= bullet.damage;
                     bullets.remove(bullet);
                    break;
                 }

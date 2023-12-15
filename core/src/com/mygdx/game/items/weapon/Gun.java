@@ -4,10 +4,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.MyGdxGame;
+import com.mygdx.game.items.artefacts.Effects;
 import com.mygdx.game.utils.Bullet;
 import com.mygdx.game.utils.BulletStorage;
 
 public class Gun extends Weapon {
+
     Sprite bulletTexture;
     Sprite weaponTexture;
     //Sprite weaponTexture = new Sprite()
@@ -26,12 +28,19 @@ public class Gun extends Weapon {
     long reloadStarted = 0L;
     int extraRotate = 0;
     boolean wasFliped;
+    public boolean reloadStarted1 = false;
+
 
 
 
     public void init(int originX, int orinigY, float scale){
         weaponTexture.setOrigin(originX, orinigY);
         weaponTexture.scale((float) (scale * 0.75));
+    }
+    @SuppressWarnings("SuspiciousIndentation")
+    public void checkReload(){
+        if ((((double) System.currentTimeMillis() - lastBulletTime) / 1000 >= reload))
+        reloadStarted1 = false;
     }
     public void shoot(float x, float y, double sinus, double cosinus) {
         long currentTime = System.currentTimeMillis();
@@ -46,10 +55,13 @@ public class Gun extends Weapon {
             lastBulletTime = currentTime;
             currentClip--;
             if (currentClip == 0) {
+                reloadStarted1 = true;
                 reloadStarted = currentTime;
             }
             BulletStorage.bullets.add(new Bullet(bulletTexture, damage, distance, bulletSpeed, x, y, sinus, cosinus));
-        }
+        }else
+            reloadStarted1 = false;
+
     }
     public void draw(SpriteBatch batch, float x, float y, float angel){
         weaponTexture.setPosition(x, y);
@@ -67,5 +79,8 @@ public class Gun extends Weapon {
     }
     public void setExtraRotate(int angle){
         weaponTexture.rotate(angle);
+    }
+    public boolean isReloadStarted1(){
+        return reloadStarted1;
     }
 }

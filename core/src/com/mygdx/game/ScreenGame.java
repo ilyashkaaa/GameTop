@@ -15,12 +15,25 @@ import com.mygdx.game.enemies.FastBasic;
 import com.mygdx.game.enemies.Small;
 import com.mygdx.game.enemies.TallBasic;
 import com.mygdx.game.hero.Hero;
-import com.mygdx.game.items.weapon.Gun;
+import com.mygdx.game.items.artefacts.Artefacts;
+import com.mygdx.game.items.artefacts.Brush;
+import com.mygdx.game.items.artefacts.Crane;
+import com.mygdx.game.items.artefacts.DemonHorn;
+import com.mygdx.game.items.artefacts.Dice;
+import com.mygdx.game.items.artefacts.ElectromagneticCoil;
+import com.mygdx.game.items.artefacts.Glitch;
+import com.mygdx.game.items.artefacts.NitrogenCylinder;
+import com.mygdx.game.items.artefacts.PortableNuclearReactor;
+import com.mygdx.game.items.artefacts.Scaner3D;
 import com.mygdx.game.locations.City;
+import com.mygdx.game.utils.Bullet;
 import com.mygdx.game.locations.Room;
 import com.mygdx.game.utils.Bullet;
 import com.mygdx.game.utils.BulletStorage;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 import control.Button;
@@ -31,6 +44,7 @@ import control.Pause;
 
 public class ScreenGame implements Screen {
     Random random;
+    Artefacts artefact;
     BitmapFont bitmapFont;
     Joystick joystick;
     Hero hero;
@@ -52,6 +66,7 @@ public class ScreenGame implements Screen {
     boolean paused = false;
     int numberOfMonsters, maxMonsters = 10, form;
     boolean isStarted = false;
+    public static List<Artefacts> artefacts = new LinkedList<>();
     float x0, y0;
 
     ScreenGame(MyGdxGame myGdxGame) {
@@ -144,14 +159,16 @@ public class ScreenGame implements Screen {
 //                paused = true;
 //            }
 
-                    hero.draw(myGdxGame.batch, frameCount, keepTouching, lastCos, lastSyn);
-                    BulletStorage.draw(myGdxGame.batch);
-                    city.draw(myGdxGame.batch, 1);
-                    city.checkHeroColision();
+            hero.draw(myGdxGame.batch, frameCount, keepTouching, lastCos, lastSyn);
+            spawnArtefact();
+            BulletStorage.draw(myGdxGame.batch);
+            city.draw(myGdxGame.batch, 1);
+            city.checkHeroColision();
 
-                    //enemy.draw(myGdxGame.batch);
-                    if (buttonHandler(fireButton1)) hero.shoot(lastCos, lastSyn, false);
-                    if (buttonHandler(fireButton2)) hero.shoot(lastCos, lastSyn, true);
+            //enemy.draw(myGdxGame.batch);
+            if (buttonHandler(fireButton1)) hero.shoot(lastCos, lastSyn, false);
+            if (buttonHandler(fireButton2)) hero.shoot(lastCos, lastSyn, true);
+            hero.checkReload();
 
 //            bitmapFont.draw(myGdxGame.batch, " " + EnemiesStorage.enemyList.size(), myGdxGame.camera.position.x, myGdxGame.camera.position.y);
                     if (city.isActivate()) {
@@ -170,6 +187,7 @@ public class ScreenGame implements Screen {
             }
         }
         myGdxGame.batch.end();
+
     }
 
     @Override
@@ -257,6 +275,9 @@ public class ScreenGame implements Screen {
                 case 3:
                     EnemiesStorage.enemyList.add(new FastBasic(x0, y0));
                     break;
+                //              case 4:
+                //                  EnemiesStorage.enemiesList.add(new Big(x0, y0));
+                //                  break;
                 case 4:
                     EnemiesStorage.enemyList.add(new TallBasic(x0, y0));
                     break;
@@ -265,4 +286,41 @@ public class ScreenGame implements Screen {
             }
         }
     }
+
+    public void spawnArtefact() {
+    if(EnemiesStorage.enemyList.size()==0) {
+        form = random.nextInt(8)+1;
+        switch (1) {
+            case 1:
+             //   Texture brush = new Texture("textures/artifacts/brush.png");
+              //  myGdxGame.batch.draw(brush, (int) Hero.x, (int) Hero.y, 256, 256);
+                artefacts.add(new Brush());
+                break;
+            case 2:
+                artefacts.add(new Crane());
+                break;
+            case 3:
+                artefacts.add(new DemonHorn());
+                break;
+            case 4:
+                artefacts.add(new Dice());
+                break;
+            case 5:
+                artefacts.add(new ElectromagneticCoil());
+                break;
+            case 6:
+                artefacts.add(new Glitch());
+                break;
+            case 7:
+                artefacts.add(new NitrogenCylinder());
+                break;
+            case 8:
+                artefacts.add(new PortableNuclearReactor());
+                break;
+            case 9:
+                artefacts.add(new Scaner3D());
+                break;
+        }
+    }
+}
 }
