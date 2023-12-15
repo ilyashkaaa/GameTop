@@ -19,7 +19,7 @@ public class Room {
     public boolean[] direction;
     public boolean isActivate;
     Room(String path, int i, int j, boolean[] direction){
-        int ran = random.nextInt(20);
+        int ran = random.nextInt(10) + 10;
         for(int t = 0; t < ran; t++){
             box.add (new Sprite(new Texture("textures/locations/1_city/box.png")));
         }
@@ -31,7 +31,7 @@ public class Room {
         texture.setPosition(x, y);
         for (int t = 0; t < box.size(); t++){
             box.get(t).scale(CityRoom.scale);
-            box.get(t).setPosition(x + 8 * CityRoom.scale + 8.1f * 16 * CityRoom.scale - 304 * CityRoom.scale + random.nextInt(600 * 4), y - 3 * CityRoom.scale + 9 * 16 * CityRoom.scale - 304 * CityRoom.scale + random.nextInt(600 * 4));
+            box.get(t).setPosition((int) (x + 8 * CityRoom.scale + 8.1f * 16 * CityRoom.scale - 304 * CityRoom.scale + random.nextInt(600 * 4)), (int) (y - 3 * CityRoom.scale + 9 * 16 * CityRoom.scale - 304 * CityRoom.scale + random.nextInt(600 * 4)));
         }
         box.stream().sorted((a, b) -> (int)(a.getY() - b.getY()));
         rooms.add(this);
