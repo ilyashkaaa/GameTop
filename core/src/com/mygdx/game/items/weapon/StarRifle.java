@@ -10,11 +10,11 @@ public class StarRifle extends Gun{
         title = "Звёздная винтовка";
         description="Выстрелы в форме звёзд упала вместе с прицелом";
         property = "урон 20 дальность 400 м перезарядка 2 сек";
-        damage = 15;
+        damage = 40;
         distance = 6000;
         clip = 5;
         shotDelay=2;
         reload = 5;
-        bulletSpeed=100;
+        bulletSpeed=25;
     }
 }

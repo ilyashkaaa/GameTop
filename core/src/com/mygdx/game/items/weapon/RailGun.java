@@ -12,7 +12,7 @@ public class RailGun extends Gun{
         property ="урон 10, дальность 200м, кд 1 сек";
         damage = 10;
         distance = 2000;
-        bulletSpeed=100;
+        bulletSpeed=20;
         clip = 1;
         shotDelay=0;
         reload = 0.3;

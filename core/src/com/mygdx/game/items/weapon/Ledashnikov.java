@@ -11,11 +11,11 @@ public class Ledashnikov extends Gun {
         title = "Автомат Ледашникова";
         description="Калашников, но с ледяным уроном";
         property = "урон 10, накладывает эффект заморозки, дальность 200м, перезарядка 0.01";
-        damage = 10;
+        damage = 5;
         distance = 1500;
         clip = 30;
         shotDelay=0.2;
         reload = 2;
-        bulletSpeed=75;
+        bulletSpeed=20;
     }
 }

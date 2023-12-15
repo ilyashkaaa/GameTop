@@ -89,6 +89,8 @@ public class ScreenGame implements Screen {
     boolean isStarted = false;
     public static List<Artefacts> artefacts = new LinkedList<>();
     float x0, y0;
+    int count = 1, slotWeapon = 0;
+    boolean drawNewGun = false;
 
     ScreenGame(MyGdxGame myGdxGame) {
         music.setLooping(true);
@@ -206,6 +208,15 @@ public class ScreenGame implements Screen {
 //            bitmapFont.draw(myGdxGame.batch, " " + EnemiesStorage.enemyList.size(), myGdxGame.camera.position.x, myGdxGame.camera.position.y);
                     if (city.isActivate()) {
                         spawnMonsters(Room.rooms.get(City.lastRoom).x + 8 * CityRoom.scale + 8.1f * 16 * CityRoom.scale, Room.rooms.get(City.lastRoom).y - 3 * CityRoom.scale + 9 * 16 * CityRoom.scale);
+                        spawnMonsters(Room.rooms.get(City.lastRoom).x, Room.rooms.get(City.lastRoom).y);
+                        drawNewGun = false;
+                        count = 0;
+                    }
+                    if (drawNewGun) {
+                        newGun.draw(myGdxGame.batch, Room.rooms.get(City.lastRoom).x + 8 * CityRoom.scale + 8.1f * 16 * CityRoom.scale, Room.rooms.get(City.lastRoom).y - 3 * CityRoom.scale + 9 * 16 * CityRoom.scale, 0);
+                        if (Math.abs(Hero.x - (Room.rooms.get(City.lastRoom).x + 8 * CityRoom.scale + 8.1f * 16 * CityRoom.scale)) <= 100 && Math.abs(Hero.y - (Room.rooms.get(City.lastRoom).y - 3 * CityRoom.scale + 9 * 16 * CityRoom.scale)) <= 100) {
+                            takeGun();
+                        }
                     }
                     fog.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
                     fog.move();
@@ -361,46 +372,51 @@ public class ScreenGame implements Screen {
             }
         }
     }
+
     public void spawnWeapon() {
-        if (EnemiesStorage.enemyList.size() == 0 ) {
+        if (EnemiesStorage.enemyList.size() == 0 && count == 0) {
+            count = 1;
             form = random.nextInt(7) + 1;
             switch (form) {
                 case 1:
                     newGun = new BasicLaser();
-                    newGunTexture = new Texture("textures/weapons/basicLazer.png");
-                    newGun.init(8,8, 5);
+                    newGun.init(8, 8, 5);
                     break;
                 case 2:
                     newGun = new CyberBow();
-                    newGunTexture = new Texture("textures/weapons/ceber_bow.png");
-                    newGun.init(8,8, 5);
+                    newGun.init(8, 8, 5);
                     break;
                 case 3:
                     newGun = new DoomShotgun();
-                    newGunTexture = new Texture("textures/weapons/hell_shotgun.png");
-                    newGun.init(8,8, 5);
+                    newGun.init(24, 8, 5);
                     break;
                 case 4:
                     newGun = new GasRifle();
-                    newGunTexture = new Texture("textures/weapons/gas_rifle.png");
-                    newGun.init(8,8, 5);
+                    newGun.init(24, 8, 5);
                     break;
                 case 5:
                     newGun = new Ledashnikov();
-                    newGunTexture = new Texture("textures/weapons/ice_rifle.png");
-                    newGun.init(8,8, 5);
+                    newGun.init(24, 8, 5);
                     break;
                 case 6:
                     newGun = new RailGun();
-                    newGunTexture = new Texture("textures/weapons/railgun.png");
-                    newGun.init(8,8, 5);
+                    newGun.init(24, 8, 5);
                     break;
                 case 7:
                     newGun = new StarRifle();
-                    newGunTexture = new Texture("textures/weapons/star_rifle.png");
+
             }
-    //    myGdxGame.batch(newGunTexture, Room.rooms.get(City.lastRoom).x + 8 * CityRoom.scale + 8.1f * 16 * CityRoom.scale, Room.rooms.get(City.lastRoom).y - 3 * CityRoom.scale + 9 * 16 * CityRoom.scale);
-        //  newGun.draw(myGdxGame.batch, Room.rooms.get(City.lastRoom).x + 8 * CityRoom.scale + 8.1f * 16 * CityRoom.scale, Room.rooms.get(City.lastRoom).y - 3 * CityRoom.scale + 9 * 16 * CityRoom.scale, 0 );
-            }
+            drawNewGun = true;
+
+            newGun.draw(myGdxGame.batch, Room.rooms.get(City.lastRoom).x + 8 * CityRoom.scale + 8.1f * 16 * CityRoom.scale, Room.rooms.get(City.lastRoom).y - 3 * CityRoom.scale + 9 * 16 * CityRoom.scale, 0);
+        }
+    }
+
+    public void takeGun() {
+        System.out.println("take gun");
+        newGun.flipY();
+        newGun.flipX();
+        Hero.gun1 = newGun;
+
     }
 }
