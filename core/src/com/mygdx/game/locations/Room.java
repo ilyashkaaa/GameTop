@@ -31,7 +31,7 @@ public class Room {
        for(int i = 0; i < rooms.size(); i++){
            if(i % 2 == fence) {
                rooms.get(i).texture.draw(batch);
-               rooms.get(i).box.draw(batch);
+               //rooms.get(i).box.draw(batch);
            }
        }
     }

@@ -25,7 +25,16 @@ import com.mygdx.game.items.artefacts.Glitch;
 import com.mygdx.game.items.artefacts.NitrogenCylinder;
 import com.mygdx.game.items.artefacts.PortableNuclearReactor;
 import com.mygdx.game.items.artefacts.Scaner3D;
+import com.mygdx.game.items.weapon.BasicLaser;
+import com.mygdx.game.items.weapon.CyberBow;
+import com.mygdx.game.items.weapon.DoomShotgun;
+import com.mygdx.game.items.weapon.GasRifle;
+import com.mygdx.game.items.weapon.Gun;
+import com.mygdx.game.items.weapon.Ledashnikov;
+import com.mygdx.game.items.weapon.RailGun;
+import com.mygdx.game.items.weapon.StarRifle;
 import com.mygdx.game.locations.City;
+import com.mygdx.game.locations.CityRoom;
 import com.mygdx.game.utils.Bullet;
 import com.mygdx.game.locations.Room;
 import com.mygdx.game.utils.Bullet;
@@ -46,6 +55,7 @@ public class ScreenGame implements Screen {
     Random random;
     public static int score;
     Artefacts artefact;
+    Gun newGun;
     BitmapFont bitmapFont;
     Joystick joystick;
     Hero hero;
@@ -59,6 +69,7 @@ public class ScreenGame implements Screen {
     City city;
     Texture startScreen;
     Texture heart;
+    Texture newGunTexture;
     //CityRoom cityRoom;
     boolean keepTouching;
     private final MyGdxGame myGdxGame;
@@ -132,7 +143,6 @@ public class ScreenGame implements Screen {
                     continueButton.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
                     inventory.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
 
-
                     if (continueButton.isTouched(Gdx.input.getX(), MyGdxGame.SCR_HEIGHT - Gdx.input.getY())) {
                         paused = false;
                     }
@@ -164,6 +174,7 @@ public class ScreenGame implements Screen {
 
                     hero.draw(myGdxGame.batch, frameCount, keepTouching, lastCos, lastSyn);
                     spawnArtefact();
+
                     BulletStorage.draw(myGdxGame.batch);
                     city.draw(myGdxGame.batch, 1);
                     city.checkHeroColision();
@@ -177,7 +188,10 @@ public class ScreenGame implements Screen {
                     if (city.isActivate()) {
                         spawnMonsters(Room.rooms.get(City.lastRoom).x, Room.rooms.get(City.lastRoom).y);
                     }
-                    bitmapFont.draw(myGdxGame.batch, "" + score, myGdxGame.camera.position.x - MyGdxGame.SCR_WIDTH / 24 * 11, myGdxGame.camera.position.y + MyGdxGame.SCR_HEIGHT / 3, 500, 1, false);
+                    myGdxGame.batch.draw(heart, myGdxGame.camera.position.x - MyGdxGame.SCR_WIDTH / 2, MyGdxGame.SCR_HEIGHT / 2 - 16 * hpScale + myGdxGame.camera.position.y, 16 * hpScale, 16 * hpScale);
+                    bitmapFont.getData().setScale(5, 5);
+                    bitmapFont.draw(myGdxGame.batch, "" + (int) Hero.hp, myGdxGame.camera.position.x - MyGdxGame.SCR_WIDTH / 2 + 16 * hpScale * 1.7f, MyGdxGame.SCR_HEIGHT / 2 + myGdxGame.camera.position.y - 16 * hpScale / 4, 15, 1, false);
+                    bitmapFont.draw(myGdxGame.batch, "" + score, myGdxGame.camera.position.x - MyGdxGame.SCR_WIDTH/24*13  , myGdxGame.camera.position.y + MyGdxGame.SCR_HEIGHT/24*9 , 500, 1, false);
                     fireButton1.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y, hero.getReload1());
                     fireButton2.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y, hero.getReload2());
                     pausedButton.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
@@ -325,5 +339,47 @@ public class ScreenGame implements Screen {
                     break;
             }
         }
+    }
+    public void spawnWeapon() {
+        if (EnemiesStorage.enemyList.size() == 0 ) {
+            form = random.nextInt(7) + 1;
+            switch (form) {
+                case 1:
+                    newGun = new BasicLaser();
+                    newGunTexture = new Texture("textures/weapons/basicLazer.png");
+                    newGun.init(8,8, 5);
+                    break;
+                case 2:
+                    newGun = new CyberBow();
+                    newGunTexture = new Texture("textures/weapons/ceber_bow.png");
+                    newGun.init(8,8, 5);
+                    break;
+                case 3:
+                    newGun = new DoomShotgun();
+                    newGunTexture = new Texture("textures/weapons/hell_shotgun.png");
+                    newGun.init(8,8, 5);
+                    break;
+                case 4:
+                    newGun = new GasRifle();
+                    newGunTexture = new Texture("textures/weapons/gas_rifle.png");
+                    newGun.init(8,8, 5);
+                    break;
+                case 5:
+                    newGun = new Ledashnikov();
+                    newGunTexture = new Texture("textures/weapons/ice_rifle.png");
+                    newGun.init(8,8, 5);
+                    break;
+                case 6:
+                    newGun = new RailGun();
+                    newGunTexture = new Texture("textures/weapons/railgun.png");
+                    newGun.init(8,8, 5);
+                    break;
+                case 7:
+                    newGun = new StarRifle();
+                    newGunTexture = new Texture("textures/weapons/star_rifle.png");
+            }
+    //    myGdxGame.batch(newGunTexture, Room.rooms.get(City.lastRoom).x + 8 * CityRoom.scale + 8.1f * 16 * CityRoom.scale, Room.rooms.get(City.lastRoom).y - 3 * CityRoom.scale + 9 * 16 * CityRoom.scale);
+        //  newGun.draw(myGdxGame.batch, Room.rooms.get(City.lastRoom).x + 8 * CityRoom.scale + 8.1f * 16 * CityRoom.scale, Room.rooms.get(City.lastRoom).y - 3 * CityRoom.scale + 9 * 16 * CityRoom.scale, 0 );
+            }
     }
 }
