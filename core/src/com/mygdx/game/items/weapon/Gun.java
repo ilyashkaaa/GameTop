@@ -27,7 +27,9 @@ public class Gun extends Weapon {
     int extraRotate = 0;
     boolean wasFliped;
 
-    public void init(int originX, int orinigY, int scale){
+
+
+    public void init(int originX, int orinigY, float scale){
         weaponTexture.setOrigin(originX, orinigY);
         weaponTexture.scale((float) (scale * 0.75));
     }
@@ -52,11 +54,18 @@ public class Gun extends Weapon {
     public void draw(SpriteBatch batch, float x, float y, float angel){
         weaponTexture.setPosition(x, y);
         weaponTexture.setRotation(angel - extraRotate);
-        if((extraRotate > 180 && wasFliped) && (extraRotate < 180 && !wasFliped)) weaponTexture.flip(false, true);
+        if((extraRotate > 180 && wasFliped) && (extraRotate < 180 && !wasFliped)) {
+            weaponTexture.flip(true, true);
+        }
         weaponTexture.draw(batch);
     }
-    public void drawMenu(SpriteBatch batch, float x, float y) {
-        weaponTexture.setPosition(x, y);
-        weaponTexture.draw(batch);
+    public void flipY() {
+        weaponTexture.flip(false,true);
+    }
+    public void flipX() {
+        weaponTexture.flip(true,true);
+    }
+    public void setExtraRotate(int angle){
+        weaponTexture.rotate(angle);
     }
 }

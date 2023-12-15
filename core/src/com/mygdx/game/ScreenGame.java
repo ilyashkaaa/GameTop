@@ -13,6 +13,7 @@ import com.mygdx.game.enemies.FastBasic;
 import com.mygdx.game.enemies.Small;
 import com.mygdx.game.enemies.TallBasic;
 import com.mygdx.game.hero.Hero;
+import com.mygdx.game.items.weapon.Gun;
 import com.mygdx.game.locations.City;
 import com.mygdx.game.locations.Room;
 import com.mygdx.game.utils.Bullet;
@@ -59,6 +60,7 @@ public class ScreenGame implements Screen {
         hero = new Hero();
         inventory = new Inventory();
         random = new Random();
+        Hero.gunRandom();
         fireButton1 = new Button(MyGdxGame.SCR_WIDTH - Button.widht / 2 - 75, MyGdxGame.SCR_HEIGHT / 2 - 25);
         fireButton2 = new Button(MyGdxGame.SCR_WIDTH - Button.widht * 2 + 25, Button.height / 2 + 75);
         restartButton = new Button(MyGdxGame.SCR_WIDTH / 2, MyGdxGame.SCR_HEIGHT / 2 - 125);
@@ -104,37 +106,39 @@ public class ScreenGame implements Screen {
                 inventory.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
 
 
-                if (continueButton.isTouched(Gdx.input.getX(), MyGdxGame.SCR_HEIGHT - Gdx.input.getY())) {
-                    paused = false;
+
+            if (continueButton.isTouched(Gdx.input.getX(), MyGdxGame.SCR_HEIGHT - Gdx.input.getY())) {
+                paused = false;
+            }
+        } else {
+            frameCount++;
+            ScreenUtils.clear(0.40625f, 0.5f, 0.515625f, 0.5f);
+            moveCamera();
+            city.draw(myGdxGame.batch, 0);
+
+            EnemiesStorage.draw(myGdxGame.batch, frameCount);
+            EnemiesBullets.draw(myGdxGame.batch);
+            if (Gdx.input.isTouched(indexJoystick(countOfTouching())) && Gdx.input.getX(indexJoystick(countOfTouching())) <= MyGdxGame.SCR_WIDTH / 2) {
+                if (keepTouching)
+                    joystick.draw(myGdxGame.batch, indexJoystick(countOfTouching()), myGdxGame.camera.position.x, myGdxGame.camera.position.y);
+                else
+                    joystick.changeXY(Gdx.input.getX(indexJoystick(countOfTouching())), (MyGdxGame.SCR_HEIGHT - Gdx.input.getY(indexJoystick(countOfTouching()))));
+                hero.move(joystick.getX(indexJoystick(countOfTouching())), joystick.getY(indexJoystick(countOfTouching())));
+                if (joystick.getX(indexJoystick(countOfTouching())) != 0 && joystick.getY(indexJoystick(countOfTouching())) != 0) {
+                    lastCos = joystick.getX(indexJoystick(countOfTouching()));
+                    lastSyn = joystick.getY(indexJoystick(countOfTouching()));
                 }
-            } else {
-                frameCount++;
-                ScreenUtils.clear(0.40625f, 0.5f, 0.515625f, 0.5f);
-                moveCamera();
-                city.draw(myGdxGame.batch, 0);
-                BulletStorage.draw(myGdxGame.batch);
-                EnemiesStorage.draw(myGdxGame.batch, frameCount);
-                EnemiesBullets.draw(myGdxGame.batch);
-                if (Gdx.input.isTouched(indexJoystick(countOfTouching())) && Gdx.input.getX(indexJoystick(countOfTouching())) <= MyGdxGame.SCR_WIDTH / 2) {
-                    if (keepTouching)
-                        joystick.draw(myGdxGame.batch, indexJoystick(countOfTouching()), myGdxGame.camera.position.x, myGdxGame.camera.position.y);
-                    else
-                        joystick.changeXY(Gdx.input.getX(indexJoystick(countOfTouching())), (MyGdxGame.SCR_HEIGHT - Gdx.input.getY(indexJoystick(countOfTouching()))));
-                    hero.move(joystick.getX(indexJoystick(countOfTouching())), joystick.getY(indexJoystick(countOfTouching())));
-                    if (joystick.getX(indexJoystick(countOfTouching())) != 0 && joystick.getY(indexJoystick(countOfTouching())) != 0) {
-                        lastCos = joystick.getX(indexJoystick(countOfTouching()));
-                        lastSyn = joystick.getY(indexJoystick(countOfTouching()));
-                    }
-                    keepTouching = true;
-                } else keepTouching = false;
+                keepTouching = true;
+            } else keepTouching = false;
 
 //            if (pausedClick()) {
 //                paused = true;
 //            }
 
-                hero.draw(myGdxGame.batch, frameCount, keepTouching, lastCos, lastSyn);
-                city.draw(myGdxGame.batch, 1);
-                city.checkHeroColision();
+        hero.draw(myGdxGame.batch, frameCount, keepTouching, lastCos, lastSyn);
+            BulletStorage.draw(myGdxGame.batch);
+        city.draw(myGdxGame.batch, 1);
+        city.checkHeroColision();
 
                 //enemy.draw(myGdxGame.batch);
                 if (buttonHandler(fireButton1)) hero.shoot(lastCos, lastSyn, false);
@@ -156,6 +160,7 @@ public class ScreenGame implements Screen {
             }
         }
         myGdxGame.batch.end();
+
     }
 
     @Override
