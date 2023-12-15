@@ -30,6 +30,9 @@ public class Hero {
     static Random random = new Random();
     static int type1;
     static int type2 = 0;
+    float lastHp = hp;
+    long hpTimer;
+    boolean redHead;
 
     public Hero() {
         head = new Head();
@@ -42,7 +45,14 @@ public class Hero {
         if (wasTurned) gun2.draw(batch, x, y, (float) moveAngle);
         else gun1.draw(batch, x, y, (float) moveAngle + 180);
         body.draw(batch, x, y, frameCount, isMoving);
-        head.draw(batch, x, y, frameCount);
+        head.draw(batch, x, y, frameCount, redHead);
+        if (hp < lastHp){
+            hpTimer = System.currentTimeMillis();
+            lastHp = hp;
+            redHead = true;
+        }
+
+        if(System.currentTimeMillis() - 333 >= hpTimer) redHead = false;
         if (wasTurned) gun1.draw(batch, x, y, (float) moveAngle + 180);
         else gun2.draw(batch, x, y, (float) moveAngle);
     }

@@ -25,6 +25,7 @@ import com.mygdx.game.items.artefacts.Glitch;
 import com.mygdx.game.items.artefacts.NitrogenCylinder;
 import com.mygdx.game.items.artefacts.Scaner3D;
 import com.mygdx.game.locations.City;
+import com.mygdx.game.locations.CityRoom;
 import com.mygdx.game.utils.Bullet;
 import com.mygdx.game.locations.Room;
 import com.mygdx.game.utils.Bullet;
@@ -57,6 +58,7 @@ public class ScreenGame implements Screen {
     City city;
     Texture startScreen;
     Texture heart;
+    Texture gameOver;
     //CityRoom cityRoom;
     boolean keepTouching;
     private final MyGdxGame myGdxGame;
@@ -73,6 +75,7 @@ public class ScreenGame implements Screen {
         this.myGdxGame = myGdxGame;
         startScreen = new Texture("textures/gui/splash.png");
         heart = new Texture("textures/gui/hp.png");
+        gameOver = new Texture("textures/gui/game_over.png");
         bitmapFont = new BitmapFont(Gdx.files.internal("font/font.fnt"));
         bitmapFont.getData().scale(5f);
         bitmapFont.setColor(Color.WHITE);
@@ -111,10 +114,10 @@ public class ScreenGame implements Screen {
         }
         else{
             if(Hero.hp <= 0){
-                ScreenUtils.clear(0.6f, 0.6f, 0.6f, 1);
-                bitmapFont.draw(myGdxGame.batch, "You Lose!" + "\n" + "Loser", myGdxGame.camera.position.x - 250, myGdxGame.camera.position.y + 250, 500, 1, false);
-                restartButton.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y - 125, false);
-                if(restartButton.isTouched(Gdx.input.getX(), MyGdxGame.SCR_HEIGHT - Gdx.input.getY(), 0)){
+                myGdxGame.batch.draw(gameOver, myGdxGame.camera.position.x - MyGdxGame.SCR_WIDTH / 2, myGdxGame.camera.position.y - MyGdxGame.SCR_HEIGHT / 2, MyGdxGame.SCR_WIDTH, MyGdxGame.SCR_HEIGHT);
+                bitmapFont.draw(myGdxGame.batch, "You Lose!" + "\n" + "Loser", myGdxGame.camera.position.x - 250, myGdxGame.camera.position.y + 350, 500, 1, false);
+//                restartButton.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y - 125, false);
+                if(Gdx.input.justTouched()){
                     Hero.hp = 100;
                     hero.changePosition(-Hero.x, -Hero.y);
                     myGdxGame.camera.position.set(0, 0, 0);
@@ -142,6 +145,11 @@ public class ScreenGame implements Screen {
 
                     EnemiesStorage.draw(myGdxGame.batch, frameCount);
                     EnemiesBullets.draw(myGdxGame.batch);
+                    hero.draw(myGdxGame.batch, frameCount, keepTouching, lastCos, lastSyn);
+                    spawnArtefact();
+                    BulletStorage.draw(myGdxGame.batch);
+                    city.draw(myGdxGame.batch, 1);
+                    city.checkHeroColision();
                     if (Gdx.input.isTouched(indexJoystick(countOfTouching())) && Gdx.input.getX(indexJoystick(countOfTouching())) <= MyGdxGame.SCR_WIDTH / 2) {
                         if (keepTouching)
                             joystick.draw(myGdxGame.batch, indexJoystick(countOfTouching()), myGdxGame.camera.position.x, myGdxGame.camera.position.y);
@@ -159,11 +167,7 @@ public class ScreenGame implements Screen {
 //                paused = true;
 //            }
 
-            hero.draw(myGdxGame.batch, frameCount, keepTouching, lastCos, lastSyn);
-            spawnArtefact();
-            BulletStorage.draw(myGdxGame.batch);
-            city.draw(myGdxGame.batch, 1);
-            city.checkHeroColision();
+
 
             //enemy.draw(myGdxGame.batch);
             if (buttonHandler(fireButton1)) hero.shoot(lastCos, lastSyn, false);
@@ -172,7 +176,7 @@ public class ScreenGame implements Screen {
 
 //            bitmapFont.draw(myGdxGame.batch, " " + EnemiesStorage.enemyList.size(), myGdxGame.camera.position.x, myGdxGame.camera.position.y);
                     if (city.isActivate()) {
-                        spawnMonsters(Room.rooms.get(City.lastRoom).x, Room.rooms.get(City.lastRoom).y);
+                        spawnMonsters(Room.rooms.get(City.lastRoom).x + 8 * CityRoom.scale + 8.1f * 16 * CityRoom.scale, Room.rooms.get(City.lastRoom).y - 3 * CityRoom.scale + 9 * 16 * CityRoom.scale);
                     }
 
                     myGdxGame.batch.draw(heart, myGdxGame.camera.position.x - MyGdxGame.SCR_WIDTH / 2, MyGdxGame.SCR_HEIGHT / 2 - 16 * hpScale + myGdxGame.camera.position.y, 16 * hpScale, 16 * hpScale);
@@ -266,8 +270,8 @@ public class ScreenGame implements Screen {
         numberOfMonsters = 30;
         for (int i = 0; i < numberOfMonsters; i++) {
             form = random.nextInt(4) + 1;
-            x0 = random.nextInt(600 * 4) + 16 * MyGdxGame.scale + roomX;
-            y0 = random.nextInt(600 * 4) + 16 * MyGdxGame.scale + roomY;
+            x0 = random.nextInt(600 * 4) + 16 * MyGdxGame.scale + roomX - 304 * CityRoom.scale;
+            y0 = random.nextInt(600 * 4) + 16 * MyGdxGame.scale + roomY - 304 * CityRoom.scale;
             switch (form) {
                 case 1:
                     EnemiesStorage.enemyList.add(new Basic(x0, y0));
