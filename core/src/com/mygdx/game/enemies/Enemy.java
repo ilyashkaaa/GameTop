@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.hero.Hero;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 public class Enemy {
@@ -14,7 +16,8 @@ public class Enemy {
     protected String description;
     Sprite[] walking;
     Sprite sprite;
-   public double hp = 10;
+    Sprite boom;
+    public double hp = 10;
     double damage;
     public double speed = 3;
     double distanceHero = 8 * MyGdxGame.scale;
@@ -25,7 +28,9 @@ public class Enemy {
     double sinus, cosinus;
     public int width = 16, height = 16;
     boolean melee = false;
+    boolean small = false;
     long lastDamageTime;
+    long lastDamageTimeSmall;
     int counter = 0;
     double moveAngle;
 
@@ -37,6 +42,7 @@ public class Enemy {
     public Enemy(float x, float y) {
         x0 = x;
         y0 = y;
+        boom = new Sprite(new Texture("textures/enemies/boom.png"));
         walking = new Sprite[]{
                 new Sprite(new Texture("textures/enemies/bubble_city_0.png")),
                 new Sprite(new Texture("textures/enemies/bubble_city_1.png")),
@@ -69,7 +75,7 @@ public class Enemy {
 
     public void move(SpriteBatch batch) {
         float x = Hero.x - width / 2 * MyGdxGame.scale;
-        float y = Hero.y- height / 4 * 3 * MyGdxGame.scale;
+        float y = Hero.y - height / 4 * 3 * MyGdxGame.scale;
         hypo = Math.pow((x0 - x) * (x0 - x) + (y0 - y) * (y0 - y), 0.5);
         cosinus = (x0 - x) / hypo;
         sinus = (y0 - y) / hypo;
@@ -78,22 +84,14 @@ public class Enemy {
                 x0 -= speed * cosinus - heh4;
                 y0 -= speed * sinus - heh4;
             }
-
         } else {
-            attack(batch, x, y);
+            attack(x, y);
         }
     }
 
-    public boolean isAlive() {
-        return true;
-    }
 
-    //public void spawn(float x, float y) {
-    //    EnemiesStorage.enemiesList.add(new Enemies(x, y));
-    //}
+    public void attack(float x, float y) {
 
-
-    public void attack(SpriteBatch batch, float x, float y) {
         if (melee && (System.currentTimeMillis() - lastDamageTime) / 1000 >= 1) {
             Hero.hp -= damage;
             counter++;
@@ -123,10 +121,6 @@ public class Enemy {
             double a = enemy.x0 - x;
             double b = enemy.y0 - y;
             double c = Math.sqrt(a * a + b * b);
-//                if (enemy.x0 >= x && enemy.x0 <= x + width*MyGdxGame.scale + 10
-//                        && enemy.y0 >=y && enemy.y0 <= y + height*MyGdxGame.scale + 10) {
-//                    System.out.println("3333");
-//                    return false;
             if (c < minC) {
                 minC = c;
             }
@@ -134,6 +128,5 @@ public class Enemy {
 
         return minC < enemies.width * 1.5;
     }
-
 }
 
