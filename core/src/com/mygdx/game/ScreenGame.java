@@ -91,6 +91,11 @@ public class ScreenGame implements Screen {
     float x0, y0;
     int count = 1, slotWeapon = 0;
     boolean drawNewGun = false;
+    long time;
+    long timeTimer;
+    boolean canMinus;
+    long restartTimer;
+    boolean justOneceGenerate;
 
     ScreenGame(MyGdxGame myGdxGame) {
         music.setLooping(true);
@@ -144,6 +149,8 @@ public class ScreenGame implements Screen {
 //                restartButton.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y - 125, false);
                 if(Gdx.input.justTouched()){
                     Hero.hp = 100;
+                    score = 0;
+                    time = 0;
                     hero.changePosition(-Hero.x, -Hero.y);
                     myGdxGame.camera.position.set(0, 0, 0);
                     Room.rooms.clear();
@@ -163,6 +170,16 @@ public class ScreenGame implements Screen {
                     }
                 } else {
                     frameCount++;
+                    if(timeTimer <= System.currentTimeMillis() / 1000 - 1){
+                        ++time;
+                        timeTimer = System.currentTimeMillis() / 1000;
+                    }
+                    if (time % 30 == 0){
+                        if(canMinus) {
+                            --score;
+                            canMinus = false;
+                        }
+                    }else canMinus = true;
                     ScreenUtils.clear(0.40625f, 0.5f, 0.515625f, 0.5f);
                     moveCamera();
                     city.draw(myGdxGame.batch, 0);
@@ -197,8 +214,6 @@ public class ScreenGame implements Screen {
 //                paused = true;
 //            }
 
-
-
                     //enemy.draw(myGdxGame.batch);
                     if (buttonHandler(fireButton1)) hero.shoot(lastCos, lastSyn, false);
                     if (buttonHandler(fireButton2)) hero.shoot(lastCos, lastSyn, true);
@@ -208,7 +223,7 @@ public class ScreenGame implements Screen {
 //            bitmapFont.draw(myGdxGame.batch, " " + EnemiesStorage.enemyList.size(), myGdxGame.camera.position.x, myGdxGame.camera.position.y);
                     if (city.isActivate()) {
                         spawnMonsters(Room.rooms.get(City.lastRoom).x + 8 * CityRoom.scale + 8.1f * 16 * CityRoom.scale, Room.rooms.get(City.lastRoom).y - 3 * CityRoom.scale + 9 * 16 * CityRoom.scale);
-                        spawnMonsters(Room.rooms.get(City.lastRoom).x, Room.rooms.get(City.lastRoom).y);
+//                        spawnMonsters(Room.rooms.get(City.lastRoom).x, Room.rooms.get(City.lastRoom).y);
                         drawNewGun = false;
                         count = 0;
                     }
@@ -218,12 +233,32 @@ public class ScreenGame implements Screen {
                             takeGun();
                         }
                     }
-                    fog.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
-                    fog.move();
+//                    fog.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
+//                    fog.move(myGdxGame.camera.position.x);
+                    if(nextFloor()) {
+                        bitmapFont.draw(myGdxGame.batch, "Next floor is apcrosing!", myGdxGame.camera.position.x - 500, myGdxGame.camera.position.y + 250, 1000, 1, true);
+                        if(!justOneceGenerate){
+                            restartTimer = System.currentTimeMillis();
+                            justOneceGenerate = true;
+                        }
+                        if(restartTimer <= System.currentTimeMillis() - 3000){
+                            justOneceGenerate = false;
+                            Hero.hp = 100;
+                            score = 0;
+                            hero.changePosition(-Hero.x, -Hero.y);
+                            myGdxGame.camera.position.set(0, 0, 0);
+                            Room.rooms.clear();
+                            city = new City();
+                            EnemiesStorage.enemyList.clear();
+                            BulletStorage.bullets.clear();
+                            EnemiesBullets.bullets.clear();
+                        }
+                    }
                     myGdxGame.batch.draw(heart, myGdxGame.camera.position.x - MyGdxGame.SCR_WIDTH / 2, MyGdxGame.SCR_HEIGHT / 2 - 16 * hpScale + myGdxGame.camera.position.y, 16 * hpScale, 16 * hpScale);
                     bitmapFont.getData().setScale(5, 5);
                     bitmapFont.draw(myGdxGame.batch, "" + (int) Hero.hp, myGdxGame.camera.position.x - MyGdxGame.SCR_WIDTH / 2 + 16 * hpScale * 1.7f, MyGdxGame.SCR_HEIGHT / 2 + myGdxGame.camera.position.y - 16 * hpScale / 4, 15, 1, false);
                     bitmapFont.draw(myGdxGame.batch, "" + score, myGdxGame.camera.position.x - MyGdxGame.SCR_WIDTH/24*13.5f  , myGdxGame.camera.position.y + MyGdxGame.SCR_HEIGHT/24*9 , 500, 1, false);
+                    bitmapFont.draw(myGdxGame.batch, "time " + time, myGdxGame.camera.position.x - MyGdxGame.SCR_WIDTH/24*12f  , myGdxGame.camera.position.y + MyGdxGame.SCR_HEIGHT/24*7 , 500, 1, false);
                     fireButton1.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y, hero.getReload1());
                     fireButton2.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y, hero.getReload2());
                     pausedButton.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
@@ -411,7 +446,16 @@ public class ScreenGame implements Screen {
             newGun.draw(myGdxGame.batch, Room.rooms.get(City.lastRoom).x + 8 * CityRoom.scale + 8.1f * 16 * CityRoom.scale, Room.rooms.get(City.lastRoom).y - 3 * CityRoom.scale + 9 * 16 * CityRoom.scale, 0);
         }
     }
-
+    public boolean nextFloor(){
+        if(EnemiesStorage.enemyList.size() == 0) {
+            for (int i = 0; i < Room.rooms.size(); i++) {
+                System.out.println(i);
+                if (!Room.rooms.get(i).isActivate && i % 2 == 0) return false;
+            }
+            return true;
+        }
+        return  false;
+    }
     public void takeGun() {
         System.out.println("take gun");
         newGun.flipY();

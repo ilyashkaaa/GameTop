@@ -26,7 +26,6 @@ public class Head {
     }
     public void draw(SpriteBatch batch, float x, float y, int frameCount, boolean takeDamage){
         if(!takeDamage) {
-            System.out.println(takeDamage);
             if (frameCount % 100 >= 0 && frameCount % 100 <= 5) {
                 head2.setPosition(x, y + 12 * MyGdxGame.scale + 0.5f * MyGdxGame.scale * (frameCount % 80 / 40));
                 head2.draw(batch);
