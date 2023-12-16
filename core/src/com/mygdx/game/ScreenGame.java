@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.enemies.Basic;
 import com.mygdx.game.enemies.EnemiesBullets;
 import com.mygdx.game.enemies.EnemiesStorage;
+import com.mygdx.game.enemies.Enemy;
 import com.mygdx.game.enemies.FastBasic;
 import com.mygdx.game.enemies.Small;
 import com.mygdx.game.enemies.TallBasic;
@@ -85,11 +86,11 @@ public class ScreenGame implements Screen {
     int lastFinger;
     double lastCos, lastSyn;
     boolean paused = false;
-    int numberOfMonsters, maxMonsters = 10, form;
+    int numberOfMonsters, maxMonsters = 36, form;
     boolean isStarted = false;
     public static List<Artefacts> artefacts = new LinkedList<>();
     float x0, y0;
-    int count = 1, slotWeapon = 0;
+    int count = 1;
     boolean drawNewGun = false;
     long time;
     long timeTimer;
@@ -194,6 +195,7 @@ public class ScreenGame implements Screen {
                     EnemiesBullets.draw(myGdxGame.batch);
                     hero.draw(myGdxGame.batch, frameCount, keepTouching, lastCos, lastSyn);
                     spawnArtefact();
+                    spawnWeapon();
                     BulletStorage.draw(myGdxGame.batch);
                     city.draw(myGdxGame.batch, 1);
                     city.checkHeroColision();
@@ -214,6 +216,8 @@ public class ScreenGame implements Screen {
 //                paused = true;
 //            }
 
+
+
                     //enemy.draw(myGdxGame.batch);
                     if (buttonHandler(fireButton1)) hero.shoot(lastCos, lastSyn, false);
                     if (buttonHandler(fireButton2)) hero.shoot(lastCos, lastSyn, true);
@@ -223,7 +227,6 @@ public class ScreenGame implements Screen {
 //            bitmapFont.draw(myGdxGame.batch, " " + EnemiesStorage.enemyList.size(), myGdxGame.camera.position.x, myGdxGame.camera.position.y);
                     if (city.isActivate()) {
                         spawnMonsters(Room.rooms.get(City.lastRoom).x + 8 * CityRoom.scale + 8.1f * 16 * CityRoom.scale, Room.rooms.get(City.lastRoom).y - 3 * CityRoom.scale + 9 * 16 * CityRoom.scale);
-//                        spawnMonsters(Room.rooms.get(City.lastRoom).x, Room.rooms.get(City.lastRoom).y);
                         drawNewGun = false;
                         count = 0;
                     }
@@ -343,8 +346,7 @@ public class ScreenGame implements Screen {
     }
 
     public void spawnMonsters(float roomX, float roomY) {
-        //numberOfMonsters = random.nextInt(maxMonsters) + 1;
-        numberOfMonsters = 30;
+        numberOfMonsters = random.nextInt(maxMonsters) + 1;
         for (int i = 0; i < numberOfMonsters; i++) {
             form = random.nextInt(4) + 1;
             x0 = random.nextInt(600 * 4) + 16 * MyGdxGame.scale + roomX - 304 * CityRoom.scale;
@@ -439,6 +441,8 @@ public class ScreenGame implements Screen {
                     break;
                 case 7:
                     newGun = new StarRifle();
+                    newGun.init(24, 8, 5);
+
 
             }
             drawNewGun = true;
@@ -460,7 +464,11 @@ public class ScreenGame implements Screen {
         System.out.println("take gun");
         newGun.flipY();
         newGun.flipX();
+        if (Hero.wasTurned) {
+            newGun.flipY();
+        }
         Hero.gun1 = newGun;
+        drawNewGun = false;
 
     }
 }

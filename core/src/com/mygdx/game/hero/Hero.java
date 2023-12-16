@@ -25,7 +25,7 @@ public class Hero {
     public int speed = 7;
     public static float x = (float) MyGdxGame.SCR_WIDTH / 2;
     public static float y = (float) MyGdxGame.SCR_HEIGHT / 2;
-    boolean wasTurned;
+    public static boolean wasTurned;
     double moveAngle;
     static Random random = new Random();
     static int type1;

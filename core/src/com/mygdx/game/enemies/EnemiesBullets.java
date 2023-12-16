@@ -9,6 +9,7 @@ import com.mygdx.game.utils.Bullet;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 public class EnemiesBullets {
     float distance = 500;
@@ -17,7 +18,8 @@ public class EnemiesBullets {
     double hypo, cosinus, sinus;
     float speed = 10;
     double moveAngle;
-    float damage = 5;
+    static Random random = new Random();
+    float damage;
     long lastDamageTime;
 
     public static List<EnemiesBullets> bullets = new LinkedList<>();
@@ -43,6 +45,7 @@ public class EnemiesBullets {
             bullet.sprite.draw(batch);
             bullet.sprite.setRotation((float) bullet.moveAngle);
             if (Math.abs(bullet.x0 - Hero.x) < 50 && Math.abs(bullet.y0 - Hero.y) < 50 && (System.currentTimeMillis() - bullet.lastDamageTime)/1000 > 1) {
+                bullet.damage = random.nextInt(11)+5;
                 Hero.hp -= bullet.damage;
                 bullets.remove(bullet);
                 bullet.lastDamageTime = System.currentTimeMillis();
