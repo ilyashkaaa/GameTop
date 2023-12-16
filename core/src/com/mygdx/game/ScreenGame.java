@@ -79,6 +79,8 @@ public class ScreenGame implements Screen {
     Fog fog;
     Audio audio = Gdx.audio;
     Music music = audio.newMusic(Gdx.files.internal("music/defalt.mp3"));
+    Music menuMusic = audio.newMusic(Gdx.files.internal("music/menu.mp3"));
+    Music deathMusic = audio.newMusic(Gdx.files.internal("music/death.mp3"));
     //CityRoom cityRoom;
     boolean keepTouching;
     private final MyGdxGame myGdxGame;
@@ -97,9 +99,13 @@ public class ScreenGame implements Screen {
     boolean canMinus;
     long restartTimer;
     boolean justOneceGenerate;
+    List<Gun> spawnGuns = new ArrayList<>();
+    int[] gunRoomIndex = new int[100];
 
     ScreenGame(MyGdxGame myGdxGame) {
         music.setLooping(true);
+        menuMusic.setLooping(true);
+        deathMusic.setLooping(true);
         this.myGdxGame = myGdxGame;
         startScreen = new Texture("textures/gui/splash.png");
         heart = new Texture("textures/gui/hp.png");
@@ -138,17 +144,24 @@ public class ScreenGame implements Screen {
     public void render(float delta) {
         myGdxGame.batch.begin();
         if (!isStarted) {
+            menuMusic.play();
             myGdxGame.batch.draw(startScreen, 0, 0, MyGdxGame.SCR_WIDTH, MyGdxGame.SCR_HEIGHT);
-            if(Gdx.input.justTouched()) isStarted = true;
+            if(Gdx.input.justTouched()) {
+                isStarted = true;
+                menuMusic.stop();
+            }
         }
         else{
             music.play();
 
             if(Hero.hp <= 0){
+                music.stop();
+                deathMusic.play();
                 myGdxGame.batch.draw(gameOver, myGdxGame.camera.position.x - MyGdxGame.SCR_WIDTH / 2, myGdxGame.camera.position.y - MyGdxGame.SCR_HEIGHT / 2, MyGdxGame.SCR_WIDTH, MyGdxGame.SCR_HEIGHT);
                 bitmapFont.draw(myGdxGame.batch, "You Lose!" + "\n" + score, myGdxGame.camera.position.x - 250, myGdxGame.camera.position.y + 350, 500, 1, false);
 //                restartButton.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y - 125, false);
                 if(Gdx.input.justTouched()){
+                    deathMusic.stop();
                     Hero.hp = 100;
                     score = 0;
                     time = 0;
@@ -195,7 +208,7 @@ public class ScreenGame implements Screen {
                     EnemiesBullets.draw(myGdxGame.batch);
                     hero.draw(myGdxGame.batch, frameCount, keepTouching, lastCos, lastSyn);
                     spawnArtefact();
-                    spawnWeapon();
+//                    spawnWeapon();
                     BulletStorage.draw(myGdxGame.batch);
                     city.draw(myGdxGame.batch, 1);
                     city.checkHeroColision();
@@ -217,25 +230,30 @@ public class ScreenGame implements Screen {
 //            }
 
 
-
                     //enemy.draw(myGdxGame.batch);
                     if (buttonHandler(fireButton1)) hero.shoot(lastCos, lastSyn, false);
                     if (buttonHandler(fireButton2)) hero.shoot(lastCos, lastSyn, true);
                     hero.checkReload();
-
+                    for(int i = 0; i < spawnGuns.size(); i++){
+                        spawnGuns.get(i).drawOnFloor(myGdxGame.batch);
+                    }
+                    System.out.println(spawnGuns.size());
 
 //            bitmapFont.draw(myGdxGame.batch, " " + EnemiesStorage.enemyList.size(), myGdxGame.camera.position.x, myGdxGame.camera.position.y);
                     if (city.isActivate()) {
                         spawnMonsters(Room.rooms.get(City.lastRoom).x + 8 * CityRoom.scale + 8.1f * 16 * CityRoom.scale, Room.rooms.get(City.lastRoom).y - 3 * CityRoom.scale + 9 * 16 * CityRoom.scale);
+                        if (Hero.hp < 90)
+                            Hero.hp += 10;
+                        else
+                            Hero.hp = 100;
                         drawNewGun = false;
                         count = 0;
                     }
-                    if (drawNewGun) {
-                        newGun.draw(myGdxGame.batch, Room.rooms.get(City.lastRoom).x + 8 * CityRoom.scale + 8.1f * 16 * CityRoom.scale, Room.rooms.get(City.lastRoom).y - 3 * CityRoom.scale + 9 * 16 * CityRoom.scale, 0);
-                        if (Math.abs(Hero.x - (Room.rooms.get(City.lastRoom).x + 8 * CityRoom.scale + 8.1f * 16 * CityRoom.scale)) <= 100 && Math.abs(Hero.y - (Room.rooms.get(City.lastRoom).y - 3 * CityRoom.scale + 9 * 16 * CityRoom.scale)) <= 100) {
-                            takeGun();
-                        }
-                    }
+
+//                        if (Math.abs(Hero.x - (Room.rooms.get(City.lastRoom).x + 8 * CityRoom.scale + 8.1f * 16 * CityRoom.scale)) <= 100 && Math.abs(Hero.y - (Room.rooms.get(City.lastRoom).y - 3 * CityRoom.scale + 9 * 16 * CityRoom.scale)) <= 100) {
+//                            takeGun();
+//                        }
+
 //                    fog.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
 //                    fog.move(myGdxGame.camera.position.x);
                     if(nextFloor()) {
@@ -257,11 +275,14 @@ public class ScreenGame implements Screen {
                             EnemiesBullets.bullets.clear();
                         }
                     }
-                    myGdxGame.batch.draw(heart, myGdxGame.camera.position.x - MyGdxGame.SCR_WIDTH / 2, MyGdxGame.SCR_HEIGHT / 2 - 16 * hpScale + myGdxGame.camera.position.y, 16 * hpScale, 16 * hpScale);
+                    myGdxGame.batch.draw(heart, myGdxGame.camera.position.x - MyGdxGame.SCR_WIDTH / 2 + 6 * hpScale, MyGdxGame.SCR_HEIGHT / 2 - 16 * hpScale + myGdxGame.camera.position.y, 16 * hpScale, 16 * hpScale);
                     bitmapFont.getData().setScale(5, 5);
-                    bitmapFont.draw(myGdxGame.batch, "" + (int) Hero.hp, myGdxGame.camera.position.x - MyGdxGame.SCR_WIDTH / 2 + 16 * hpScale * 1.7f, MyGdxGame.SCR_HEIGHT / 2 + myGdxGame.camera.position.y - 16 * hpScale / 4, 15, 1, false);
-                    bitmapFont.draw(myGdxGame.batch, "" + score, myGdxGame.camera.position.x - MyGdxGame.SCR_WIDTH/24*13.5f  , myGdxGame.camera.position.y + MyGdxGame.SCR_HEIGHT/24*9 , 500, 1, false);
-                    bitmapFont.draw(myGdxGame.batch, "time " + time, myGdxGame.camera.position.x - MyGdxGame.SCR_WIDTH/24*12f  , myGdxGame.camera.position.y + MyGdxGame.SCR_HEIGHT/24*7 , 500, 1, false);
+                    bitmapFont.draw(myGdxGame.batch, "" + (int) Hero.hp, myGdxGame.camera.position.x - MyGdxGame.SCR_WIDTH / 2 + 16 * hpScale * 2f, MyGdxGame.SCR_HEIGHT / 2 + myGdxGame.camera.position.y - 16 * hpScale / 4, 15, 1, false);
+                    bitmapFont.draw(myGdxGame.batch, "" + score, myGdxGame.camera.position.x - MyGdxGame.SCR_WIDTH/24*13.5f, myGdxGame.camera.position.y + MyGdxGame.SCR_HEIGHT/24*9 , 500, 1, false);
+                    if(time % 60 < 10)
+                        bitmapFont.draw(myGdxGame.batch, "time " + (int) (time / 60) + ":0" + (time % 60), myGdxGame.camera.position.x - MyGdxGame.SCR_WIDTH / 2 + 16 * hpScale * 3f, MyGdxGame.SCR_HEIGHT / 2 - 4 * hpScale + myGdxGame.camera.position.y, 500, 0, false);
+                    else
+                        bitmapFont.draw(myGdxGame.batch, "time " + (int) (time / 60) + ":" + (time % 60), myGdxGame.camera.position.x - MyGdxGame.SCR_WIDTH/2 + 16 * hpScale * 3f, MyGdxGame.SCR_HEIGHT / 2  - 4 * hpScale + myGdxGame.camera.position.y, 500, 0, false);
                     fireButton1.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y, hero.getReload1());
                     fireButton2.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y, hero.getReload2());
                     pausedButton.draw(myGdxGame.batch, myGdxGame.camera.position.x, myGdxGame.camera.position.y);
@@ -416,44 +437,60 @@ public class ScreenGame implements Screen {
             form = random.nextInt(7) + 1;
             switch (form) {
                 case 1:
-                    newGun = new BasicLaser();
-                    newGun.init(8, 8, 5);
+                    spawnGuns.add(new BasicLaser());
+                    spawnGuns.get(spawnGuns.size() - 1).init(8, 8, 5);
+                    spawnGuns.get(spawnGuns.size() - 1).setXYPosition((int) (Room.rooms.get(City.lastRoom).x + 8 * CityRoom.scale + 8.1f * 16 * CityRoom.scale), (int) (Room.rooms.get(City.lastRoom).y - 3 * CityRoom.scale + 9 * 16 * CityRoom.scale));
+                    gunRoomIndex[City.lastRoom] = spawnGuns.size() - 1;
                     break;
                 case 2:
-                    newGun = new CyberBow();
-                    newGun.init(8, 8, 5);
+                    spawnGuns.add(new CyberBow());
+                    spawnGuns.get(spawnGuns.size() - 1).init(8, 8, 5);
+                    spawnGuns.get(spawnGuns.size() - 1).setXYPosition((int) (Room.rooms.get(City.lastRoom).x + 8 * CityRoom.scale + 8.1f * 16 * CityRoom.scale), (int) (Room.rooms.get(City.lastRoom).y - 3 * CityRoom.scale + 9 * 16 * CityRoom.scale));
+                    gunRoomIndex[City.lastRoom] = spawnGuns.size() - 1;
+
                     break;
                 case 3:
-                    newGun = new DoomShotgun();
-                    newGun.init(24, 8, 5);
+                    spawnGuns.add(new DoomShotgun());
+                    spawnGuns.get(spawnGuns.size() - 1).init(8, 8, 5);
+                    spawnGuns.get(spawnGuns.size() - 1).setXYPosition((int) (Room.rooms.get(City.lastRoom).x + 8 * CityRoom.scale + 8.1f * 16 * CityRoom.scale), (int) (Room.rooms.get(City.lastRoom).y - 3 * CityRoom.scale + 9 * 16 * CityRoom.scale));
+                    gunRoomIndex[City.lastRoom] = spawnGuns.size() - 1;
+
                     break;
                 case 4:
-                    newGun = new GasRifle();
-                    newGun.init(24, 8, 5);
+                    spawnGuns.add(new GasRifle());
+                    spawnGuns.get(spawnGuns.size() - 1).init(8, 8, 5);
+                    spawnGuns.get(spawnGuns.size() - 1).setXYPosition((int) (Room.rooms.get(City.lastRoom).x + 8 * CityRoom.scale + 8.1f * 16 * CityRoom.scale), (int) (Room.rooms.get(City.lastRoom).y - 3 * CityRoom.scale + 9 * 16 * CityRoom.scale));
+                    gunRoomIndex[City.lastRoom] = spawnGuns.size() - 1;
+
                     break;
                 case 5:
-                    newGun = new Ledashnikov();
-                    newGun.init(24, 8, 5);
+                    spawnGuns.add(new Ledashnikov());
+                    spawnGuns.get(spawnGuns.size() - 1).init(8, 8, 5);
+                    spawnGuns.get(spawnGuns.size() - 1).setXYPosition((int) (Room.rooms.get(City.lastRoom).x + 8 * CityRoom.scale + 8.1f * 16 * CityRoom.scale), (int) (Room.rooms.get(City.lastRoom).y - 3 * CityRoom.scale + 9 * 16 * CityRoom.scale));
+                    gunRoomIndex[City.lastRoom] = spawnGuns.size() - 1;
+
                     break;
                 case 6:
-                    newGun = new RailGun();
-                    newGun.init(24, 8, 5);
+                    spawnGuns.add(new RailGun());
+                    spawnGuns.get(spawnGuns.size() - 1).init(8, 8, 5);
+                    spawnGuns.get(spawnGuns.size() - 1).setXYPosition((int) (Room.rooms.get(City.lastRoom).x + 8 * CityRoom.scale + 8.1f * 16 * CityRoom.scale), (int) (Room.rooms.get(City.lastRoom).y - 3 * CityRoom.scale + 9 * 16 * CityRoom.scale));
+                    gunRoomIndex[City.lastRoom] = spawnGuns.size() - 1;
+
                     break;
                 case 7:
-                    newGun = new StarRifle();
-                    newGun.init(24, 8, 5);
-
+                    spawnGuns.add(new StarRifle());
+                    spawnGuns.get(spawnGuns.size() - 1).init(8, 8, 5);
+                    spawnGuns.get(spawnGuns.size() - 1).setXYPosition((int) (Room.rooms.get(City.lastRoom).x + 8 * CityRoom.scale + 8.1f * 16 * CityRoom.scale), (int) (Room.rooms.get(City.lastRoom).y - 3 * CityRoom.scale + 9 * 16 * CityRoom.scale));
+                    gunRoomIndex[City.lastRoom] = spawnGuns.size() - 1;
 
             }
             drawNewGun = true;
 
-            newGun.draw(myGdxGame.batch, Room.rooms.get(City.lastRoom).x + 8 * CityRoom.scale + 8.1f * 16 * CityRoom.scale, Room.rooms.get(City.lastRoom).y - 3 * CityRoom.scale + 9 * 16 * CityRoom.scale, 0);
         }
     }
     public boolean nextFloor(){
         if(EnemiesStorage.enemyList.size() == 0) {
             for (int i = 0; i < Room.rooms.size(); i++) {
-                System.out.println(i);
                 if (!Room.rooms.get(i).isActivate && i % 2 == 0) return false;
             }
             return true;
@@ -462,13 +499,10 @@ public class ScreenGame implements Screen {
     }
     public void takeGun() {
         System.out.println("take gun");
-        newGun.flipY();
-        newGun.flipX();
         if (Hero.wasTurned) {
-            newGun.flipY();
+            spawnGuns.get(gunRoomIndex[City.lastRoom]).flipY();
         }
-        Hero.gun1 = newGun;
+        Hero.gun1 = spawnGuns.get(gunRoomIndex[City.lastRoom]);
         drawNewGun = false;
-
     }
 }

@@ -29,7 +29,8 @@ public class Gun extends Weapon {
     int extraRotate = 0;
     boolean wasFliped;
     public boolean reloadStarted1 = false;
-
+    int xPosition, yPosition;
+    public int indexRoom;
 
 
 
@@ -40,7 +41,7 @@ public class Gun extends Weapon {
     @SuppressWarnings("SuspiciousIndentation")
     public void checkReload(){
         if ((((double) System.currentTimeMillis() - lastBulletTime) / 1000 >= reload))
-        reloadStarted1 = false;
+            reloadStarted1 = false;
     }
     public void shoot(float x, float y, double sinus, double cosinus) {
         long currentTime = System.currentTimeMillis();
@@ -82,5 +83,12 @@ public class Gun extends Weapon {
     }
     public boolean isReloadStarted1(){
         return reloadStarted1;
+    }
+    public void drawOnFloor(SpriteBatch batch){
+        draw(batch, xPosition, yPosition, 0);
+    }
+    public void setXYPosition(int x, int y){
+        xPosition = x;
+        yPosition = y;
     }
 }

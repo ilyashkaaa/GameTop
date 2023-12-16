@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class GasRifle extends Gun{
-    public GasRifle() {
+    public GasRifle(){
         weaponTexture = new Sprite(new Texture("textures/weapons/gas_rifle.png"));
         bulletTexture = new Sprite(new Texture("textures/weapons/bullets/radiation.png"));
         title = "Газовая винтовка";

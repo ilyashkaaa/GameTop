@@ -11,7 +11,7 @@ public class Small extends Enemy {
         melee = true;
         small = true;
         damage = random.nextInt(6)+10;
-        speed = 8;
+        speed = 5;
         width = 16;
         height = 16;
         title = "Мелкий пузырь";
